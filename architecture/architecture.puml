@@ -1,0 +1,39 @@
+﻿@startuml
+
+package "AV Datalogger" {
+    [Connector] as Connector
+    [Data Store] as Store
+    [Car Logger] as Log
+    [App Logger] as AppLog
+    [App] as App
+
+    (CSV File) as CSV
+    (Serial Port) as Serial
+    (TCP Socket) as TCP
+    
+    CSV <-- Connector : reads from
+    Serial <-down- Connector : reads from
+    TCP <-down- Connector : reads from
+
+    Connector -right-> Store : converts and stores
+
+    Store -right-> Log : logs CAN data
+    App -up-> Store : reads from
+    App --> Connector : sends commands
+    App -right-> AppLog : logs app data
+
+    Log --> [CSV File] : writes logs
+    AppLog  --> [TXT File] : writes logs
+
+    note left of Connector
+        The Connector reads data from various sources
+        and converts it before storing it in the Data Store.
+    end note
+
+    note top of Store
+        The Data Store logs CAN data and provides
+        live read access to the CAN data for the App.
+    end note
+}
+
+@enduml
