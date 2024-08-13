@@ -15,6 +15,18 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+        <TextBlock Text="Line 2 text demo" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Panel>
+            <Rectangle Height="200" Width="200" Fill="White" />
+            <Image Source="/Assets/nuvotion_logo.png" Height="200" Width="200">
+                <Image.RenderTransform>
+                    <RotateTransform Angle="90" />
+                </Image.RenderTransform>
+            </Image>
+        </Panel>
+    </StackPanel>
 
 </Window>
