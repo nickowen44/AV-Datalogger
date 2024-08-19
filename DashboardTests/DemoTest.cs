@@ -1,4 +1,4 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
 using Dashboard.Connectors;
 using Dashboard.Models;
@@ -32,7 +32,7 @@ public class DemoTest
 
         // Act
         window.Show();
-        
+
         // Assert
         Assert.That(window, Is.Not.Null);
         Assert.That(window, Is.InstanceOf<MainWindow>());
