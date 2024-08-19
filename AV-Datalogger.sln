@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard", "Dashboard\Dashboard.csproj", "{7AEB3289-9302-43A3-BF12-D21E7608403D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashboardTests", "DashboardTests\DashboardTests.csproj", "{BA33AD13-B1E8-477D-8601-29E660E6D9BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{7AEB3289-9302-43A3-BF12-D21E7608403D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AEB3289-9302-43A3-BF12-D21E7608403D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AEB3289-9302-43A3-BF12-D21E7608403D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA33AD13-B1E8-477D-8601-29E660E6D9BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA33AD13-B1E8-477D-8601-29E660E6D9BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA33AD13-B1E8-477D-8601-29E660E6D9BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA33AD13-B1E8-477D-8601-29E660E6D9BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
