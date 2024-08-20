@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
-using Dashboard.Connectors;
 using Dashboard.Models;
 using Dashboard.ViewModels;
 using Dashboard.Views;
@@ -12,13 +11,11 @@ namespace DashboardTests;
 public class DemoTest
 {
     private Mock<IDataStore> _dataStore;
-    private Mock<IConnector> _connector;
 
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
-        _connector = new Mock<IConnector>();
     }
 
     [AvaloniaTest]
@@ -27,7 +24,7 @@ public class DemoTest
         // Arrange
         var window = new MainWindow
         {
-            DataContext = new MainViewModel(_dataStore.Object, _connector.Object)
+            DataContext = new MainViewModel(_dataStore.Object)
         };
 
         // Act
@@ -66,7 +63,7 @@ public class DemoTest
 
         var window = new MainWindow
         {
-            DataContext = new MainViewModel(_dataStore.Object, _connector.Object)
+            DataContext = new MainViewModel(_dataStore.Object)
         };
 
         // Act

@@ -17,4 +17,10 @@ public interface IDataStore
     /// <param name="steeringAngle">The car's steering angle</param>
     /// <param name="brakePressure">The car's brake pressure</param>
     void UpdateData(double speed, double steeringAngle, double brakePressure);
+
+    /// <summary>
+    ///     Handles the cleanup when the data store is no longer needed.
+    ///     Such as removing event handlers and stopping the store's connector.
+    /// </summary>
+    void Dispose();
 }
