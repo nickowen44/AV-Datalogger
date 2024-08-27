@@ -55,7 +55,7 @@ var start = new ProcessStartInfo
 {
     FileName = python,
     // Run for 99999 minutes
-    Arguments = $"{scriptPath} 99999",
+    Arguments = $"{scriptPath} 1",
     UseShellExecute = false,
     RedirectStandardOutput = true,
     RedirectStandardError = true
@@ -70,14 +70,13 @@ using (var process = Process.Start(start))
         return;
     }
 
-    // Read the output (or error)
-    var output = process.StandardOutput.ReadToEnd();
-    var error = process.StandardError.ReadToEnd();
+    // Pipe the process output to the console
+    process.OutputDataReceived += (sender, args) => Console.WriteLine(args.Data);
+    process.ErrorDataReceived += (sender, args) => Console.WriteLine(args.Data);
+
+    process.BeginErrorReadLine();
+    process.BeginOutputReadLine();
 
     // Wait for the process to exit
     process.WaitForExit();
-
-    // Print the output (or error)
-    Console.WriteLine(output);
-    if (!string.IsNullOrEmpty(error)) Console.WriteLine("Error: " + error);
 }
