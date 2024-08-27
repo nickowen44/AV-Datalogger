@@ -4,19 +4,31 @@ namespace Dashboard.Models;
 
 public interface IDataStore
 {
-    event EventHandler DataUpdated;
+    event EventHandler GpsDataUpdated;
+    event EventHandler AvDataUpdated;
+    event EventHandler ResDataUpdated;
 
-    double Speed { get; }
-    double SteeringAngle { get; }
-    double BrakePressure { get; }
+    GpsData? GpsData { get; }
+    AvData? AvStatusData { get; }
+    ResData? ResData { get; }
 
     /// <summary>
-    ///     Updates the data store with the new values.
+    /// Updates the Av-logger's GPS data in the data store.
     /// </summary>
-    /// <param name="speed">The car's speed</param>
-    /// <param name="steeringAngle">The car's steering angle</param>
-    /// <param name="brakePressure">The car's brake pressure</param>
-    void UpdateData(double speed, double steeringAngle, double brakePressure);
+    /// <param name="gpsData">The new data to store.</param>
+    // void UpdateGpsData(GpsData gpsData);
+
+    /// <summary>
+    ///     Updates the AV data in the data store.
+    /// </summary>
+    /// <param name="avData">The AV data to store.</param>
+    // void UpdateAvData(AvData avData);
+
+    /// <summary>
+    ///     Updates the RES data in the data store.
+    /// </summary>
+    /// <param name="resData">The RES data to store.</param>
+    // void UpdateResData(ResData resData);
 
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.

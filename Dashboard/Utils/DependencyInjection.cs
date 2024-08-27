@@ -1,5 +1,6 @@
 ﻿using System;
 using Dashboard.Connectors;
+using Dashboard.Connectors.Serial;
 using Dashboard.Models;
 using Dashboard.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ public static class DependencyInjection
         var services = new ServiceCollection();
 
         services.AddSingleton<IDataStore, DataStore>();
-        services.AddSingleton<IConnector, DummyConnector>();
+        services.AddSingleton<IConnector, SerialConnector>();
 
         services.AddTransient<MainViewModel>();
 
