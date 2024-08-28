@@ -22,9 +22,9 @@ public class DemoTest
     public void TestMainWindow()
     {
         // Arrange
-        var window = new MainWindow
+        var window = new MainWindow()
         {
-            DataContext = new MainViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object)
         };
 
         // Act
@@ -32,7 +32,7 @@ public class DemoTest
 
         // Assert
         Assert.That(window, Is.Not.Null);
-        Assert.That(window, Is.InstanceOf<MainWindow>());
+        Assert.That(window, Is.InstanceOf<MainView>());
 
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
         var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
@@ -61,9 +61,9 @@ public class DemoTest
         _dataStore.SetupGet(x => x.SteeringAngle).Returns(90);
         _dataStore.SetupGet(x => x.BrakePressure).Returns(100);
 
-        var window = new MainWindow
+        var window = new MainWindow()
         {
-            DataContext = new MainViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object)
         };
 
         // Act

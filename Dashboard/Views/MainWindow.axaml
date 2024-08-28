@@ -1,41 +1,11 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Dashboard.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Dashboard.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dashboard.Views.MainWindow"
-        x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Dashboard"
-        Foreground="Black"
-        Background="White">
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
-
-    <Panel>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-            <TextBlock Text="Car Dashboard" FontSize="36" />
-            <TextBlock Name="SpeedDisplay" Text="{Binding Speed, StringFormat='Speed: {0:0.##}'}" FontSize="24" />
-            <TextBlock Name="BrakePressureDisplay"
-                       Text="{Binding BrakePressure, StringFormat='Brake Pressure: {0:0.##}'}"
-                       FontSize="24" />
-            <TextBlock Name="SteeringAngleDisplay"
-                       Text="{Binding SteeringAngle, StringFormat='Steering Angle: {0:0.##}'}"
-                       FontSize="24" />
-        </StackPanel>
-
-        <Rectangle Width="100" Height="100" />
-        <Image Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
-               VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5">
-            <Image.RenderTransform>
-                <RotateTransform Angle="90" />
-            </Image.RenderTransform>
-        </Image>
-    </Panel>
-
+        Title="MainWindow">
+        <views:MainView/>
+  
 </Window>

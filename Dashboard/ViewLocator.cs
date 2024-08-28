@@ -29,4 +29,5 @@ public class ViewLocator : IDataTemplate
     {
         return data is ViewModelBase;
     }
+   
 }

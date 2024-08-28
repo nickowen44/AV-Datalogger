@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Dashboard.Connectors;
 
-public class DummyConnector : IConnector
+public class DummyConnector : IConnector, IDisposable
 {
     public event EventHandler<DataUpdatedEventArgs>? DataUpdated;
 
@@ -30,5 +30,26 @@ public class DummyConnector : IConnector
     public void Stop()
     {
         _shouldStop = true;
+    }
+    private bool _disposed = false;
+    public void Dispose()
+    {
+        Stop(); // Ensure stopping the thread and cleanup
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                Stop(); // Stop the thread and cleanup
+            }
+            _disposed = true;
+        }
+    }
+    ~DummyConnector()
+    {
+        Dispose(false);
     }
 }
