@@ -1,0 +1,63 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Dashboard.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Dashboard.Views.StatusWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Dashboard"
+        Foreground="Black"
+        Background="White">
+
+    <Panel>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+            <TextBlock Text="Test" FontSize="36" />
+            <!-- AMI Status -->
+            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24" />
+            <!-- EBS Status -->
+            <TextBlock Text="Emergency Brake Service Status:" FontSize="24" />
+            <!-- Speed actual -->
+            <TextBlock Text="Speed - Actual:" FontSize="24" />
+            <!-- Speed target -->
+            <TextBlock Text="Speed - Target:" FontSize="24" />
+            <!-- Need a tacho / speedo for speed actual -->
+
+            <!-- Brake Pressure actual -->
+            <TextBlock Text="Brake Pressure - Actual:" FontSize="24" />
+            <!-- Brake Pressure target -->
+            <TextBlock Text="Brake Pressure - Target:" FontSize="24" />
+            <!-- Need a tacho / speedo for brake pressure actual -->
+            
+            <!-- Steering Angle actual -->
+            <TextBlock Text="Steering Angle - Actual:" FontSize="24" />
+            <StackPanel>
+                <TextBlock Text="Dummy Slider" Margin="10"/>
+                <Slider Minimum="0" Maximum="100" Value="50" Width="200" Margin="10"/>
+            </StackPanel>
+            <!-- Steering Angle target -->
+            <TextBlock Text="Steering Angle - Target:" FontSize="24" />
+            <!-- Need to implement a slider each for steering angle -->
+            <StackPanel>
+                <TextBlock Text="Dummy Slider" Margin="10"/>
+                <Slider Minimum="0" Maximum="100" Value="50" Width="200" Margin="10"/>
+            </StackPanel>
+            <!-- Motor moment actual -->
+            <TextBlock Text="Motor Moment - Actual:" FontSize="24" />
+            <!-- Motor moment target -->
+            <StackPanel>
+                <TextBlock Text="Dummy Slider" Margin="10"/>
+                <Slider Minimum="0" Maximum="100" Value="50" Width="200" Margin="10"/>
+            </StackPanel>
+            <TextBlock Text="Motor Moment - Target:" FontSize="24" />
+            <!-- Need to implement a slider each for motor moment -->
+            <StackPanel>
+                <TextBlock Text="Dummy Slider" Margin="10"/>
+                <Slider Minimum="0" Maximum="100" Value="50" Width="200" Margin="10"/>
+            </StackPanel>
+            <!-- Need an Emergency Stop big red button -->
+        
+        </StackPanel>
+    </Panel>
+
+</Window>
