@@ -9,16 +9,18 @@ namespace Dashboard.Views;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow(MainViewModel vm)
     {
+        DataContext = vm;
         InitializeComponent();
     }
+
+    public MainWindow() : this(new MainViewModel()) { }
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-    
         // Dispose the view model when the window is closed, to clean up the data store and connector
         // Otherwise, the connector thread will keep running in the background
-        if (DataContext is DataViewModel model) model.Dispose();
+        if (DataContext is MainViewModel model) model.Dispose();
     }
 }

@@ -41,30 +41,13 @@ public partial class DataViewModel : ViewModelBase, IDisposable
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
     /// </summary>
-    private bool _disposed = false;
-    public void Dispose()
+    public override void Dispose()
     {
-        Dispose(true);
+        _dataStore.DataUpdated -= OnDataChanged;
+        _dataStore.Dispose();
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                _dataStore.DataUpdated -= OnDataChanged;
-                _dataStore.Dispose();
-                Console.WriteLine("Called D2");
-            }
-            _disposed = true;
-        }
-    }
-
-    ~DataViewModel()
-    {
-        Dispose(false);
-    }
+    
 }
 

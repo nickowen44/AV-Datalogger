@@ -34,37 +34,13 @@ public class DataStore : IDataStore, IDisposable
     {
         UpdateData(e.Speed, e.SteeringAngle, e.BrakePressure);
     }
-    private bool _disposed = false;
+
     public void Dispose()
     {
-        Dispose(true);
+        _connector.DataUpdated -= OnDataUpdated;
+        // Stop the connector
+        _connector.Stop();
         GC.SuppressFinalize(this);
     }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                // Unsubscribe from events
-                _connector.DataUpdated -= OnDataUpdated;
-
-                // Stop the connector
-                _connector.Stop();
-                    
-                // Dispose of the connector if it's disposable
-                if (_connector is IDisposable disposableConnector)
-                {
-                    disposableConnector.Dispose();
-                }
-            }
-            _disposed = true;
-        }
-    }
-
-    ~DataStore()
-    {
-        Dispose(false);
-    }
+    
 }

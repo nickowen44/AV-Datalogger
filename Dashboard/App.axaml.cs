@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
@@ -18,6 +19,8 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var locator = new ViewLocator();
+        DataTemplates.Add(locator);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Line below is needed to remove Avalonia data validation.
@@ -27,13 +30,14 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new MainWindow()
+            desktop.MainWindow = new MainWindow();
             {
-                DataContext = services.GetRequiredService<MainViewModel>()
+                DataContext = services.GetRequiredService<MainViewModel>();
             };
-           
+
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+    
 }

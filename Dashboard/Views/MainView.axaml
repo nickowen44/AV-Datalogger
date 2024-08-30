@@ -7,24 +7,41 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dashboard.Views.MainView"
         x:DataType="vm:MainViewModel"
-        >
+        Foreground="Black"
+        Background="White">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        <Rectangle Width="100" Height="100" />
+        <Image Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
+               VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Image.RenderTransform>
+        </Image>
+        <TextBlock> Nuvotion Motorsports</TextBlock>
         <!-- Menu to navigate between pages -->
-        <ListBox  ItemsSource="{Binding Pages}" 
-                  SelectedItem="{Binding SelectedPage, Mode=OneWay}"
-                  SelectionChanged="OnSelectionChanged"/>
-        <!-- Content area for displaying pages -->
-        <ContentControl Content="{Binding SelectedPage}" Grid.Row="1">
-            <ContentControl.ContentTemplate>
-                <DataTemplate>
-                    <ContentPresenter Content="{Binding }"/>
+        <ListBox  VerticalAlignment="Bottom" ItemsSource="{Binding Items}" 
+                  SelectedItem="{Binding SelectedListItem}">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:ListItemTemplate}">
+                    <TextBlock Text="{Binding Label}"></TextBlock>
                 </DataTemplate>
-            </ContentControl.ContentTemplate>
-        </ContentControl>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- Content area for displaying pages -->
+        <ContentControl Content="{Binding CurrentPage}" Grid.Row="1"/>
     </Grid>
 </UserControl>

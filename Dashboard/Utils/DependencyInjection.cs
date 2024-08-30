@@ -21,6 +21,7 @@ public static class DependencyInjection
     
         services.AddTransient<DataViewModel>();
         services.AddTransient<MainViewModel>();
+        services.AddTransient<TestWindowViewModel>();
         return services.BuildServiceProvider();
     }
 }
