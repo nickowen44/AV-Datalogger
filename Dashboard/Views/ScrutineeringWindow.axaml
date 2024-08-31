@@ -9,7 +9,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Dashboard"
         Foreground="Black"
-        Background="White">
+        Background="DimGray">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -18,33 +18,65 @@
     </Design.DataContext>
 
     <Panel>
-        <TextBlock HorizontalAlignment="Center" Margin="0 20 0  0" Text="Autonomous Vehicle Inspection" FontSize="24" />
-        <Carousel Name="slides" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Carousel.PageTransition>
-                <CompositePageTransition>
-                    <PageSlide Duration="0:00:01" Orientation="Horizontal" />
-                </CompositePageTransition>
-            </Carousel.PageTransition>
-            <Carousel.Items>
-                <TextBlock Margin="0 20">
-                    <!-- TODO What is the first step with the new program -->
-                    Connect FSAE-A Data logger to tool?
-                </TextBlock>
-                <TextBlock Margin="0 5">
-                    Switch on LVMS and select inspection mission AMI. ASSI Should remain off.
-                    Verify function by monitoring EBS CAN mesages from data logger.
-                </TextBlock>
-                <TextBlock Margin="0 5">
-                    Switch on ASMS. Activing TS from cockpit button should not be possible. Test that TS does not activate.
-                </TextBlock>
-            </Carousel.Items>
-        </Carousel>
-        <Panel Margin="20">
-            <Button Background="Gray" Click="Previous">&lt;</Button>
-            <Button Background="Gray" Click="Next"
-                    HorizontalAlignment="Right">
-                &gt;
-            </Button>
+        <TextBlock HorizontalAlignment="Center" Margin="0 50 0  0" Text="Autonomous Vehicle Inspection" FontSize="20"
+                   FontWeight="Bold"
+                   ZIndex="1" />
+
+        <Panel Width="100%" Height="50%" Margin="0 70 0 0">
+            <Border Background="Gainsboro"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="3"
+                    Padding="10" Margin="10">
+                <Carousel Name="slides" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Carousel.PageTransition>
+                        <CompositePageTransition>
+                            <PageSlide Duration="0:00:01" Orientation="Horizontal" />
+                        </CompositePageTransition>
+                    </Carousel.PageTransition>
+                    <Carousel.Items>
+                        <Panel>
+                            <TextBlock TextAlignment="Center">
+                                Connect FSAE-A Data logger to test laptop and observe CAN message data stream.
+                            </TextBlock>
+                        </Panel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock TextAlignment="Center">
+                                Switch on LVMS and select inspection mission AMI. <LineBreak />
+                                ASSI Should remain off. <LineBreak />
+                                Verify function by monitoring EBS CAN mesages from data logger.<LineBreak />
+                            </TextBlock>
+                            <Button Click="CheckPassFail">Press Me!</Button>
+                            <TextBlock Margin="0 10" x:Name="message">Raaa</TextBlock>
+                        </StackPanel>
+                        <Panel>
+                            <TextBlock TextAlignment="Center">
+                                Switch on ASMS. <LineBreak />
+                                Activing TS from cockpit button should not be possible.  <LineBreak />
+                                Test that TS does not activate.
+                            </TextBlock>
+                        </Panel>
+                        <Panel>
+                            <TextBlock TextAlignment="Center">
+                                Activate TS, and press RES "Go" button.  <LineBreak />
+                                Vehicle should enter "AS Ready"?. Current state: <Span>TODO </Span>
+                                <!-- TODO insert AS state -->
+                                ASSI are yellow and continuous.
+                                Vehicle is not ready to drive, that is the state is not in AS Ready.
+                                All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle.
+                            </TextBlock>
+                        </Panel>
+                    </Carousel.Items>
+                </Carousel>
+            </Border>
+            <Panel Margin="30 10">
+                <!-- IsEnabled="Check" -->
+                <Button Background="Gray" Click="Previous">&lt;</Button>
+                <Button Background="Gray" Click="Next"
+                        HorizontalAlignment="Right">
+                    &gt;
+                </Button>
+            </Panel>
         </Panel>
     </Panel>
 </Window>

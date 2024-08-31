@@ -11,15 +11,24 @@ public partial class ScrutineeringWindow : Window
     {
         InitializeComponent();
     }
-    
+
     public void Next(object source, RoutedEventArgs args)
     {
+        // TODO
+        // if (checks)
+        // {
         slides.Next();
+        // }
     }
 
-    public void Previous(object source, RoutedEventArgs args) 
+    public void Previous(object source, RoutedEventArgs args)
     {
         slides.Previous();
+    }
+
+    public void CheckPassFail(object sender, RoutedEventArgs args)
+    {
+        message.Text = "Passed checks!";
     }
 
     protected override void OnClosed(EventArgs e)
