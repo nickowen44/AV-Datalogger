@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Dashboard.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Dashboard.Views.ScrutineeringWindow"
+        x:DataType="vm:ScrutineeringViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Dashboard"
+        Foreground="Black"
+        Background="White">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:ScrutineeringViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <TextBlock HorizontalAlignment="Center" Margin="0 20 0  0" Text="Autonomous Vehicle Inspection" FontSize="24" />
+        <Carousel Name="slides" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Carousel.PageTransition>
+                <CompositePageTransition>
+                    <PageSlide Duration="0:00:01" Orientation="Horizontal" />
+                </CompositePageTransition>
+            </Carousel.PageTransition>
+            <Carousel.Items>
+                <TextBlock Margin="0 20">
+                    <!-- TODO What is the first step with the new program -->
+                    Connect FSAE-A Data logger to tool?
+                </TextBlock>
+                <TextBlock Margin="0 5">
+                    Switch on LVMS and select inspection mission AMI. ASSI Should remain off.
+                    Verify function by monitoring EBS CAN mesages from data logger.
+                </TextBlock>
+                <TextBlock Margin="0 5">
+                    Switch on ASMS. Activing TS from cockpit button should not be possible. Test that TS does not activate.
+                </TextBlock>
+            </Carousel.Items>
+        </Carousel>
+        <Panel Margin="20">
+            <Button Background="Gray" Click="Previous">&lt;</Button>
+            <Button Background="Gray" Click="Next"
+                    HorizontalAlignment="Right">
+                &gt;
+            </Button>
+        </Panel>
+    </Panel>
+</Window>
