@@ -20,6 +20,13 @@ public class SerialConnector : IConnector
 
     private bool _shouldStop;
 
+    // TODO: Handle connection status
+    private DateTime _lastMessageReceived = DateTime.Now;
+
+    // TODO: Consider making this configurable
+    // Connection timeout in seconds
+    private const double ConnectionTimeout = 5;
+
     public void Start()
     {
         ComPort.Open();
@@ -32,6 +39,8 @@ public class SerialConnector : IConnector
                 var data = ComPort.ReadLine();
 
                 ParseMessage(data);
+
+                _lastMessageReceived = DateTime.Now;
             }
         }).Start();
     }
@@ -86,10 +95,14 @@ public class SerialConnector : IConnector
     {
         AvDataUpdated?.Invoke(this, new AvData
         {
-            Speed = new ValuePair<double>(ParseDouble(values["SA"]), ParseDouble(values["ST"])),
-            SteeringAngle = new ValuePair<double>(ParseDouble(values["STA"]), ParseDouble(values["STT"])),
-            BrakeActuation = new ValuePair<double>(ParseDouble(values["BRA"]), ParseDouble(values["BRT"])),
-            MotorMoment = new ValuePair<double>(ParseDouble(values["MMA"]), ParseDouble(values["MMT"])),
+            Speed = new ValuePair<double>
+                { Actual = ParseDouble(values["SA"]), Target = ParseDouble(values["ST"]) },
+            SteeringAngle = new ValuePair<double>
+                { Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"]) },
+            BrakeActuation = new ValuePair<double>
+                { Actual = ParseDouble(values["BRA"]), Target = ParseDouble(values["BRT"]) },
+            MotorMoment = new ValuePair<double>
+                { Actual = ParseDouble(values["MMA"]), Target = ParseDouble(values["MMT"]) },
             LateralAcceleration = ParseDouble(values["ALAT"]),
             LongitudinalAcceleration = ParseDouble(values["ALON"]),
             YawRate = ParseDouble(values["YAW"]),
@@ -117,7 +130,6 @@ public class SerialConnector : IConnector
     }
 
     // TODO: Remove below when we have the actual values
-
     private readonly Random _random = new();
 
     private double ParseDouble(string value)
@@ -133,5 +145,10 @@ public class SerialConnector : IConnector
     private bool ParseBool(string value)
     {
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
+    }
+
+    private bool IsConnected()
+    {
+        return (DateTime.Now - _lastMessageReceived).TotalSeconds < ConnectionTimeout;
     }
 }

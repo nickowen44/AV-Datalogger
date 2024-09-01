@@ -25,9 +25,18 @@ public class DemoTest
         // Arrange
         _dataStore.SetupGet(x => x.AvStatusData).Returns(new AvData
         {
-            Speed = new ValuePair<double>(50, 50),
-            SteeringAngle = new ValuePair<double>(90, 90),
-            BrakeActuation = new ValuePair<double>(100, 100)
+            Speed = new ValuePair<double>
+            {
+                Actual = 50, Target = 50
+            },
+            SteeringAngle = new ValuePair<double>
+            {
+                Actual = 90, Target = 90
+            },
+            BrakeActuation = new ValuePair<double>
+            {
+                Actual = 100, Target = 100
+            }
         });
 
         var window = new MainWindow

@@ -43,11 +43,14 @@ public class DummyConnector : IConnector
                 // Generate random AvData
                 var avData = new AvData
                 {
-                    Speed = new ValuePair<double>(random.NextDouble() * 100, random.NextDouble() * 100),
-                    SteeringAngle =
-                        new ValuePair<double>(random.NextDouble() * 360 - 180, random.NextDouble() * 360 - 180),
-                    BrakeActuation = new ValuePair<double>(random.NextDouble() * 100, random.NextDouble() * 100),
-                    MotorMoment = new ValuePair<double>(random.NextDouble() * 1000, random.NextDouble() * 1000),
+                    Speed = new ValuePair<double>
+                        { Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100 },
+                    SteeringAngle = new ValuePair<double>
+                        { Actual = random.NextDouble() * 360 - 180, Target = random.NextDouble() * 360 - 180 },
+                    BrakeActuation = new ValuePair<double>
+                        { Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100 },
+                    MotorMoment = new ValuePair<double>
+                        { Actual = random.NextDouble() * 1000, Target = random.NextDouble() * 1000 },
                     LateralAcceleration = random.NextDouble() * 10,
                     LongitudinalAcceleration = random.NextDouble() * 10,
                     YawRate = random.NextDouble() * 360,
