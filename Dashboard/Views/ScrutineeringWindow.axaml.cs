@@ -26,10 +26,10 @@ public partial class ScrutineeringWindow : Window
         slides.Previous();
     }
 
-    public void CheckPassFail(object sender, RoutedEventArgs args)
-    {
-        message.Text = "Passed checks!";
-    }
+    // public void CheckPassFail(object sender, RoutedEventArgs args)
+    // {
+    //     message.Text = "Passed checks!";
+    // }
 
     protected override void OnClosed(EventArgs e)
     {
