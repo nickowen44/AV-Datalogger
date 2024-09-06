@@ -21,12 +21,13 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="YamlDotNet" Version="16.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\ScrutineeringWindow.axaml.cs">
-        <DependentUpon>ScrutineeringWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Views\ScrutineeringWindow.axaml.cs">
+            <DependentUpon>ScrutineeringWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 </Project>

@@ -1,17 +1,14 @@
-﻿using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -29,14 +26,17 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
+            // Create an instance of the MainViewModel
+            // TODO the yaml doesnt load in w/ dependency injection services.GetRequiredService<ScrutineeringViewModel>()
+            var viewModel = new ScrutineeringViewModel();
+
             desktop.MainWindow = new ScrutineeringWindow
             {
-                DataContext = services.GetRequiredService<ScrutineeringViewModel>()
+                DataContext = viewModel
             };
 
             // desktop.Windows.Append(new ScrutineeringWindow()
             //     { DataContext = services.GetRequiredService<ScrutineeringViewModel>() });
-
         }
 
         base.OnFrameworkInitializationCompleted();

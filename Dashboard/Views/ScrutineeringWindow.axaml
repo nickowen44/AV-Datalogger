@@ -17,6 +17,7 @@
         <vm:ScrutineeringViewModel />
     </Design.DataContext>
 
+    <!-- TODO yaml, remainder of carousel, final grey box for ending, window the page -->
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
@@ -33,14 +34,14 @@
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
                            FontSize="30"
                            FontWeight="Bold"
-                           Foreground="#F2D398" />
+                           Foreground="Gold" />
                 <TextBlock TextAlignment="Left" Text="Functional Autonomous System Test (RES)"
                            FontSize="25"
                            FontWeight="Bold"
                            Foreground="#F2D398" />
             </StackPanel>
-            <Border Background="#B796AC"
-                    BorderBrush="#513B56"
+            <Border Background="LightGray"
+                    BorderBrush="DimGray"
                     BorderThickness="4"
                     CornerRadius="1"
                     Padding="10" Margin="10"
@@ -66,6 +67,19 @@
                         </CompositePageTransition>
                     </Carousel.PageTransition>
                     <Carousel.Items>
+                        <StackPanel Margin="20">
+                            <!-- TextBox to display and allow editing of YamlContent -->
+                            <!-- TextBlock to display YamlContent -->
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                          Height="200">
+                                <TextBlock Text="{Binding YamlContent}"
+                                           TextWrapping="Wrap"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           ZIndex="1"
+                                           Foreground="Black" />
+                            </ScrollViewer>
+                        </StackPanel>
                         <StackPanel>
                             <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.1 Visual Check</TextBlock>
                             <TextBlock TextAlignment="Center" Margin="10">
@@ -126,7 +140,6 @@
                                 EBS is not triggered (i.e. not activated) <LineBreak />
                                 ASSI are not flashing.
                             </TextBlock>
-                            <!-- TODO Update w/ a pass/fail -->
                             <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock>
                             <TextBlock Margin="10">
                                 Current AS State: <LineBreak />
@@ -149,14 +162,12 @@
                                 Reset EBS with manual action if needed.<LineBreak />
                                 Brakes are disengaged.
                             </TextBlock>
-                            <!-- TODO Update w/ a pass/fail -->
                             <TextBlock Margin="10 20" FontWeight="Bold" TextAlignment="Center">DV Data</TextBlock>
                             <TextBlock Margin="10" TextAlignment="Center">
                                 Current EBS state: <LineBreak />
                                 Current Service Brake State: <LineBreak />
                             </TextBlock>
                         </StackPanel>
-                        <!-- TODO red box at the end... antother row?  -->
                     </Carousel.Items>
                 </Carousel>
             </Border>
