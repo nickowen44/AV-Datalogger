@@ -57,11 +57,22 @@
             <StackPanel Grid.Column="0" Margin="20">
                 <!-- Connection Type -->
                 <TextBlock Text="Connection Type" Margin="0, 10, 0, 5"/>
-                <ComboBox Width="200"/>
+                <ComboBox Width="200">
+                    <ComboBoxItem>Serial Port</ComboBoxItem>
+                    <ComboBoxItem>Ethernet</ComboBoxItem>
+                    <ComboBoxItem>USB</ComboBoxItem>
+                    <ComboBoxItem>Wi-Fi</ComboBoxItem>
+                </ComboBox>
 
                 <!-- Serial Port -->
                 <TextBlock Text="Serial Port" Margin="0, 10, 0, 5"/>
-                <ComboBox Width="200"/>
+                <ComboBox Width="200">
+                    <ComboBoxItem>COM1</ComboBoxItem>
+                    <ComboBoxItem>COM2</ComboBoxItem>
+                    <ComboBoxItem>COM3</ComboBoxItem>
+                    <ComboBoxItem>COM4</ComboBoxItem>
+                    <ComboBoxItem>COM5</ComboBoxItem>
+                </ComboBox>
 
                 <!-- IP Address -->
                 <TextBlock Text="IP Address" Margin="0, 15, 0, 5"/>
@@ -75,7 +86,7 @@
                 </StackPanel>
 
                 <!-- Connect Button -->
-                <Button Content="Connect" Width="100" Margin="0,30,0,0"/>
+                <Button Content="Connect" Width="100" Margin="0,30,0,0" Background="#00FFFF" FontWeight="Bold"/>
             </StackPanel>
         </Grid>
     </DockPanel>
