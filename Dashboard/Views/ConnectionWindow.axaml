@@ -8,7 +8,7 @@
     <DockPanel>
 
         <!-- Top Menu -->
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Background="LightGray">
             <MenuItem Header="Connection"/>
             <MenuItem Header="Setup"/>
             <MenuItem Header="Status"/>
@@ -18,7 +18,7 @@
         </Menu>
 
         <!-- Bottom Status Panel -->
-        <Grid DockPanel.Dock="Bottom" Background="LightGray"  Height="40">
+        <Grid DockPanel.Dock="Bottom" Background="LightGray"  Height="60">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <!-- Left -->
@@ -30,8 +30,8 @@
 
             <!-- Left Side: Car Number -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Car Number" VerticalAlignment="Center"/>
-                <TextBox Width="50" Margin="5,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Car Number" VerticalAlignment="Center" Margin="20,0"/>
+                <TextBox Width="150" Margin="5,0" VerticalAlignment="Center"/>
             </StackPanel>
 
             <!-- Center: UTC Time and SN -->
@@ -75,7 +75,7 @@
                 </StackPanel>
 
                 <!-- Connect Button -->
-                <Button Content="Connect" Width="100" Margin="0,20,0,0"/>
+                <Button Content="Connect" Width="100" Margin="0,30,0,0"/>
             </StackPanel>
         </Grid>
     </DockPanel>
