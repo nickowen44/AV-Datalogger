@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Avalonia.Threading;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace Dashboard.ViewModels;
 
@@ -10,7 +14,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
 
-    private string _yamlContent;
+    private List<StepData> _steps;
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
@@ -23,6 +27,8 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector());
+
+        Steps = new List<StepData>();
 
         // The folder we are in at runtime is net8.0 (AV-Datalogger/Dashboard/bin/Debug/net8.0/Dashboard.exe), as
         // our yaml file is in the resources folder, exit the current folder three times
@@ -44,7 +50,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 
         // Setting this to true starts monitoring the file for changes.
         _fileWatcher.EnableRaisingEvents = true;
-        
+
         // Load the initial YAML data when the ViewModel is created
         LoadYamlData(Path.Combine(pathDirectory, "AV_Inspection_Flow.yaml"));
     }
@@ -54,18 +60,18 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     // public int EmergencyBrakeState => _dataStore.EmergencyBrakeState;
     // public int AutonomousMissionIndicator => _dataStore.AutonomousMissionIndicator;
     public double SteeringAngle => _dataStore.SteeringAngle;
-    
+
     /// <summary>
-    ///  Getter and Setter for the yaml content that is read in from the file
+    ///     Getter and Setter for the flow of steps for autonomous vehicle inspection
     /// </summary>
-    public string YamlContent
+    public List<StepData> Steps
     {
-        get => _yamlContent;
+        get => _steps;
         set
         {
-            if (_yamlContent != value)
+            if (_steps != value)
             {
-                _yamlContent = value;
+                _steps = value;
                 OnPropertyChanged();
             }
         }
@@ -91,14 +97,26 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     {
         try
         {
-            // Load the YAML file as a raw string
-            var data = File.ReadAllText(filePath);
-            // Set the string content to YamlContent property
-            YamlContent = data;
+            // Read file as a raw string
+            var yamlContent = File.ReadAllText(filePath);
+
+            // Parse into a list of steps
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .Build();
+
+            var yamlData = deserializer.Deserialize<YamlData>(yamlContent);
+
+            // Update the Steps collection with parsed steps
+            // Note: We need to use a thread here to prevent weirdness if the update were to happen on the thread used by
+            //       the file watcher.
+            Dispatcher.UIThread.Post(() => { Steps = yamlData.Steps; });
+            Console.WriteLine(yamlData.Steps);
         }
         catch (Exception ex)
         {
-            YamlContent = $"Error loading file: {ex.Message}";
+            Steps = new List<StepData>
+                { new() { Step = $"Error loading file: {ex.Message}", Measurements = new List<string>() } };
         }
     }
 

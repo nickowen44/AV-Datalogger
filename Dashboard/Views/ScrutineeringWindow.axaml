@@ -11,6 +11,11 @@
         Foreground="Black"
         Background="#14080E">
 
+    <!-- Set the DataContext to MainViewModel -->
+    <Window.DataContext>
+        <vm:ScrutineeringViewModel />
+    </Window.DataContext>
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -59,116 +64,135 @@
                     Padding="10" Margin="10"
                     Grid.Row="2"
                     Grid.Column="1">
-                <Carousel Name="slides" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#14080e"
+                <Carousel x:Name="carousel" Name="slides" Items="{Binding Steps}" VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          Foreground="#14080e"
                           FontSize="20">
                     <Carousel.PageTransition>
                         <CompositePageTransition>
                             <PageSlide Duration="0:00:01" Orientation="Horizontal" />
                         </CompositePageTransition>
                     </Carousel.PageTransition>
-                    <Carousel.Items>
-                        <StackPanel Margin="20">
-                            <!-- TextBox to display and allow editing of YamlContent -->
-                            <!-- TextBlock to display YamlContent -->
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                                          Height="200">
-                                <TextBlock Text="{Binding YamlContent}"
-                                           TextWrapping="Wrap"
-                                           FontFamily="Consolas"
-                                           FontSize="12"
-                                           ZIndex="1"
-                                           Foreground="Black" />
-                            </ScrollViewer>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.1 Visual Check</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Connect FSAE-A Data logger to test laptop and observe CAN message data stream.
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.2 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Switch on LVMS and select inspection mission AMI. <LineBreak />
-                                ASSI Should remain off. <LineBreak />
-                                Verify function by monitoring EBS CAN mesages from data logger.<LineBreak />
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.3 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Switch on ASMS. <LineBreak />
-                                Activing TS from cockpit button should not be possible.  <LineBreak />
-                                Test that TS does not activate.
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.4 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Activate TS, and press RES "Go" button.  <LineBreak />
-                                Vehicle should enter "AS Ready". <LineBreak />
-                                ASSI are yellow and continuous. <LineBreak />
-                                Vehicle is not ready to drive, that is the state is not in AS Ready. <LineBreak />
-                                All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle.
-                            </TextBlock>
-                            <!-- TODO Update below with AS state, add a pass/fail as well -->
-                            <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock>
-                            <TextBlock Margin="10">Current AS State:</TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.5 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Press RES "Go" button.  <LineBreak />
-                                Vehicle transitions to "AS Driving" state. <LineBreak />
-                                ASSI are yellow and flashing.<LineBreak />
-                                Drivetrain is slowly spinning and steering system is actuating in sine wave.
-                            </TextBlock>
-                            <!-- TODO Update w/ a pass/fail -->
-                            <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock>
-                            <TextBlock Margin="10">
-                                Current AS State: <LineBreak />
-                                Current Steering Angle:
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.6 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Wait for transition to "AS Finished".  <LineBreak />
-                                Vehicle transitions to "AS Finished" within 30 seconds after step 4. <LineBreak />
-                                ASSI are blue and continuous.<LineBreak />
-                                Brakes are engaged.<LineBreak />
-                                EBS is not triggered (i.e. not activated) <LineBreak />
-                                ASSI are not flashing.
-                            </TextBlock>
-                            <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock>
-                            <TextBlock Margin="10">
-                                Current AS State: <LineBreak />
-                                Current Service Brake State: <LineBreak />
-                                Current EBS state: <LineBreak />
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.7 Visual Check</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Blue ASSI is clearly visible in the sunlight.<LineBreak />
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.8 Team Demonstration</TextBlock>
-                            <TextBlock TextAlignment="Center" Margin="10">
-                                Deactivate TS and turn off ASMS.<LineBreak />
-                                Reset EBS if needed.<LineBreak />
-                                TS turns off, ASSI turns off.<LineBreak />
-                                Reset EBS with manual action if needed.<LineBreak />
-                                Brakes are disengaged.
-                            </TextBlock>
-                            <TextBlock Margin="10 20" FontWeight="Bold" TextAlignment="Center">DV Data</TextBlock>
-                            <TextBlock Margin="10" TextAlignment="Center">
-                                Current EBS state: <LineBreak />
-                                Current Service Brake State: <LineBreak />
-                            </TextBlock>
-                        </StackPanel>
-                    </Carousel.Items>
+                    <Carousel.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="10">
+                                <!-- Display the step name -->
+                                <TextBlock Text="{Binding Step}" FontWeight="Bold" FontSize="20" Margin="0, 0, 0, 10" />
+
+                                <!-- Display the measurements for each step -->
+                                <ItemsControl Items="{Binding Measurements}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Margin="10,0,0,0" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Carousel.ItemTemplate>
+                    <!-- <Carousel.Items> -->
+                    <!--     <StackPanel Margin="20"> -->
+                    <!--         ~1~ TextBox to display and allow editing of YamlContent @1@ -->
+                    <!--         ~1~ TextBlock to display YamlContent @1@ -->
+                    <!--         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" -->
+                    <!--                       Height="200"> -->
+                    <!--             <TextBlock Text="{Binding YamlContent}" -->
+                    <!--                        TextWrapping="Wrap" -->
+                    <!--                        FontFamily="Consolas" -->
+                    <!--                        FontSize="12" -->
+                    <!--                        ZIndex="1" -->
+                    <!--                        Foreground="Black" /> -->
+                    <!--         </ScrollViewer> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.1 Visual Check</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Connect FSAE-A Data logger to test laptop and observe CAN message data stream. -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel HorizontalAlignment="Center"> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.2 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Switch on LVMS and select inspection mission AMI. <LineBreak /> -->
+                    <!--             ASSI Should remain off. <LineBreak /> -->
+                    <!--             Verify function by monitoring EBS CAN mesages from data logger.<LineBreak /> -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel HorizontalAlignment="Center"> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.3 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Switch on ASMS. <LineBreak /> -->
+                    <!--             Activing TS from cockpit button should not be possible.  <LineBreak /> -->
+                    <!--             Test that TS does not activate. -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.4 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Activate TS, and press RES "Go" button.  <LineBreak /> -->
+                    <!--             Vehicle should enter "AS Ready". <LineBreak /> -->
+                    <!--             ASSI are yellow and continuous. <LineBreak /> -->
+                    <!--             Vehicle is not ready to drive, that is the state is not in AS Ready. <LineBreak /> -->
+                    <!--             All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle. -->
+                    <!--         </TextBlock> -->
+                    <!--         ~1~ TODO Update below with AS state, add a pass/fail as well @1@ -->
+                    <!--         <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock> -->
+                    <!--         <TextBlock Margin="10">Current AS State:</TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.5 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Press RES "Go" button.  <LineBreak /> -->
+                    <!--             Vehicle transitions to "AS Driving" state. <LineBreak /> -->
+                    <!--             ASSI are yellow and flashing.<LineBreak /> -->
+                    <!--             Drivetrain is slowly spinning and steering system is actuating in sine wave. -->
+                    <!--         </TextBlock> -->
+                    <!--         ~1~ TODO Update w/ a pass/fail @1@ -->
+                    <!--         <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock> -->
+                    <!--         <TextBlock Margin="10"> -->
+                    <!--             Current AS State: <LineBreak /> -->
+                    <!--             Current Steering Angle: -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.6 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Wait for transition to "AS Finished".  <LineBreak /> -->
+                    <!--             Vehicle transitions to "AS Finished" within 30 seconds after step 4. <LineBreak /> -->
+                    <!--             ASSI are blue and continuous.<LineBreak /> -->
+                    <!--             Brakes are engaged.<LineBreak /> -->
+                    <!--             EBS is not triggered (i.e. not activated) <LineBreak /> -->
+                    <!--             ASSI are not flashing. -->
+                    <!--         </TextBlock> -->
+                    <!--         <TextBlock Margin="10" FontWeight="Bold">DV Data</TextBlock> -->
+                    <!--         <TextBlock Margin="10"> -->
+                    <!--             Current AS State: <LineBreak /> -->
+                    <!--             Current Service Brake State: <LineBreak /> -->
+                    <!--             Current EBS state: <LineBreak /> -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.7 Visual Check</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Blue ASSI is clearly visible in the sunlight.<LineBreak /> -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">AV 7.8 Team Demonstration</TextBlock> -->
+                    <!--         <TextBlock TextAlignment="Center" Margin="10"> -->
+                    <!--             Deactivate TS and turn off ASMS.<LineBreak /> -->
+                    <!--             Reset EBS if needed.<LineBreak /> -->
+                    <!--             TS turns off, ASSI turns off.<LineBreak /> -->
+                    <!--             Reset EBS with manual action if needed.<LineBreak /> -->
+                    <!--             Brakes are disengaged. -->
+                    <!--         </TextBlock> -->
+                    <!--         <TextBlock Margin="10 20" FontWeight="Bold" TextAlignment="Center">DV Data</TextBlock> -->
+                    <!--         <TextBlock Margin="10" TextAlignment="Center"> -->
+                    <!--             Current EBS state: <LineBreak /> -->
+                    <!--             Current Service Brake State: <LineBreak /> -->
+                    <!--         </TextBlock> -->
+                    <!--     </StackPanel> -->
+                    <!-- </Carousel.Items> -->
                 </Carousel>
             </Border>
             <Panel Margin="30 90" Grid.Row="2" Grid.Column="1">

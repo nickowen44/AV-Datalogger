@@ -18,6 +18,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IConnector, DummyConnector>();
+        services.AddSingleton<IStepData, StepData>();
+        services.AddSingleton<IYamlData, YamlData>();
 
         services.AddTransient<MainViewModel>();
         services.AddTransient<ScrutineeringViewModel>();

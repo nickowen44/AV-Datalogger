@@ -1,1 +1,12 @@
-you know how we do it
+steps:
+    -   step: "test"
+        measurements:
+            - "measurement1"
+            - "measurement2"
+            - "measurement3"
+    -   step: "test2"
+        measurements:
+            - "measurement2"
+            - "measurement3"
+    -   step: "test3"
+        measurements:
