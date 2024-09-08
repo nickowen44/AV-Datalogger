@@ -25,75 +25,118 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Padding="20" Height="1000">
+        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Padding="20" Height="900">
             <!-- TabControl for AV Data, GPS, and RES -->
             <TabControl>
                 <!-- AV Data Tab -->
                 <TabItem Header="AV Data">
-                    <StackPanel Width="1100">
-                        <!-- Motor moment actual -->
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="10">
-                            <TextBlock Text="Motor Moment (%):" FontSize="24" />
-                            <StackPanel>
-                                <Slider Minimum="0" Maximum="100" Value="10" Orientation="Vertical" Height="200" Margin="10" IsEnabled="False" />
-                                <TextBlock Text="Target" Margin="10" />
-                                <TextBlock Text="10%" Margin="10" />
-                            </StackPanel>
-                            <StackPanel>
-                                <Slider Minimum="0" Maximum="100" Value="13" Orientation="Vertical" Height="200" Margin="10" IsEnabled="False" />
-                                <TextBlock Text="Actual" Margin="10" />
-                                <TextBlock Text="13%" Margin="10" />
-                            </StackPanel>
-                        </StackPanel>
-                        <!-- Autonomous Mission Indicator -->
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24" Grid.Column="0" VerticalAlignment="Center"/>
-                            <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
-                        </Grid>
-                        <!-- Emergency Brake Service Status -->
-                        <Grid Margin="5">
+                    <Grid>
+                        <!-- Centering the content -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- AV Data Tab Content -->
+                        <StackPanel Orientation="Horizontal" Width="1100">
+                            <!-- Motor Moment Percentage -->
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Emergency Brake Service Status:" FontSize="24" Grid.Column="0" VerticalAlignment="Center"/>
-                                <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
+                                <TextBlock Text="Motor Moment (%):" FontSize="24" Grid.Row="0" HorizontalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                                    <StackPanel Margin="10">
+                                        <Slider Minimum="0" Maximum="100" Value="10" Orientation="Vertical" Height="700" Margin="10" IsEnabled="False" />
+                                        <TextBlock Text="Target" Margin="10" />
+                                        <TextBlock Text="10%" Margin="10" />
+                                    </StackPanel>
+                                    <StackPanel Margin="10">
+                                        <Slider Minimum="0" Maximum="100" Value="13" Orientation="Vertical" Height="700" Margin="10" IsEnabled="False" />
+                                        <TextBlock Text="Actual" Margin="10" />
+                                        <TextBlock Text="13%" Margin="10" />
+                                    </StackPanel>
+                                </StackPanel>
                             </Grid>
-                        <!-- Speed actual -->
-                        <TextBlock Text="Speed - Actual:" FontSize="24" />
-                        <!-- Speed target -->
-                        <TextBlock Text="Speed - Target:" FontSize="24" />
-                        <!-- Brake Pressure actual -->
-                        <TextBlock Text="Brake Pressure - Actual:" FontSize="24" />
-                        <!-- Brake Pressure target -->
-                        <TextBlock Text="Brake Pressure - Target:" FontSize="24" />
-                        <!-- Steering Angle actual -->
-                        <TextBlock Text="Steering Angle (º Degrees):" FontSize="24" />
-                        <StackPanel>
-                            <TextBlock Text="Actual" Margin="10" />
-                            <Slider Minimum="0" Maximum="100" Value="13" Width="200" Margin="10" IsEnabled="False"/>
-                            <TextBlock Text="13º" Margin="10" />
+
+                            <!-- Other values -->
+                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="10">
+                                <!-- Autonomous Mission Indicator with White Box -->
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Autonomous Mission Indicator:" FontSize="24" Grid.Column="0" VerticalAlignment="Center"/>
+                                    <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
+                                </Grid>
+                                <!-- Emergency Brake Service Status -->
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Emergency Brake Service Status:" FontSize="24" Grid.Column="0" VerticalAlignment="Center"/>
+                                    <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
+                                </Grid>
+                                <!-- Speed actual -->
+                                <TextBlock Text="Speed - Actual:" FontSize="24" />
+                                <!-- Speed target -->
+                                <TextBlock Text="Speed - Target:" FontSize="24" />
+                                <!-- Brake Pressure actual -->
+                                <TextBlock Text="Brake Pressure - Actual:" FontSize="24" />
+                                <!-- Brake Pressure target -->
+                                <TextBlock Text="Brake Pressure - Target:" FontSize="24" />
+                                <!-- Steering Angle actual -->
+                                <TextBlock Text="Steering Angle (º Degrees):" FontSize="24" />
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="400" Margin="10" IsEnabled="False" Grid.Column="0"/>
+                                    <TextBlock Text="Actual" Margin="10" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="13º" Margin="10" VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+                                <!-- Steering Angle target -->
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="400" Margin="10" IsEnabled="False" Grid.Column="0"/>
+                                    <TextBlock Text="Target" Margin="10" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="17º" Margin="10" VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+                                <!-- Emergency Stop Button -->
+                                <Button Name="EmergencyStopButton" Content="EMERGENCY STOP" 
+                                        Background="Red" Foreground="White" FontSize="24" 
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        Width="200" Height="200">
+                                    <Button.RenderTransform>
+                                        <ScaleTransform/>
+                                    </Button.RenderTransform>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
-                        <!-- Steering Angle target -->
-                        <StackPanel>
-                            <TextBlock Text="Target" Margin="10" />
-                            <Slider Minimum="0" Maximum="100" Value="17" Width="200" Margin="10" IsEnabled="False"/>
-                            <TextBlock Text="17º" Margin="10" />
-                        </StackPanel>
-                        <!-- Emergency Stop Button -->
-                        <Button Name="EmergencyStopButton" Content="EMERGENCY STOP" 
-                                Background="Red" Foreground="White" FontSize="24" 
-                                HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                Width="200" Height="200">
-                            <Button.RenderTransform>
-                                <ScaleTransform/>
-                            </Button.RenderTransform>
-                        </Button>
-                    </StackPanel>
+                    </Grid>
                 </TabItem>
 
                 <!-- GPS Tab -->
