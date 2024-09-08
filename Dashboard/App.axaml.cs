@@ -27,12 +27,19 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new MainWindow
+            /*desktop.MainWindow = new MainWindow
             {
                 DataContext = services.GetRequiredService<MainViewModel>()
-            };
+            };*/
+
+            var connectionWindow = new ConnectionWindow();
+            connectionWindow.Show();
+
+
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+
 }

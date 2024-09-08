@@ -1,0 +1,82 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        x:Class="Dashboard.ConnectionWindow"
+        Title="ConnectionWindow"
+        Width="800"
+        Height="500">
+    <DockPanel>
+
+        <!-- Top Menu -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Connection"/>
+            <MenuItem Header="Setup"/>
+            <MenuItem Header="Status"/>
+            <MenuItem Header="Console"/>
+            <MenuItem Header="About"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+
+        <!-- Bottom Status Panel -->
+        <Grid DockPanel.Dock="Bottom" Background="LightGray"  Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <!-- Left -->
+                <ColumnDefinition Width="1*"/>
+                <!-- Center -->
+                <ColumnDefinition Width="1*"/>
+                <!-- Right -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side: Car Number -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Car Number" VerticalAlignment="Center"/>
+                <TextBox Width="50" Margin="5,0" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Center: UTC Time and SN -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="UTC Time" VerticalAlignment="Center"/>
+                <TextBlock Text="SN: 987654321" Margin="30,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Right Side: Connection and Heart Beat -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <RadioButton Content="Connection" GroupName="Status" VerticalAlignment="Center"/>
+                <RadioButton Content="Heart Beat" GroupName="Status" Margin="10,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Grid -->
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="20">
+                <!-- Connection Type -->
+                <TextBlock Text="Connection Type" Margin="0, 10, 0, 5"/>
+                <ComboBox Width="200"/>
+
+                <!-- Serial Port -->
+                <TextBlock Text="Serial Port" Margin="0, 10, 0, 5"/>
+                <ComboBox Width="200"/>
+
+                <!-- IP Address -->
+                <TextBlock Text="IP Address" Margin="0, 15, 0, 5"/>
+                <TextBox Width="200" HorizontalAlignment="Left"/>
+
+                <!-- Simulation -->
+                <TextBlock Text="Simulation" Margin="0, 10, 0, 5"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Width="200"/>
+                    <Button Content="..." Width="30" Margin="5,0,0,0"/>
+                </StackPanel>
+
+                <!-- Connect Button -->
+                <Button Content="Connect" Width="100" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>
