@@ -44,13 +44,21 @@ public class DummyConnector : IConnector
                 var avData = new AvData
                 {
                     Speed = new ValuePair<double>
-                        { Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100 },
+                    {
+                        Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100
+                    },
                     SteeringAngle = new ValuePair<double>
-                        { Actual = random.NextDouble() * 360 - 180, Target = random.NextDouble() * 360 - 180 },
+                    {
+                        Actual = random.NextDouble() * 360 - 180, Target = random.NextDouble() * 360 - 180
+                    },
                     BrakeActuation = new ValuePair<double>
-                        { Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100 },
+                    {
+                        Actual = random.NextDouble() * 100, Target = random.NextDouble() * 100
+                    },
                     MotorMoment = new ValuePair<double>
-                        { Actual = random.NextDouble() * 1000, Target = random.NextDouble() * 1000 },
+                    {
+                        Actual = random.NextDouble() * 1000, Target = random.NextDouble() * 1000
+                    },
                     LateralAcceleration = random.NextDouble() * 10,
                     LongitudinalAcceleration = random.NextDouble() * 10,
                     YawRate = random.NextDouble() * 360,

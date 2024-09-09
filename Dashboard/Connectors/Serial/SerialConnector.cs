@@ -48,7 +48,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         // First we validate that we have the correct message format
         if (!message.StartsWith("#ID=") || !message.Contains("|UTC="))
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
-        
+
         var split = message.Split('|')[2..];
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
@@ -102,13 +102,21 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         AvDataUpdated?.Invoke(this, new AvData
         {
             Speed = new ValuePair<double>
-                { Actual = ParseDouble(values["SA"]), Target = ParseDouble(values["ST"]) },
+            {
+                Actual = ParseDouble(values["SA"]), Target = ParseDouble(values["ST"])
+            },
             SteeringAngle = new ValuePair<double>
-                { Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"]) },
+            {
+                Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"])
+            },
             BrakeActuation = new ValuePair<double>
-                { Actual = ParseDouble(values["BRA"]), Target = ParseDouble(values["BRT"]) },
+            {
+                Actual = ParseDouble(values["BRA"]), Target = ParseDouble(values["BRT"])
+            },
             MotorMoment = new ValuePair<double>
-                { Actual = ParseDouble(values["MMA"]), Target = ParseDouble(values["MMT"]) },
+            {
+                Actual = ParseDouble(values["MMA"]), Target = ParseDouble(values["MMT"])
+            },
             LateralAcceleration = ParseDouble(values["ALAT"]),
             LongitudinalAcceleration = ParseDouble(values["ALON"]),
             YawRate = ParseDouble(values["YAW"]),

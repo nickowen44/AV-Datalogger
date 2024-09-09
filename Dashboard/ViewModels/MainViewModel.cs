@@ -31,7 +31,7 @@ public class MainViewModel : ViewModelBase, IDisposable
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("AV Data Updated in MainViewModel");
-        
+
         OnPropertyChanged(nameof(Speed));
         OnPropertyChanged(nameof(SteeringAngle));
         OnPropertyChanged(nameof(BrakeActuation));
