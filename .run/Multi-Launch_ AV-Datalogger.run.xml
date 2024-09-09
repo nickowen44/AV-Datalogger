@@ -19,6 +19,7 @@
             <option name="type" value="afterPreviousStarted" />
           </ConditionSnapshot>
         </option>
+        <option name="disableDebugging" value="true" />
         <option name="executable">
           <ExecutableSnapshot>
             <option name="id" value="runConfig:.NET Project.SerialSimulator" />

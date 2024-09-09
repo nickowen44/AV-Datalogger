@@ -33,8 +33,18 @@ public class SerialPortWrapper : ISerialPort
 
     public void Configure(string portName, int baudRate)
     {
+        var wasOpen = _serialPort.IsOpen;
+
+        // Close the port if it's already open
+        if (wasOpen)
+            _serialPort.Close();
+        
         _serialPort.PortName = portName;
         _serialPort.BaudRate = baudRate;
+
+        // Reopen the port if it was previously open
+        if (wasOpen)
+            _serialPort.Open();
     }
 
     public string ReadExisting()

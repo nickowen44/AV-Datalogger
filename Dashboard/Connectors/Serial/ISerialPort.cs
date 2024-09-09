@@ -21,6 +21,7 @@ public interface ISerialPort
 
     /// <summary>
     ///     Configure the serial port.
+    ///     This method will close the port if it's already open, configure it, and then reopen it if it was previously open.
     /// </summary>
     /// <param name="portName">The name of the port to connect to.</param>
     /// <param name="baudRate">The baudRate to listen at.</param>
