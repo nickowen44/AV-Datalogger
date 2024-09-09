@@ -35,9 +35,6 @@ public class App : Application
                 // DataContext = services.GetRequiredService<ScrutineeringViewModel>()
                 DataContext = viewModel
             };
-
-            // desktop.Windows.Append(new ScrutineeringWindow()
-            //     { DataContext = services.GetRequiredService<ScrutineeringViewModel>() });
         }
 
         base.OnFrameworkInitializationCompleted();

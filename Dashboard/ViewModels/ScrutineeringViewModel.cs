@@ -107,10 +107,6 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
             var yamlData = deserializer.Deserialize<YamlData>(yamlContent);
 
             // Update the Steps collection with parsed steps
-            // Note: We need to use a thread here to prevent weirdness if the update were to happen on the thread used by
-            //       the file watcher.
-            // Dispatcher.UIThread.Post(() => { Steps = yamlData.Steps; });
-            // TODO here
             Steps = yamlData.Steps;
             Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + Steps.Count);
         }
