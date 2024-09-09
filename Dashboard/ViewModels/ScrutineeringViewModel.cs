@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Avalonia.Threading;
 using Dashboard.Connectors;
 using Dashboard.Models;
 using YamlDotNet.Serialization;
@@ -110,13 +109,18 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
             // Update the Steps collection with parsed steps
             // Note: We need to use a thread here to prevent weirdness if the update were to happen on the thread used by
             //       the file watcher.
-            Dispatcher.UIThread.Post(() => { Steps = yamlData.Steps; });
-            Console.WriteLine(yamlData.Steps);
+            // Dispatcher.UIThread.Post(() => { Steps = yamlData.Steps; });
+            // TODO here
+            Steps = yamlData.Steps;
+            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + Steps.Count);
         }
         catch (Exception ex)
         {
+            Console.WriteLine("Error: " + ex.Message);
             Steps = new List<StepData>
-                { new() { Step = $"Error loading file: {ex.Message}", Measurements = new List<string>() } };
+            {
+                new() { Step = "Error loading the yaml file please check logs.", Measurements = new List<string>() }
+            };
         }
     }
 

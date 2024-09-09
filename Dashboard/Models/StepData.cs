@@ -7,6 +7,6 @@ namespace Dashboard.Models;
 /// </summary>
 public class StepData : IStepData
 {
-    public string Step { get; set; } = string.Empty;
-    public List<string> Measurements { get; set; } = new();
+    public string Step { get; set; }
+    public List<string> Measurements { get; set; }
 }

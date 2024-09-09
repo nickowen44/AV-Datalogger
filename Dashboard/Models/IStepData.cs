@@ -4,6 +4,6 @@ namespace Dashboard.Models;
 
 public interface IStepData
 {
-    public string Step { get; }
-    public List<string> Measurements { get; }
+    public string Step { get; set; }
+    public List<string> Measurements { get; set; }
 }

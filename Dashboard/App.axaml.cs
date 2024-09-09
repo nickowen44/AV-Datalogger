@@ -32,6 +32,7 @@ public class App : Application
 
             desktop.MainWindow = new ScrutineeringWindow
             {
+                // DataContext = services.GetRequiredService<ScrutineeringViewModel>()
                 DataContext = viewModel
             };
 

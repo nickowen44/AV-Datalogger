@@ -7,5 +7,5 @@ namespace Dashboard.Models;
 /// </summary>
 public class YamlData : IYamlData
 {
-    public List<StepData> Steps { get; set; }
+    public List<StepData> Steps { get; set; } = new();
 }
