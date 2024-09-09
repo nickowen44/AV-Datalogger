@@ -1,12 +1,36 @@
 steps:
-    -   step: "test"
+    -   step: "Connect FSAE-A Data logger to test laptop and observe CAN message data stream."
+        id: 7.1
+        inspection: "Visual Check"
         measurements:
-            - "measurement1"
-            - "measurement2"
-            - "measurement3"
-    -   step: "test2"
+    -   step: "Switch on LVMS and select inspection mission AMI. ASSI Should remain off. Verify function by monitoring EBS CAN mesages from data logger."
+        id: 7.2
+        inspection: "Team Demonstration"
         measurements:
-            - "measurement2"
-            - "measurement3"
-    -   step: "test3"
+            - "AMI Status"
+    -   step: "Switch on ASMS. Activing TS from cockpit button should not be possible. Test that TS does not activate."
+        id: 7.3
+        inspection: "Team Demonstration"
+        measurements:
+    -   step: "Activate TS, and press RES Go button. Vehicle enters AS Ready. ASSI are yellow and continuous. Vehicle is not ready to drive, that is the state is not in AS Ready. All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle."
+        id: 7.4
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+    -   step: "Press RES Go button. Vehicle transitions to AS Driving state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
+        id: 7.5
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Steering Angle"
+    -   step: "Wait for transition to AS Finished. Vehicle transitions to AS Finished within 30 seconds after step 4. ASSI are blue and continuous. Brakes are engaged. EBS is not triggered (not activated) and ASSI are not flashing."
+        id: 7.6
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Service Brake State"
+            - "Emergency Brake System State"
+    -   step: "Blue ASSI is clearly visible in sunlight."
+        id: 7.7
+        inspection: "Visual Check"
         measurements:

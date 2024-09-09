@@ -119,7 +119,11 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
             Console.WriteLine("Error: " + ex.Message);
             Steps = new List<StepData>
             {
-                new() { Step = "Error loading the yaml file please check logs.", Measurements = new List<string>() }
+                new()
+                {
+                    Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
+                    Id = 0, Inspection = ""
+                }
             };
         }
     }
