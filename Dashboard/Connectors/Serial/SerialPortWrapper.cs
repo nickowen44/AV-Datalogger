@@ -38,7 +38,7 @@ public class SerialPortWrapper : ISerialPort
         // Close the port if it's already open
         if (wasOpen)
             _serialPort.Close();
-        
+
         _serialPort.PortName = portName;
         _serialPort.BaudRate = baudRate;
 
