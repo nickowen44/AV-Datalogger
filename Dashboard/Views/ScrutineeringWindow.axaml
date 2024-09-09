@@ -16,7 +16,6 @@
         <vm:ScrutineeringViewModel />
     </Design.DataContext>
 
-    <!-- TODO yaml, remainder of carousel, final grey box for ending, window the page -->
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
@@ -25,9 +24,12 @@
                 <RowDefinition Height="0.8*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*" /> <!-- 20% left margin -->
-                <ColumnDefinition Width="0.6*" /> <!-- Carousel takes 60% of horizontal space -->
-                <ColumnDefinition Width="0.2*" /> <!-- 20% right margin -->
+                <!-- 20% left margin -->
+                <ColumnDefinition Width="0.2*" /> 
+                <!-- Carousel takes 60% of horizontal space -->
+                <ColumnDefinition Width="0.6*" /> 
+                <!-- 20% right margin -->
+                <ColumnDefinition Width="0.2*" /> 
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1" ZIndex="1" Margin="10 5">
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
@@ -68,7 +70,6 @@
                     <Carousel.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <!-- Display the step name -->
                                 <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="AV {0}: {1}">
@@ -79,8 +80,6 @@
                                 </TextBlock>
                                 <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center"
                                            Margin="20 0" />
-
-                                <!-- Display the measurements for each step -->
                                 <TextBlock Margin="10" FontWeight="Bold" TextAlignment="Center">DV Data</TextBlock>
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
@@ -95,7 +94,6 @@
                 </Carousel>
             </Border>
             <Panel Margin="30 90" Grid.Row="2" Grid.Column="1">
-                <!-- IsEnabled="Check" -->
                 <Button Background="#8b6220" Click="Previous"
                         HorizontalAlignment="Left">
                     &lt;
