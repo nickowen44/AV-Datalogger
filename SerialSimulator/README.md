@@ -22,7 +22,7 @@ Download the driver [here](https://sourceforge.net/projects/com0com/files/com0co
 
 After installing, ensure your virtual ports are set up correctly. You can do this by ensuring your com0com GUI looks
 like
-the following (pay attention to the port names):
+the following (pay attention to the port names):  
 ![GUI](img/com0com.png)
 
 You also need to have a functioning python (3.x - latest preferred) installation, with python on path. This script
