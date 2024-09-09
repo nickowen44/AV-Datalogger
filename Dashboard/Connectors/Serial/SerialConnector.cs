@@ -79,7 +79,6 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
     private void ParseGpsMessage(Dictionary<string, string> values)
     {
-        // TODO: Error handling possibly...
         GpsDataUpdated?.Invoke(this, new GpsData
         {
             Latitude = ParseDouble(values["LAT"]),

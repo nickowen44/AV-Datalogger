@@ -45,7 +45,6 @@ public class SerialPortWrapper : ISerialPort
 
     private DateTime _lastMessageReceived = DateTime.Now;
 
-    // TODO: Consider making this configurable
     private const double ConnectionTimeout = 5.0;
 
     public bool IsConnected
