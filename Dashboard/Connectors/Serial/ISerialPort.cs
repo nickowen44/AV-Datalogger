@@ -1,0 +1,30 @@
+﻿using System;
+
+namespace Dashboard.Connectors.Serial;
+
+public interface ISerialPort
+{
+    /// <summary>
+    ///     Called when data is received from the serial port.
+    /// </summary>
+    event EventHandler<SerialPortData> DataReceived;
+
+    /// <summary>
+    ///     Opens the serial port.
+    /// </summary>
+    void Open();
+
+    /// <summary>
+    ///     Close the serial port.
+    /// </summary>
+    void Close();
+
+    /// <summary>
+    ///     Configure the serial port.
+    /// </summary>
+    /// <param name="portName">The name of the port to connect to.</param>
+    /// <param name="baudRate">The baudRate to listen at.</param>
+    void Configure(string portName, int baudRate);
+
+    bool IsConnected { get; }
+}

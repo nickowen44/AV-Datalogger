@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddSingleton<IConnector, SerialConnector>();
 
         services.AddTransient<MainViewModel>();
+        services.AddTransient<ISerialPort, SerialPortWrapper>();
 
         return services.BuildServiceProvider();
     }

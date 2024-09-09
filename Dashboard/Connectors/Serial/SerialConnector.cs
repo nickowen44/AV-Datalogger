@@ -1,55 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Linq;
-using System.Threading;
 using Dashboard.Models;
 using Dashboard.Utils;
 
 namespace Dashboard.Connectors.Serial;
 
-public class SerialConnector : IConnector
+public class SerialConnector(ISerialPort comPort) : IConnector
 {
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
 
-    // TODO: Make the port and baud rate configurable
-    // Maybe consider adding to constructor
-    private static readonly SerialPort ComPort = new("COM22", 115200);
-
-    private bool _shouldStop;
-
-    // TODO: Handle connection status
-    private DateTime _lastMessageReceived = DateTime.Now;
-
-    // TODO: Consider making this configurable
-    // Connection timeout in seconds
-    private const double ConnectionTimeout = 5;
-
     public void Start()
     {
-        ComPort.Open();
+        // Set up the connection to the serial port
+        comPort.Configure("COM22", 115200);
 
-        // Start a new thread to read the data from the serial port
-        new Thread(() =>
-        {
-            while (!_shouldStop)
-            {
-                var data = ComPort.ReadLine();
+        // Set up the event handler for when data is received
+        comPort.DataReceived += OnDataReceived;
 
-                ParseMessage(data);
+        // Open our serial port
+        comPort.Open();
+    }
 
-                _lastMessageReceived = DateTime.Now;
-            }
-        }).Start();
+    private void OnDataReceived(object? _, SerialPortData data)
+    {
+        // If multiple messages are received at once, we need to handle them. To do this, we read the entire buffer
+        var buffer = data.Buffer;
+        var msgCount = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).Length;
+
+        // Then we split the buffer by the carriage return delimiter, and parse each message
+        foreach (var msg in buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)) ParseMessage(msg);
+
+        // TODO: Remove this debug message
+        Console.WriteLine($"[DEBUG] Processed {msgCount} serial messages");
     }
 
     public void Stop()
     {
-        _shouldStop = true;
+        // Remove the event handler
+        comPort.DataReceived -= OnDataReceived;
 
-        ComPort.Close();
+        // Close the serial port
+        comPort.Close();
     }
 
     private void ParseMessage(string message)
@@ -147,8 +141,4 @@ public class SerialConnector : IConnector
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
     }
 
-    private bool IsConnected()
-    {
-        return (DateTime.Now - _lastMessageReceived).TotalSeconds < ConnectionTimeout;
-    }
 }
