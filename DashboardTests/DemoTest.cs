@@ -66,4 +66,36 @@ public class DemoTest
             Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 100"));
         });
     }
+
+    [AvaloniaTest]
+    public void TestNullAvData()
+    {
+        // Arrange
+        var window = new MainWindow
+        {
+            DataContext = new MainViewModel(_dataStore.Object)
+        };
+
+        // Act
+        window.Show();
+
+        // Assert
+        var speed = window.FindControl<TextBlock>("SpeedDisplay");
+        var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
+        var brakePressure = window.FindControl<TextBlock>("BrakeActuationDisplay");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(speed, Is.Not.Null);
+            Assert.That(steeringAngle, Is.Not.Null);
+            Assert.That(brakePressure, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(speed.Text, Is.EqualTo("Speed: 0"));
+            Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
+            Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 0"));
+        });
+    }
 }

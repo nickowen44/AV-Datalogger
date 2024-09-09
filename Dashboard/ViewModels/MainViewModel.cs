@@ -8,10 +8,9 @@ public class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
 
-    // TODO: Handle the case where the data could be null (init) in another ticket
-    public double Speed => _dataStore.AvStatusData.Speed.Actual;
-    public double SteeringAngle => _dataStore.AvStatusData.SteeringAngle.Actual;
-    public double BrakeActuation => _dataStore.AvStatusData.BrakeActuation.Actual;
+    public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
+    public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
 
     public MainViewModel(IDataStore dataStore)
     {
