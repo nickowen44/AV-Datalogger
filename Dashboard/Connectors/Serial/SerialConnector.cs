@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dashboard.Models;
 using Dashboard.Utils;
 
@@ -28,13 +27,10 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     {
         // If multiple messages are received at once, we need to handle them. To do this, we read the entire buffer
         var buffer = data.Buffer;
-        var msgCount = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).Length;
+        var messages = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
         // Then we split the buffer by the carriage return delimiter, and parse each message
-        foreach (var msg in buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)) ParseMessage(msg);
-
-        // TODO: Remove this debug message
-        Console.WriteLine($"[DEBUG] Processed {msgCount} serial messages");
+        foreach (var msg in messages) ParseMessage(msg);
     }
 
     public void Stop()
@@ -49,19 +45,36 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     private void ParseMessage(string message)
     {
         // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
+        // First we validate that we have the correct message format
+        if (!message.StartsWith("#ID=") || !message.Contains("|UTC="))
+            throw new InvalidOperationException("Invalid message format received", new Exception(message));
+        
         var split = message.Split('|')[2..];
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
         // GPS starts with "LAT", AV Status starts with "SA", and RES starts with "RES"
         // First we parse our message into K:V pairs, then we identify the message type
-        var values = split.Select(s => s.Split('=')).ToDictionary(s => s[0], s => s[1]);
+        var values = new Dictionary<string, string>();
+        foreach (var s in split)
+        {
+            var pair = s.Split('=');
+
+            // If we don't have a key-value pair, we throw an exception
+            if (pair.Length != 2)
+                throw new InvalidOperationException($"Invalid key-value pair: {s}",
+                    new Exception($"Buffer str: {message}"));
+
+            values.Add(pair[0], pair[1]);
+        }
 
         if (values.ContainsKey("LAT"))
             ParseGpsMessage(values);
         else if (values.ContainsKey("SA"))
             ParseAvStatusMessage(values);
         else if (values.ContainsKey("RES")) ParseResMessage(values);
-        else Console.WriteLine($"Error: Unable to parse serial message {message}");
+        else
+            throw new InvalidOperationException("Unknown message type received",
+                new Exception($"Buffer str: {message}"));
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
