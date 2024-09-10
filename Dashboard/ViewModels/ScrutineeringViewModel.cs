@@ -11,15 +11,13 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
-    private YamlData _yamlData;
+    private YamlData _yamlData = new();
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
         _dataStore.DataUpdated += OnDataChanged;
-
-        YamlData = new YamlData();
 
         // The folder we are in at runtime is net8.0 (AV-Datalogger/Dashboard/bin/Debug/net8.0/Dashboard.exe), as
         // our yaml file is in the resources folder, exit the current folder three times

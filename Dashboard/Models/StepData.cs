@@ -5,7 +5,7 @@ namespace Dashboard.Models;
 /// <summary>
 ///     The data class for each step of the flowchart.
 /// </summary>
-public class StepData : IStepData
+public class StepData
 {
     public string Step { get; set; } = string.Empty;
     public double Id { get; set; }
