@@ -12,8 +12,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
-
-    private List<StepData> _steps;
+    private YamlData _yamlData;
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
@@ -26,8 +25,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector());
-
-        Steps = new List<StepData>();
+        YamlData = new YamlData();
 
         // The folder we are in at runtime is net8.0 (AV-Datalogger/Dashboard/bin/Debug/net8.0/Dashboard.exe), as
         // our yaml file is in the resources folder, exit the current folder three times
@@ -63,14 +61,14 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     /// <summary>
     ///     Getter and Setter for the flow of steps for autonomous vehicle inspection
     /// </summary>
-    public List<StepData> Steps
+    public YamlData YamlData
     {
-        get => _steps;
+        get => _yamlData;
         set
         {
-            if (_steps != value)
+            if (_yamlData != value)
             {
-                _steps = value;
+                _yamlData = value;
                 OnPropertyChanged();
             }
         }
@@ -107,19 +105,25 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
             var yamlData = deserializer.Deserialize<YamlData>(yamlContent);
 
             // Update the Steps collection with parsed steps
-            Steps = yamlData.Steps;
-            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + Steps.Count);
+            YamlData = yamlData;
+            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
         }
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
-            Steps = new List<StepData>
+
+            YamlData = new YamlData
             {
-                new()
+                Steps = new List<StepData>
                 {
-                    Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                    Id = 0, Inspection = ""
-                }
+                    new()
+                    {
+                        Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
+                        Id = 0, Inspection = ""
+                    }
+                },
+                Top = "",
+                Bottom = ""
             };
         }
     }

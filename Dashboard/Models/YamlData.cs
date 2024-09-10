@@ -8,4 +8,6 @@ namespace Dashboard.Models;
 public class YamlData : IYamlData
 {
     public List<StepData> Steps { get; set; } = new();
+    public string Top { get; set; } = string.Empty;
+    public string Bottom { get; set; } = string.Empty;
 }

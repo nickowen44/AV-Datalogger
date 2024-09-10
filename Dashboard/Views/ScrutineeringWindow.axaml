@@ -19,17 +19,21 @@
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
+                <!-- Top 10% of the screen -->
                 <RowDefinition Height="0.1*" />
-                <RowDefinition Height="0.1*" />
-                <RowDefinition Height="0.8*" />
+                <!-- Auto fits to the height of the content -->
+                <RowDefinition Height="Auto" />
+                <!-- Middle 70% of the screen (the carousel) -->
+                <RowDefinition Height="0.7*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <!-- 20% left margin -->
-                <ColumnDefinition Width="0.2*" /> 
+                <ColumnDefinition Width="0.2*" />
                 <!-- Carousel takes 60% of horizontal space -->
-                <ColumnDefinition Width="0.6*" /> 
+                <ColumnDefinition Width="0.6*" />
                 <!-- 20% right margin -->
-                <ColumnDefinition Width="0.2*" /> 
+                <ColumnDefinition Width="0.2*" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1" ZIndex="1" Margin="10 5">
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
@@ -48,10 +52,8 @@
                     Padding="10" Margin="10"
                     Grid.Row="1"
                     Grid.Column="1">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="#14080e" FontSize="18">
-                    THE VEHICLE SHOULD BE ASSUMED TO BE LIVE AT ALL TIMES <LineBreak />
-                    THE VEHICLE MAY MOVE AT ANY TIME
-                </TextBlock>
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="#14080e"
+                           Text="{Binding YamlData.Top}" FontSize="18" />
             </Border>
             <Border Background="#f2d398"
                     BorderBrush="#8B6220"
@@ -60,7 +62,7 @@
                     Padding="10" Margin="10"
                     Grid.Row="2"
                     Grid.Column="1">
-                <Carousel x:Name="slides" ItemsSource="{Binding Steps}" HorizontalAlignment="Center"
+                <Carousel x:Name="slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
                           VerticalAlignment="Center" Foreground="#14080e" FontSize="18">
                     <Carousel.PageTransition>
                         <CompositePageTransition>
@@ -84,7 +86,7 @@
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center" Margin="0 5 0 0">:</TextBlock>
+                                            <TextBlock Text="{Binding}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -103,6 +105,16 @@
                     &gt;
                 </Button>
             </Panel>
+            <Border Background="LightGray"
+                    BorderBrush="DimGray"
+                    BorderThickness="4"
+                    CornerRadius="1"
+                    Padding="10" Margin="10"
+                    Grid.Row="3"
+                    Grid.Column="1">
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="#14080e" FontSize="18"
+                           Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
+            </Border>
         </Grid>
     </Panel>
 </Window>
