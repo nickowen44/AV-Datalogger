@@ -5,7 +5,6 @@ using Avalonia.Markup.Xaml;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
@@ -33,7 +32,7 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow();
             {
                 DataContext = services.GetRequiredService<MainViewModel>();
-            };
+            }
 
         }
 

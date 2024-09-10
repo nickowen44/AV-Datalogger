@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
 
-// using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Dashboard.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, INotifyPropertyChanged, IDisposable
+    public partial class MainViewModel : ViewModelBase, IDisposable
     {
         /// <summary>
         /// Obserable variables that utilize ObserableObject for reactive commands.
         /// </summary>
-
         [ObservableProperty] 
-        private ViewModelBase _currentPage;
+        private object _currentPage;
         [ObservableProperty]
         private ListItemTemplate? _selectedListItem;
-        private Dictionary<string,ViewModelBase> _vms;
+        
+        /// <summary>
+        /// Dictionary of the Views with their ViewModel and shorthand names.
+        /// </summary>
+        private Dictionary<string, (object View, object? ViewModel)> _views;
+        
+        /// <summary>
+        /// Service Provider so the ViewModels can be created with their appropriate services required.
+        /// </summary>
         private  IServiceProvider _serviceProvider;
         
         /// <summary>
@@ -36,10 +41,10 @@ namespace Dashboard.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            _vms = new Dictionary<string,ViewModelBase>();
+            _views = new Dictionary<string, (object, object?)>();
             _serviceProvider = DependencyInjection.ConfigureServices();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
-            SelectedListItem = Items.First(vm => vm.ModelType == typeof(TestWindowViewModel));
+            SelectedListItem = Items.First(vm => vm.View == typeof(ConnectionView));
         }
 
         
@@ -50,32 +55,57 @@ namespace Dashboard.ViewModels
         /// </summary>
         partial void OnSelectedListItemChanged(ListItemTemplate? value)
         {
-            if (!_vms.ContainsKey(value.Label)){
-                _vms[value.Label] = (ViewModelBase)ActivatorUtilities.CreateInstance(_serviceProvider, value.ModelType);
+            
+            // Check if the view already exist in the dict, if it does not then create it and the appropriate ViewModel as needed.
+            if (!_views.ContainsKey(value.Label))
+            {
+                // Create the view and an object to hold the ViewModel if there is one.
+                var viewInstance = Activator.CreateInstance(value.View);
+                object? viewModelInstance = null;
+                if (value.ViewModel != null)
+                {
+                    // Create the ViewModel with their required services and set the DataContext.
+                    viewModelInstance = (ViewModelBase)ActivatorUtilities.CreateInstance(_serviceProvider, value.ViewModel);
+                    (viewInstance as Control).DataContext = viewModelInstance;
+                }
+                _views[value.Label] = (viewInstance, viewModelInstance);
             }
-            CurrentPage = _vms[value.Label];
+
+            CurrentPage = _views[value.Label].View; 
             
         }
         
         /// <summary>
-        /// Simple list template to tie the shorten names to ViewModels.
+        /// Simple list template to tie the shorten names to ViewModels and Views
+        /// ViewModel can be Null as not all Views will require one e.g Help/About
         /// </summary>
         private readonly List<ListItemTemplate> _templates =
         [
-            new ListItemTemplate(typeof(DataViewModel),  "Data"),
-            new ListItemTemplate(typeof(TestWindowViewModel),  "Test"),
-      
+            // Currently a bunch of dummy views 
+            new ListItemTemplate(typeof(ConnectionView), null, "Connection"),
+            new ListItemTemplate(typeof(SetupView), null, "Setup"),
+            new ListItemTemplate(typeof(StatusView), typeof(DataViewModel), "Status"),
+            new ListItemTemplate(typeof(ConsoleView), null, "Console"),
+            new ListItemTemplate(typeof(AboutView), null, "About"),
+            new ListItemTemplate(typeof(HelpView), null, "Help"),
+            new ListItemTemplate(typeof(DataView), typeof(DataViewModel), "Data"),
+            new ListItemTemplate(typeof(TestWindowView), null, "Test"),
+            
         ];
         public ObservableCollection<ListItemTemplate> Items { get; }
         
         /// <summary>
-        /// Iterates through _vms to dispose of the ViewModels.
+        /// Iterates through _views to dispose of the ViewModels as needed.
         /// </summary>
         public override void Dispose()
         {
-            foreach(var item in _vms)
+            foreach (var entry in _views)
             {
-                item.Value.Dispose();
+                var viewModel = entry.Value.ViewModel;
+                if (viewModel is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
             }
             GC.SuppressFinalize(this);
         }

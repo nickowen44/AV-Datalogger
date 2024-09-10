@@ -22,4 +22,10 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\StatusView.axaml.cs">
+        <DependentUpon>Status.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

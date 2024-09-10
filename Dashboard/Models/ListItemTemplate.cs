@@ -2,4 +2,4 @@
 
 namespace Dashboard.Models;
 
-public record ListItemTemplate(Type ModelType,  string Label);
+public record ListItemTemplate(Type View, Type? ViewModel,  string Label);
