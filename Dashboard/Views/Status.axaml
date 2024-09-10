@@ -1,16 +1,50 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Dashboard.ViewModels"
-        xmlns:animations="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="using:Dashboard.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Dashboard.Views.StatusWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Dashboard"
-        Foreground="Black"
-        Background="#c4c4c4">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
+             xmlns:animations="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="using:Dashboard.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.StatusWindow"
+             Icon="/Assets/avalonia-logo.ico"
+             Title="Dashboard"
+             Foreground="Black"
+             Background="#c4c4c4">
+
+    <UserControl.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#a3a3a3"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#124078"/>
+        </Style>
+
+        <Style Selector="TabItem:focus">
+            <Setter Property="Foreground" Value="#2B579A"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+        <Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#f0f0f0"/>
+        </Style>
+
+        <Style Selector="TabItem:selected">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#787373"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+        <Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#787373"/>
+        </Style>
+    </UserControl.Styles>
 
     <Grid>
         <!-- Centering the content -->
@@ -25,7 +59,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Padding="20" Height="900">
+        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="900">
             <!-- TabControl for AV Data, GPS, and RES -->
             <TabControl>
                 <!-- AV Data Tab -->
@@ -92,9 +126,39 @@
                                 <TextBlock Text="Speed - Actual:" FontSize="24" />
                                 <!-- Speed target -->
                                 <TextBlock Text="Speed - Target:" FontSize="24" />
-                                <!-- Brake Pressure actual -->
-                                <TextBlock Text="Brake Pressure - Actual:" FontSize="24" />
-                                <!-- Brake Pressure target -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Brake Pressure actual -->
+                                    <TextBlock Text="Brake Pressure - Actual:" FontSize="24" Grid.Column="0"/>
+                                    <!-- Brake Pressure target -->
+                                    <Canvas Width="100" Height="100" Grid.Column="1">
+                                        <!-- Background semicircle rotated 90 degrees -->
+                                        <Path Stroke="Gray" StrokeThickness="8"
+                                            Data="M 100,100 A 80,80 0 1 1 100,20" 
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="90"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+
+                                        <!-- Foreground semicircle (progress) rotated 90 degrees -->
+                                        <Path Stroke="Green" StrokeThickness="8"
+                                            Data="M 100,100 A 80,80 0 0 1 20,100" 
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="90"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+
+                                        <!-- Centered percentage text -->
+                                        <TextBlock Text="50%" FontSize="32" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Foreground="Black" Canvas.Left="-85" Canvas.Top="15"/>
+                                    </Canvas>
+                                </Grid>
                                 <TextBlock Text="Brake Pressure - Target:" FontSize="24" />
                                 <!-- Steering Angle actual -->
                                 <TextBlock Text="Steering Angle (º Degrees):" FontSize="24" />
@@ -153,4 +217,4 @@
             </TabControl>
         </Border>
     </Grid>
-</Window>
+</UserControl>
