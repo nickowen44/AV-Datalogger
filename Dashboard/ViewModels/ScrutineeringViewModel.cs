@@ -43,11 +43,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
         // Load the initial YAML data when the ViewModel is created
         LoadYamlData(Path.Combine(pathDirectory, "AV_Inspection_Flow.yaml"));
     }
-
-    // public int AutonomousState => _dataStore.AutonomousState;
-    // public int ServiceBrakeState => _dataStore.ServiceBrakeState;
-    // public int EmergencyBrakeState => _dataStore.EmergencyBrakeState;
-    // public int AutonomousMissionIndicator => _dataStore.AutonomousMissionIndicator;
+    
     public double SteeringAngle => _dataStore.SteeringAngle;
 
     /// <summary>

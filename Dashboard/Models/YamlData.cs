@@ -3,7 +3,7 @@
 namespace Dashboard.Models;
 
 /// <summary>
-///     Class to represent structure of the yaml file
+///     Class to represent structure of the yaml file.
 /// </summary>
 public class YamlData
 {

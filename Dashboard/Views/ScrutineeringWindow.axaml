@@ -3,6 +3,7 @@
              xmlns:vm="using:Dashboard.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:utils="clr-namespace:Dashboard.Utils"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dashboard.Views.ScrutineeringWindow"
              x:DataType="vm:ScrutineeringViewModel"
@@ -13,13 +14,18 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:ScrutineeringViewModel />
     </Design.DataContext>
+    
+    <UserControl.Resources>
+        <!-- This allows the conditional rendering of the "DV Data" header -->
+        <utils:MeasurmentVisibility x:Key="MeasurmentVisibility" />
+    </UserControl.Resources>
 
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
                 <!-- Top 10% of the screen -->
                 <RowDefinition Height="0.1*" />
-                <!-- Auto fits to the height of the content -->
+                <!-- Auto sizes to the height of the content -->
                 <RowDefinition Height="Auto" />
                 <!-- Middle 70% of the screen (the carousel) -->
                 <RowDefinition Height="0.7*" />
@@ -80,7 +86,12 @@
                                 </TextBlock>
                                 <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center"
                                            Margin="20 0" />
-                                <TextBlock Margin="10" FontWeight="Bold" TextAlignment="Center">DV Data</TextBlock>
+                                <TextBlock Text="DV Data"
+                                           Margin="10"
+                                           FontWeight="Bold"
+                                           TextAlignment="Center"
+                                           IsVisible="{Binding Measurements, Converter={StaticResource MeasurmentVisibility}}" />
+
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
