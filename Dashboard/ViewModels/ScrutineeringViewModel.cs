@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Dashboard.Connectors;
 using Dashboard.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -16,15 +15,10 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
-        _dataStore = dataStore;
-
-        _dataStore.DataUpdated += OnDataChanged;
-    }
-
-    public ScrutineeringViewModel()
-    {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector());
+        _dataStore = dataStore;
+        _dataStore.DataUpdated += OnDataChanged;
+
         YamlData = new YamlData();
 
         // The folder we are in at runtime is net8.0 (AV-Datalogger/Dashboard/bin/Debug/net8.0/Dashboard.exe), as

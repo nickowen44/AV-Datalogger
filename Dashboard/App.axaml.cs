@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
@@ -27,13 +28,9 @@ public class App : Application
             var services = DependencyInjection.ConfigureServices();
 
             // Create an instance of the MainViewModel
-            // TODO the yaml doesnt load in w/ dependency injection services.GetRequiredService<ScrutineeringViewModel>()
-            var viewModel = new ScrutineeringViewModel();
-
             desktop.MainWindow = new ScrutineeringWindow
             {
-                // DataContext = services.GetRequiredService<ScrutineeringViewModel>()
-                DataContext = viewModel
+                DataContext = services.GetRequiredService<ScrutineeringViewModel>()
             };
         }
 

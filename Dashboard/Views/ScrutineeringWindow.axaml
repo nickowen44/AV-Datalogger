@@ -1,13 +1,13 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Dashboard.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Dashboard.Views.ScrutineeringWindow"
-        x:DataType="vm:ScrutineeringViewModel"
-        Foreground="Black"
-        Background="#14080E">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.ScrutineeringWindow"
+             x:DataType="vm:ScrutineeringViewModel"
+             Foreground="Black"
+             Background="#565656">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -37,24 +37,24 @@
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
                            FontSize="30"
                            FontWeight="Bold"
-                           Foreground="#f2d398" />
+                           Foreground="White" />
                 <TextBlock TextAlignment="Left" Text="Functional Autonomous System Test (RES)"
                            FontSize="25"
                            FontWeight="Bold"
-                           Foreground="#F2D398" />
+                           Foreground="White" />
             </StackPanel>
-            <Border Background="LightGray"
-                    BorderBrush="DimGray"
+            <Border Background="#3f3f3f"
+                    BorderBrush="Black"
                     BorderThickness="4"
                     CornerRadius="1"
                     Padding="10" Margin="10"
                     Grid.Row="1"
                     Grid.Column="1">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="#14080e"
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="White"
                            Text="{Binding YamlData.Top}" FontSize="18" />
             </Border>
-            <Border Background="#f2d398"
-                    BorderBrush="#8B6220"
+            <Border Background="LightGray"
+                    BorderBrush="#2c2c2c"
                     BorderThickness="4"
                     CornerRadius="1"
                     Padding="10" Margin="10"
@@ -94,23 +94,23 @@
                 </Carousel>
             </Border>
             <Panel Margin="30 90" Grid.Row="2" Grid.Column="1">
-                <Button Background="#8b6220" Click="Previous"
+                <Button Background="DimGray" Foreground="White" Click="Previous"
                         HorizontalAlignment="Left">
                     &lt;
                 </Button>
-                <Button Background="#8b6220" Click="Next"
+                <Button Background="DimGray" Foreground="White" Click="Next"
                         HorizontalAlignment="Right">
                     &gt;
                 </Button>
             </Panel>
-            <Border Background="LightGray"
-                    BorderBrush="DimGray"
+            <Border Background="#3f3f3f"
+                    BorderBrush="Black"
                     BorderThickness="4"
                     CornerRadius="1"
                     Padding="10" Margin="10"
                     Grid.Row="3"
                     Grid.Column="1">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="#14080e" FontSize="18"
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="White" FontSize="18"
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
         </Grid>
