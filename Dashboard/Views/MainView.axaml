@@ -15,16 +15,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Rectangle Width="100" Height="100" />
-        <Image Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
+        <Image Grid.Row = "0" Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
                VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
                 <RotateTransform Angle="90" />
             </Image.RenderTransform>
         </Image>
-        <TextBlock> Nuvotion Motorsports</TextBlock>
+        <TextBlock Grid.Row = "0"> Nuvotion Motorsports</TextBlock>
         <!-- Menu to navigate between pages -->
-        <ListBox  VerticalAlignment="Bottom" ItemsSource="{Binding Items}" 
-                  SelectedItem="{Binding SelectedListItem}">
+        <ListBox Grid.Row = "0"  VerticalAlignment="Bottom" ItemsSource="{Binding Items}" 
+                                SelectedItem="{Binding SelectedListItem}">
             <ListBox.Styles>
                 <Style Selector="ListBoxItem">
                 </Style>

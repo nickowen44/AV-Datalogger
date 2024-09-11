@@ -18,16 +18,4 @@ public partial class StatusView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    public partial class DummySlider : UserControl
-    {
-        public DummySlider()
-        {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-    }
 }

@@ -4,7 +4,7 @@ using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
-public partial class DataViewModel : ViewModelBase, IDisposable
+public class DataViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     
