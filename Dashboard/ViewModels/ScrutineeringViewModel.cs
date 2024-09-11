@@ -43,7 +43,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
         // Load the initial YAML data when the ViewModel is created
         LoadYamlData(Path.Combine(pathDirectory, "AV_Inspection_Flow.yaml"));
     }
-    
+
     public double SteeringAngle => _dataStore.SteeringAngle;
 
     /// <summary>
