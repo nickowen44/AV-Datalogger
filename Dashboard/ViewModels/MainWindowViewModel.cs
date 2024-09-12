@@ -125,6 +125,5 @@ namespace Dashboard.ViewModels
             
             GC.SuppressFinalize(this);
         }
-
     }
 }

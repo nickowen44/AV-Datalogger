@@ -31,5 +31,4 @@ public class DummyConnector : IConnector
     {
         _shouldStop = true;
     }
-   
 }

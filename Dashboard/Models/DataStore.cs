@@ -42,5 +42,4 @@ public class DataStore : IDataStore, IDisposable
         _connector.Stop();
         GC.SuppressFinalize(this);
     }
-    
 }

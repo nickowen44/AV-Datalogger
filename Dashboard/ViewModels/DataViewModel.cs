@@ -7,7 +7,6 @@ namespace Dashboard.ViewModels;
 public class DataViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-    
     public double Speed => _dataStore.Speed;
     public double SteeringAngle => _dataStore.SteeringAngle;
     public double BrakePressure => _dataStore.BrakePressure;
@@ -19,7 +18,6 @@ public class DataViewModel : ViewModelBase, IDisposable
         _dataStore.DataUpdated += OnDataChanged;
         
     }
-
     public DataViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
@@ -45,7 +43,4 @@ public class DataViewModel : ViewModelBase, IDisposable
         _dataStore.Dispose();
         GC.SuppressFinalize(this);
     }
-
-    
 }
-
