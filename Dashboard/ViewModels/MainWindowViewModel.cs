@@ -35,8 +35,7 @@ namespace Dashboard.ViewModels
         /// <summary>
         ///  Main constructor, creates a Dict with the ViewModels and their names,
         /// _serviceProvider to allow dependency injection for ViewModels as needed,
-        /// and sets the first page.
-        /// Bug : When DataViewModel is the first page, results in memory leak? 
+        /// and sets the first page
         /// </summary>
         public MainWindowViewModel()
         {
