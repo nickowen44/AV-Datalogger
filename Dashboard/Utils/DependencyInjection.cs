@@ -18,10 +18,10 @@ public static class DependencyInjection
 
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IConnector, DummyConnector>();
-        
+
         services.AddTransient<DataViewModel>();
         services.AddTransient<MainWindowViewModel>();
-        
+
         return services.BuildServiceProvider();
     }
 }

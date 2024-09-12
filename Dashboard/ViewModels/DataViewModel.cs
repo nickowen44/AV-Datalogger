@@ -16,14 +16,14 @@ public class DataViewModel : ViewModelBase, IDisposable
         _dataStore = dataStore;
 
         _dataStore.DataUpdated += OnDataChanged;
-        
+
     }
     public DataViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector());
     }
-    
+
     /// <summary>
     ///     Notifies the view that the data has changed.
     /// </summary>
@@ -33,7 +33,7 @@ public class DataViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(SteeringAngle));
         OnPropertyChanged(nameof(BrakePressure));
     }
-    
+
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
     /// </summary>

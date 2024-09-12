@@ -38,19 +38,19 @@ public class DemoTest
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
         var selected = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar, Is.Not.Null);
             Assert.That(mainContent, Is.Not.Null);
         });
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(selected));
             Assert.That(mainContent.Content, Is.InstanceOf(selected.View));
         });
-        
+
         window.Close();
     }
 
@@ -67,7 +67,7 @@ public class DemoTest
             DataContext = new DataViewModel(_dataStore.Object)
         };
 
-        
+
         // Assert
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
         var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
@@ -109,13 +109,13 @@ public class DemoTest
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
         var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar, Is.Not.Null);
             Assert.That(mainContent, Is.Not.Null);
         });
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(defaultSelectedItem));
@@ -124,13 +124,13 @@ public class DemoTest
 
         var changedSelectedItem = new ListItemTemplate(typeof(StatusView), null, "Status");
         naviBar.SelectedItem = changedSelectedItem;
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
             Assert.That(mainContent.Content, Is.InstanceOf(changedSelectedItem.View));
         });
-        
+
         window.Close();
     }
 }
