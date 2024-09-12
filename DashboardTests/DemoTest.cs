@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
 using Dashboard.Models;
 using Dashboard.ViewModels;
@@ -22,9 +23,9 @@ public class DemoTest
     public void TestMainWindow()
     {
         // Arrange
-        var window = new MainWindow()
+        var window = new MainWindowView()
         {
-            DataContext = new DataViewModel(_dataStore.Object)
+            DataContext = new MainWindowViewModel()
         };
 
         // Act
@@ -32,25 +33,25 @@ public class DemoTest
 
         // Assert
         Assert.That(window, Is.Not.Null);
-        Assert.That(window, Is.InstanceOf<MainView>());
+        Assert.That(window, Is.InstanceOf<MainWindowView>());
 
-        var speed = window.FindControl<TextBlock>("SpeedDisplay");
-        var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
-        var brakePressure = window.FindControl<TextBlock>("BrakePressureDisplay");
-
+        var naviBar = window.FindControl<ListBox>("NaviBar");
+        var mainContent = window.FindControl<ContentControl>("MainContent");
+        var selected = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+        
         Assert.Multiple(() =>
         {
-            Assert.That(speed, Is.Not.Null);
-            Assert.That(steeringAngle, Is.Not.Null);
-            Assert.That(brakePressure, Is.Not.Null);
+            Assert.That(naviBar, Is.Not.Null);
+            Assert.That(mainContent, Is.Not.Null);
         });
-
+        
         Assert.Multiple(() =>
         {
-            Assert.That(speed.Text, Is.EqualTo("Speed: 0"));
-            Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
-            Assert.That(brakePressure.Text, Is.EqualTo("Brake Pressure: 0"));
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(selected));
+            Assert.That(mainContent.Content, Is.InstanceOf(selected.View));
         });
+        
+        window.Close();
     }
 
     [AvaloniaTest]
@@ -61,14 +62,12 @@ public class DemoTest
         _dataStore.SetupGet(x => x.SteeringAngle).Returns(90);
         _dataStore.SetupGet(x => x.BrakePressure).Returns(100);
 
-        var window = new MainWindow()
+        var window = new DataView()
         {
             DataContext = new DataViewModel(_dataStore.Object)
         };
 
-        // Act
-        window.Show();
-
+        
         // Assert
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
         var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
@@ -87,5 +86,51 @@ public class DemoTest
             Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 90"));
             Assert.That(brakePressure.Text, Is.EqualTo("Brake Pressure: 100"));
         });
+
+    }
+
+    [AvaloniaTest]
+
+    public void TestNavigation()
+    {
+        // Arrange
+        var window = new MainWindowView()
+        {
+            DataContext = new MainWindowViewModel()
+        };
+
+        // Act
+        window.Show();
+
+        // Assert
+        Assert.That(window, Is.Not.Null);
+        Assert.That(window, Is.InstanceOf<MainWindowView>());
+
+        var naviBar = window.FindControl<ListBox>("NaviBar");
+        var mainContent = window.FindControl<ContentControl>("MainContent");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar, Is.Not.Null);
+            Assert.That(mainContent, Is.Not.Null);
+        });
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(defaultSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(defaultSelectedItem.View));
+        });
+
+        var changedSelectedItem = new ListItemTemplate(typeof(StatusView), null, "Status");
+        naviBar.SelectedItem = changedSelectedItem;
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(changedSelectedItem.View));
+        });
+        
+        window.Close();
     }
 }

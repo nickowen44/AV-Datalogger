@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddSingleton<IConnector, DummyConnector>();
     
         services.AddTransient<DataViewModel>();
-        services.AddTransient<MainViewModel>();
+        services.AddTransient<MainWindowViewModel>();
         return services.BuildServiceProvider();
     }
 }

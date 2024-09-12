@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -29,10 +30,11 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new MainWindow();
+            desktop.MainWindow = new MainWindowView
             {
-                DataContext = services.GetRequiredService<MainViewModel>();
-            }
+                DataContext = services.GetRequiredService<MainWindowViewModel>(),
+            };
+
 
         }
 

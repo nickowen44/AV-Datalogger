@@ -7,20 +7,19 @@ using Dashboard.ViewModels;
 
 namespace Dashboard.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindowView : Window
 {
-    public MainWindow(MainViewModel vm)
+    public MainWindowView()
     {
-        DataContext = vm;
         InitializeComponent();
     }
 
-    public MainWindow() : this(new MainViewModel()) { }
+    // public MainWindowView() : this(new MainWindowViewModel()) { }
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
         // Dispose the view model when the window is closed, to clean up the data store and connector
         // Otherwise, the connector thread will keep running in the background
-        if (DataContext is MainViewModel model) model.Dispose();
+        if (DataContext is MainWindowViewModel model) model.Dispose();
     }
 }

@@ -1,18 +1,20 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Dashboard.Views"
         xmlns:vm="clr-namespace:Dashboard.ViewModels"
         xmlns:models="clr-namespace:Dashboard.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Dashboard.Views.MainView"
-        x:DataType="vm:MainViewModel"
+        x:Class="Dashboard.Views.MainWindowView"
+        x:DataType="vm:MainWindowViewModel"
+        Title="MainWindow"
         Foreground="Black"
         Background="#c4c4c4">
-    <Design.DataContext>
+        <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
+        <vm:MainWindowViewModel />
     </Design.DataContext>
     
     <Grid RowDefinitions="Auto, *, Auto" >
@@ -24,9 +26,9 @@
                             <RotateTransform Angle="90" />
                         </Image.RenderTransform>
                     </Image>
-                    <TextBlock > Nuvotion Motorsports</TextBlock>
+                    <TextBlock> Nuvotion Motorsports</TextBlock>
                     <!-- Menu to navigate between pages -->
-                    <ListBox   VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
+                    <ListBox Name="NaviBar" VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
                              SelectedItem="{Binding SelectedListItem}">
                         <ListBox.Styles>
                             <Style Selector="ListBoxItem">
@@ -48,13 +50,11 @@
             
     <Grid Grid.Row="1">
         <Viewbox Stretch="Uniform" StretchDirection="Both">
-        <ContentControl Content="{Binding CurrentPage}"/> 
+        <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
         </Viewbox>
     </Grid>
-    
-    <Grid Grid.Row="2">
-        <Label> Testing</Label>
-    </Grid>
+        
         
     </Grid>
-</UserControl>
+  
+</Window>
