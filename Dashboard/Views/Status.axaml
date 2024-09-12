@@ -22,27 +22,21 @@
             <Setter Property="Padding" Value="10 0"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
         <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#124078"/>
-        </Style>
-
-        <Style Selector="TabItem:focus">
-            <Setter Property="Foreground" Value="#2B579A"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0 0 0 0"/>
-            <Setter Property="Padding" Value="10 0"/>
         </Style>
-        <Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#f0f0f0"/>
-        </Style>
-
         <Style Selector="TabItem:selected">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="#787373"/>
-            <Setter Property="Margin" Value="0 0 0 0"/>
-            <Setter Property="Padding" Value="10 0"/>
         </Style>
         <Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#787373"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
         </Style>
     </UserControl.Styles>
 
@@ -105,7 +99,7 @@
                             <!-- Other values -->
                             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="10">
                                 <!-- Autonomous Mission Indicator with White Box -->
-                                <Grid Margin="5">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -114,7 +108,7 @@
                                     <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
                                 </Grid>
                                 <!-- Emergency Brake Service Status -->
-                                <Grid Margin="5">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -122,48 +116,10 @@
                                     <TextBlock Text="Emergency Brake Service Status:" FontSize="24" Grid.Column="0" VerticalAlignment="Center"/>
                                     <Border Background="White" Width="100" Height="30" Grid.Column="1" Margin="5"/>
                                 </Grid>
-                                <!-- Speed actual -->
-                                <TextBlock Text="Speed - Actual:" FontSize="24" />
-                                <!-- Speed target -->
-                                <TextBlock Text="Speed - Target:" FontSize="24" />
+                                <!-- Steering Angle actual -->
+                                <TextBlock Text="Steering Angle (º Degrees)" FontSize="24" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <!-- Brake Pressure actual -->
-                                    <TextBlock Text="Brake Pressure - Actual:" FontSize="24" Grid.Column="0"/>
-                                    <!-- Brake Pressure target -->
-                                    <Canvas Width="100" Height="100" Grid.Column="1">
-                                        <!-- Background semicircle rotated 90 degrees -->
-                                        <Path Stroke="Gray" StrokeThickness="8"
-                                            Data="M 100,100 A 80,80 0 1 1 100,20" 
-                                            RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <RotateTransform Angle="90"/>
-                                            </Path.RenderTransform>
-                                        </Path>
-
-                                        <!-- Foreground semicircle (progress) rotated 90 degrees -->
-                                        <Path Stroke="Green" StrokeThickness="8"
-                                            Data="M 100,100 A 80,80 0 0 1 20,100" 
-                                            RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <RotateTransform Angle="90"/>
-                                            </Path.RenderTransform>
-                                        </Path>
-
-                                        <!-- Centered percentage text -->
-                                        <TextBlock Text="50%" FontSize="32" 
-                                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                Foreground="Black" Canvas.Left="-85" Canvas.Top="15"/>
-                                    </Canvas>
-                                </Grid>
-                                <TextBlock Text="Brake Pressure - Target:" FontSize="24" />
-                                <!-- Steering Angle actual -->
-                                <TextBlock Text="Steering Angle (º Degrees):" FontSize="24" />
-                                <Grid Margin="10">
-                                    <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
@@ -171,12 +127,12 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="400" Margin="10" IsEnabled="False" Grid.Column="0"/>
-                                    <TextBlock Text="Actual" Margin="10" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-                                    <TextBlock Text="13º" Margin="10" VerticalAlignment="Center" Grid.Column="1"/>
+                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="400" IsEnabled="False" Grid.Column="0"/>
+                                    <TextBlock Text="Actual" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="13º" VerticalAlignment="Center" Grid.Column="1"/>
                                 </Grid>
                                 <!-- Steering Angle target -->
-                                <Grid Margin="10">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -185,19 +141,131 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="400" Margin="10" IsEnabled="False" Grid.Column="0"/>
-                                    <TextBlock Text="Target" Margin="10" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-                                    <TextBlock Text="17º" Margin="10" VerticalAlignment="Center" Grid.Column="1"/>
+                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="400" IsEnabled="False" Grid.Column="0"/>
+                                    <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="17º" VerticalAlignment="Center" Grid.Column="1"/>
                                 </Grid>
-                                <!-- Emergency Stop Button -->
-                                <Button Name="EmergencyStopButton" Content="EMERGENCY STOP" 
-                                        Background="Red" Foreground="White" FontSize="24" 
-                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                        Width="200" Height="200">
-                                    <Button.RenderTransform>
-                                        <ScaleTransform/>
-                                    </Button.RenderTransform>
-                                </Button>
+                                <!-- Speed actual -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Column="0" Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Speed - Actual:" FontSize="24" />
+                                        <TextBlock Grid.Column="1" Text="20 km/h" FontSize="24" />
+                                        <Canvas Grid.Column="2" Width="400" Height="300">
+                                            <!-- Outer semi-circle (Speedometer border) -->
+                                            <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="Black" StrokeThickness="5" Fill="Transparent"/>
+                                            <!-- Major ticks (0, 40, 60, 80, 110 km/h positions) -->
+                                            <!-- Center Tick (60 km/h) -->
+                                            <Path Data="M 200,100 L 200,130" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 30 km/h -->
+                                            <Path Data="M 100,140 L 120,160" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 90 km/h -->
+                                            <Path Data="M 280,160 L 300,140" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 0 km/h -->
+                                            <Path Data="M 50,250 L 80,250" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 120 km/h -->
+                                            <Path Data="M 320,250 L 350,250" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- Needle pointing to 60 km/h -->
+                                            <Path Data="M 200,250 L 180,180" Stroke="Red" StrokeThickness="4"/>
+                                            <!-- Text Labels for speed -->
+                                            <TextBlock Canvas.Left="190" Canvas.Top="130" Text="60" FontSize="16" Foreground="Black"/> <!-- 60 km/h -->
+                                            <TextBlock Canvas.Left="117.5" Canvas.Top="162.5" Text="30" FontSize="16" Foreground="Black"/> <!-- 40 km/h -->
+                                            <TextBlock Canvas.Left="257.5" Canvas.Top="162.5" Text="90" FontSize="16" Foreground="Black"/> <!-- 80 km/h -->
+                                            <TextBlock Canvas.Left="85" Canvas.Top="235" Text="0" FontSize="16" Foreground="Black"/> <!-- 0 km/h -->
+                                            <TextBlock Canvas.Left="285" Canvas.Top="235" Text="120" FontSize="16" Foreground="Black"/> <!-- 110 km/h -->
+                                        </Canvas>
+                                    </Grid>
+                                    <!-- Speed target -->
+                                    <Grid Grid.Column="0" Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Speed - Target:" FontSize="24" />
+                                        <Canvas Width="400" Height="300">
+                                            <!-- Outer semi-circle (Speedometer border) -->
+                                            <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="Black" StrokeThickness="5" Fill="Transparent"/>
+                                            <!-- Major ticks (0, 40, 60, 80, 110 km/h positions) -->
+                                            <!-- Center Tick (60 km/h) -->
+                                            <Path Data="M 200,100 L 200,130" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 30 km/h -->
+                                            <Path Data="M 100,140 L 120,160" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 90 km/h -->
+                                            <Path Data="M 280,160 L 300,140" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 0 km/h -->
+                                            <Path Data="M 50,250 L 80,250" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- 120 km/h -->
+                                            <Path Data="M 320,250 L 350,250" Stroke="Black" StrokeThickness="3"/>
+                                            <!-- Needle pointing to 60 km/h -->
+                                            <Path Data="M 200,250 L 180,180" Stroke="Red" StrokeThickness="4"/>
+                                            <!-- Text Labels for speed -->
+                                            <TextBlock Canvas.Left="190" Canvas.Top="130" Text="60" FontSize="16" Foreground="Black"/> <!-- 60 km/h -->
+                                            <TextBlock Canvas.Left="117.5" Canvas.Top="162.5" Text="30" FontSize="16" Foreground="Black"/> <!-- 40 km/h -->
+                                            <TextBlock Canvas.Left="257.5" Canvas.Top="162.5" Text="90" FontSize="16" Foreground="Black"/> <!-- 80 km/h -->
+                                            <TextBlock Canvas.Left="85" Canvas.Top="235" Text="0" FontSize="16" Foreground="Black"/> <!-- 0 km/h -->
+                                            <TextBlock Canvas.Left="285" Canvas.Top="235" Text="120" FontSize="16" Foreground="Black"/> <!-- 110 km/h -->
+                                        </Canvas>
+                                    </Grid>
+                                    <Grid Grid.Column="0" Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!-- Brake Pressure actual -->
+                                        <TextBlock Text="Brake Pressure - Actual:" FontSize="24" Grid.Column="0"/>
+                                        <!-- Brake Pressure target -->
+                                        <!-- <Canvas Width="100" Height="100" Grid.Column="1">
+                                            <Path Stroke="Gray" StrokeThickness="8"
+                                                Data="M 100,100 A 80,80 0 1 1 100,20"
+                                                RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
+                                                    <RotateTransform Angle="90"/>
+                                                </Path.RenderTransform>
+                                            </Path>
+
+                                            <Path Stroke="Green" StrokeThickness="8"
+                                                Data="M 100,100 A 80,80 0 0 1 20,100"
+                                                RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
+                                                    <RotateTransform Angle="90"/>
+                                                </Path.RenderTransform>
+                                            </Path>
+
+                                            <TextBlock Text="50%" FontSize="32"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    Foreground="Black" Canvas.Left="-85" Canvas.Top="15"/>
+                                        </Canvas> -->
+                                    </Grid>
+                                    <Grid Grid.Column="0" Grid.Row="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!-- Brake Pressure target -->
+                                        <TextBlock Text="Brake Pressure - Target:" FontSize="24" Grid.Column="0"/>
+                                    </Grid>
+                                    
+                                    <!-- Emergency Stop Button -->
+                                    <Button Grid.Column="1" Grid.Row="0" Name="EmergencyStopButton" Content="EMERGENCY STOP"
+                                            Background="Red" Foreground="White" FontSize="24"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Width="200" Height="200">
+                                        <Button.RenderTransform>
+                                            <ScaleTransform/>
+                                        </Button.RenderTransform>
+                                    </Button>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
