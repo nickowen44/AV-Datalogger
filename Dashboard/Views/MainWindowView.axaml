@@ -17,9 +17,8 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    
     <Grid RowDefinitions="Auto, *, Auto">
-        <Grid Grid.Row="0" Height="100" >
+        <Grid Grid.Row="0" >
                 <Image Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
                        VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
@@ -52,8 +51,5 @@
         <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
         </Viewbox>
     </Grid>
-        
-        
     </Grid>
-  
 </Window>

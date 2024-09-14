@@ -1,5 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Dashboard.Models;
 using Dashboard.ViewModels;
 using Dashboard.Views;
@@ -92,6 +96,7 @@ public class DemoTest
 
     public void TestNavigation()
     {
+
         // Arrange
         var window = new MainWindowView()
         {
@@ -121,8 +126,12 @@ public class DemoTest
             Assert.That(mainContent.Content, Is.InstanceOf(defaultSelectedItem.View));
         });
 
-        var changedSelectedItem = new ListItemTemplate(typeof(StatusView), null, "Status");
-        naviBar.SelectedItem = changedSelectedItem;
+        var changedSelectedItem = new ListItemTemplate(typeof(SetupView), null, "Setup");
+
+        // Click on Setup button.
+        window.MouseDown(new Point(135, 70), MouseButton.Left);
+        window.MouseUp(new Point(135, 70), MouseButton.Left);
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
