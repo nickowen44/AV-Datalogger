@@ -14,12 +14,12 @@ public partial class ScrutineeringView : UserControl
 
     public void Next(object source, RoutedEventArgs args)
     {
-        slides.Next();
+        Slides.Next();
     }
 
     public void Previous(object source, RoutedEventArgs args)
     {
-        slides.Previous();
+        Slides.Previous();
     }
 
     protected override void OnClosed(EventArgs e)

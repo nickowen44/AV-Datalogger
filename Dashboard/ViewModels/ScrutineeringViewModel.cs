@@ -11,7 +11,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
-    private YamlData _yamlData = new();
+    private YamlData _yamlData;
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
