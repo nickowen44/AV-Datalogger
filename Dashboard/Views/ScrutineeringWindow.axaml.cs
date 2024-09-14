@@ -5,7 +5,7 @@ using Dashboard.ViewModels;
 
 namespace Dashboard.Views;
 
-public partial class ScrutineeringView : UserControl
+public partial class ScrutineeringWindow : Window
 {
     public ScrutineeringWindow()
     {
