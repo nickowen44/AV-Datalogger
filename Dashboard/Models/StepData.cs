@@ -5,10 +5,10 @@ namespace Dashboard.Models;
 /// <summary>
 ///     The data class for each step of the flowchart.
 /// </summary>
-public class StepData
+public record StepData
 {
-    public string Step { get; set; } = string.Empty;
-    public double Id { get; set; }
-    public string Inspection { get; set; } = string.Empty;
-    public List<string> Measurements { get; set; } = new();
+    public required string Step { get; set; }
+    public required double Id { get; set; }
+    public required string Inspection { get; set; }
+    public required List<string> Measurements { get; set; }
 }

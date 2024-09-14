@@ -5,9 +5,9 @@ namespace Dashboard.Models;
 /// <summary>
 ///     Class to represent structure of the yaml file.
 /// </summary>
-public class YamlData
+public record YamlData
 {
-    public List<StepData> Steps { get; set; } = new();
-    public string Top { get; set; } = string.Empty;
-    public string Bottom { get; set; } = string.Empty;
+    public required List<StepData> Steps { get; set; }
+    public required string Top { get; set; }
+    public required string Bottom { get; set; }
 }

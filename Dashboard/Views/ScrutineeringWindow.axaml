@@ -14,7 +14,7 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:ScrutineeringViewModel />
     </Design.DataContext>
-    
+
     <UserControl.Resources>
         <!-- This allows the conditional rendering of the "DV Data" header -->
         <utils:MeasurmentVisibility x:Key="MeasurmentVisibility" />
@@ -24,7 +24,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <!-- Top 10% of the screen -->
-                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="Auto" />
                 <!-- Auto sizes to the height of the content -->
                 <RowDefinition Height="Auto" />
                 <!-- Middle 70% of the screen (the carousel) -->
@@ -66,7 +66,7 @@
                     Padding="10" Margin="10"
                     Grid.Row="2"
                     Grid.Column="1">
-                <Carousel x:Name="slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
+                <Carousel x:Name="Slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
                           VerticalAlignment="Center" Foreground="#14080e" FontSize="18">
                     <Carousel.PageTransition>
                         <CompositePageTransition>
