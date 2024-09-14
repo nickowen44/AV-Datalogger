@@ -27,12 +27,10 @@ public partial class App : Application
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            // Setup dependency injection
-            var services = DependencyInjection.ConfigureServices();
 
             desktop.MainWindow = new MainWindowView
             {
-                DataContext = services.GetRequiredService<MainWindowViewModel>(),
+                DataContext = new MainWindowViewModel()
             };
 
 

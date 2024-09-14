@@ -14,7 +14,6 @@ public partial class MainWindowView : Window
         InitializeComponent();
     }
 
-    // public MainWindowView() : this(new MainWindowViewModel()) { }
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);

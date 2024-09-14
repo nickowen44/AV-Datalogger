@@ -4,7 +4,7 @@ using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
-public class DataViewModel : ViewModelBase, IDisposable
+public class DataViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
     public double Speed => _dataStore.Speed;

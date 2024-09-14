@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard.ViewModels
 {
-    public partial class MainWindowViewModel : ViewModelBase, IDisposable
+    public partial class MainWindowViewModel : ViewModelBase
     {
         /// <summary>
         /// Observable variables that utilize ObservableObject for reactive commands.
@@ -102,8 +102,6 @@ namespace Dashboard.ViewModels
             new ListItemTemplate(typeof(HelpView), null, "Help"),
             new ListItemTemplate(typeof(DataView), typeof(DataViewModel), "Data"),
             new ListItemTemplate(typeof(TestWindowView), null, "Test"),
-
-
         ];
         public ObservableCollection<ListItemTemplate> Items { get; }
 

@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
 using Dashboard.Models;
 using Dashboard.ViewModels;
@@ -124,7 +123,6 @@ public class DemoTest
 
         var changedSelectedItem = new ListItemTemplate(typeof(StatusView), null, "Status");
         naviBar.SelectedItem = changedSelectedItem;
-
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
