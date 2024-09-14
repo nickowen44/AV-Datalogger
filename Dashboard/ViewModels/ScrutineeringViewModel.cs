@@ -11,6 +11,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
+    private readonly string _yamlFilePath;
     private YamlData _yamlData;
 
     public ScrutineeringViewModel(IDataStore dataStore)
@@ -19,15 +20,19 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
         _dataStore = dataStore;
         _dataStore.DataUpdated += OnDataChanged;
 
-        // The folder we are in at runtime is net8.0 (AV-Datalogger/Dashboard/bin/Debug/net8.0/Dashboard.exe), as
-        // our yaml file is in the resources folder, exit the current folder three times
-        var pathDirectory = "../../../Resources/";
+        // Dynamically locate the folder where the app is running and read the YAML file.
+        // This works as the yaml file has been included in the output directory
+        // Follow this to do so for another file:
+        // (https://stackoverflow.com/questions/16785369/how-to-include-other-files-to-the-output-directory-in-c-sharp-upon-build)
+        var appDirectory = AppContext.BaseDirectory;
+        _yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
+
+        var directory = Path.GetDirectoryName(_yamlFilePath);
+        var fileName = Path.GetFileName(_yamlFilePath);
 
         // // Initialize file watcher
-        _fileWatcher = new FileSystemWatcher
+        _fileWatcher = new FileSystemWatcher(directory, fileName)
         {
-            // Watch the project directory
-            Path = pathDirectory,
             // Watch specifically for yaml files
             Filter = "*.yaml",
             // Trigger on file modifications
@@ -41,7 +46,7 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
         _fileWatcher.EnableRaisingEvents = true;
 
         // Load the initial YAML data when the ViewModel is created
-        LoadYamlData(Path.Combine(pathDirectory, "AV_Inspection_Flow.yaml"));
+        LoadYamlData(_yamlFilePath);
     }
 
     public double SteeringAngle => _dataStore.SteeringAngle;
