@@ -112,15 +112,7 @@ namespace Dashboard.ViewModels
         public override void Dispose()
         {
             Console.WriteLine("Dispose for MainViewModel Triggered");
-            foreach (var entry in _views)
-            {
-                var viewModel = entry.Value.ViewModel;
-                if (viewModel is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                    Console.WriteLine("Dispose for {0} Triggered", viewModel.GetType());
-                }
-            }
+            _serviceProvider.GetService<IDataStore>()?.Dispose();
 
             GC.SuppressFinalize(this);
         }
