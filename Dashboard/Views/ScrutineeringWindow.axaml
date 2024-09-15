@@ -1,24 +1,24 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Dashboard.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:utils="clr-namespace:Dashboard.Utils"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Dashboard.Views.ScrutineeringWindow"
-        x:DataType="vm:ScrutineeringViewModel"
-        Foreground="Black"
-        Background="#565656">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:utils="clr-namespace:Dashboard.Utils"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.ScrutineeringView"
+             x:DataType="vm:ScrutineeringViewModel"
+             Foreground="Black"
+             Background="#565656">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:ScrutineeringViewModel />
     </Design.DataContext>
 
-    <Window.Resources>
+    <UserControl.Resources>
         <!-- This allows the conditional rendering of the "DV Data" header -->
         <utils:MeasurmentVisibility x:Key="MeasurmentVisibility" />
-    </Window.Resources>
+    </UserControl.Resources>
 
     <Panel>
         <Grid>
@@ -126,4 +126,4 @@
             </Border>
         </Grid>
     </Panel>
-</Window>
+</UserControl>

@@ -28,7 +28,7 @@ public class App : Application
             var services = DependencyInjection.ConfigureServices();
 
             // Create an instance of the MainViewModel
-            desktop.MainWindow = new ScrutineeringWindow
+            desktop.MainWindow = new MainWindow()
             {
                 DataContext = services.GetRequiredService<ScrutineeringViewModel>()
             };
