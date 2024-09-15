@@ -47,9 +47,7 @@
                     </ListBox>
         </Grid>
     <Grid Grid.Row="1">
-        <Viewbox Stretch="Uniform" StretchDirection="Both">
         <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
-        </Viewbox>
     </Grid>
     </Grid>
 </Window>
