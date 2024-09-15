@@ -43,9 +43,9 @@
     <Grid>
         <!-- Centering the content -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -61,9 +61,9 @@
                     <Grid>
                         <!-- Centering the content -->
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -99,7 +99,7 @@
                             <!-- Other values -->
                             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="10">
                                 <!-- Autonomous Mission Indicator with White Box -->
-                                <Grid>
+                                <Grid Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -108,7 +108,7 @@
                                     <TextBlock Text="Inspection" FontSize="22" Grid.Column="1" VerticalAlignment="Center" Background="White" Padding="10,0" TextAlignment="Center"/>
                                 </Grid>
                                 <!-- Emergency Brake Service Status -->
-                                <Grid Margin="0,0,0,60">
+                                <Grid Margin="0,0,0,50">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -120,7 +120,7 @@
                                 <TextBlock Text="Steering Angle (º Degrees)" FontSize="24" />
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -132,9 +132,9 @@
                                     <TextBlock Text="13º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
                                 <!-- Steering Angle target -->
-                                <Grid>
+                                <Grid Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -145,15 +145,15 @@
                                     <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
                                     <TextBlock Text="17º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
-                                <!-- Speed actual -->
-                                <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" /> <!-- Speed Actual Row -->
                                         <RowDefinition Height="Auto" /> <!-- Speed Target Row -->
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Speed Actual Text -->
@@ -161,9 +161,13 @@
                                         <TextBlock Text="Speed - Actual:" FontSize="24" VerticalAlignment="Center" />
                                         <TextBlock Text="20 km/h" FontSize="24" Padding="20,0" Background="White" Margin="10,10,10,10" VerticalAlignment="Center"/>
                                     </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,90,10,10">
+                                        <TextBlock Margin="0,0,10,10" Text="Speed - Target:" FontSize="24" VerticalAlignment="Center"/>
+                                        <TextBlock Text="24 km/h" FontSize="24" Padding="20,0" Background="White" Margin="10,10,10,10" VerticalAlignment="Center"/>
+                                    </StackPanel>
 
                                     <!-- Speedometer Canvas -->
-                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                                    <StackPanel Grid.Row="0" Grid.Column="1">
                                         <Canvas Width="300" Height="300">
                                             <!-- Outer semi-circle (Speedometer border) -->
                                             <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="Black" StrokeThickness="5" Fill="Transparent"/>
@@ -183,30 +187,19 @@
                                             <TextBlock Canvas.Left="285" Canvas.Top="235" Text="120" FontSize="16" Foreground="Black"/>
                                         </Canvas>
                                     </StackPanel>
-
-                                    <!-- Speed Target Text -->
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                        <TextBlock Margin="0,10,10,10" Text="Speed - Target:" FontSize="24" VerticalAlignment="Center"/>
-                                        <TextBlock Text="24 km/h" FontSize="24" Padding="20,0" Background="White" Margin="10,10,10,10" VerticalAlignment="Center"/>
+                            
+                                    <!-- Brake Actual Text -->
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Brake - Actual:" FontSize="24" VerticalAlignment="Center" />
+                                        <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White" Margin="10,10,10,10" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                </Grid>
-
-                                <!-- Brake Pressure actual -->
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <TextBlock Text="Brake - Actual:" Margin="0,10,10,10" FontSize="24" />
-                                        <TextBlock Text="50%" FontSize="24" Background="White" Padding="20,0" Margin="10,10,10,10" TextAlignment="Center"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,90,10,10">
+                                        <TextBlock Margin="0,0,10,10" Text="Brake - Target:" FontSize="24"/>
+                                        <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White" Margin="10,10,10,10"/>
                                     </StackPanel>
-                                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+
+                                    <!-- Brake Canvas -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,200,0,0">
                                         <Canvas>
                                         <!-- Outer semi-circle (Speedometer border) -->
                                             <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="Black" StrokeThickness="5" Fill="Transparent"/>
@@ -231,22 +224,12 @@
                                             <TextBlock Canvas.Left="285" Canvas.Top="235" Text="100" FontSize="16" Foreground="Black"/> <!-- 110 km/h -->
                                         </Canvas>
                                     </StackPanel>
-                                    <!-- Brake Pressure target -->
-                                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <TextBlock Text="Brake - Target:" Margin="0,10,10,10" FontSize="24" />
-                                        <TextBlock Text="50%" FontSize="24" Background="White" Padding="20,0" Margin="10,10,10,10" TextAlignment="Center"/>
+                                    <!-- Remote Emergency Stop Status -->
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom" Margin="80,10,0,0"/>
+                                        <Image Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="80,20,0,0"/>
+                                        <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22" Background="Green" Foreground="White" Padding="10,0" Margin="80,10,0,0"/>
                                     </StackPanel>
-                                </Grid>
-                                <!-- Emergency Stop Button -->
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                <!-- Import image -->
-                                    <Image Grid.Column="0" Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="0,20,0,0"/>
-                                    <TextBlock Grid.Column="0" Text="RES Status" FontSize="24" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
-                                    <TextBlock Grid.Column="1" FontWeight="Bold" Text="DISENGAGED" FontSize="22" HorizontalAlignment="Right" Background="Green" Foreground="White" Padding="10,0" Margin="0,10,0,0"/>
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
