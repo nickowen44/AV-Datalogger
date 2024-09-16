@@ -4,7 +4,7 @@ using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
-public class MainViewModel : ViewModelBase, IDisposable
+public class DataViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
 
@@ -12,14 +12,14 @@ public class MainViewModel : ViewModelBase, IDisposable
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
     public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
 
-    public MainViewModel(IDataStore dataStore)
+    public DataViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
 
         _dataStore.AvDataUpdated += OnAvDataChanged;
     }
 
-    public MainViewModel()
+    public DataViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector());
@@ -40,7 +40,7 @@ public class MainViewModel : ViewModelBase, IDisposable
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
     /// </summary>
-    public void Dispose()
+    public override void Dispose()
     {
         _dataStore.AvDataUpdated -= OnAvDataChanged;
 

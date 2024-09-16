@@ -49,6 +49,7 @@ public class DataStore : IDataStore, IDisposable
 
     public void Dispose()
     {
+        // Stop the connector
         _connector.GpsDataUpdated -= OnGpsDataUpdated;
         _connector.AvDataUpdated -= OnAvDataUpdated;
         _connector.ResDataUpdated -= OnResDataUpdated;

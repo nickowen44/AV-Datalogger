@@ -1,5 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
@@ -21,7 +25,6 @@ public class DemoTest
 
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestDataStore()
     {
         // Arrange
@@ -41,13 +44,10 @@ public class DemoTest
             }
         });
 
-        var window = new MainWindow
+        var window = new DataView()
         {
-            DataContext = new MainViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object)
         };
-
-        // Act
-        window.Show();
 
         // Assert
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
@@ -70,17 +70,13 @@ public class DemoTest
     }
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestNullAvData()
     {
         // Arrange
-        var window = new MainWindow
+        var window = new DataView
         {
-            DataContext = new MainViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object)
         };
-
-        // Act
-        window.Show();
 
         // Assert
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
@@ -100,5 +96,55 @@ public class DemoTest
             Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
             Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 0"));
         });
+
+    }
+
+    [AvaloniaTest]
+    [Ignore("Waiting on ADL-41 PR")]
+    public void TestNavigation()
+    {
+
+        // Arrange
+        var window = new MainWindowView()
+        {
+            DataContext = new MainWindowViewModel()
+        };
+
+        // Act
+        window.Show();
+
+        // Assert
+        Assert.That(window, Is.Not.Null);
+        Assert.That(window, Is.InstanceOf<MainWindowView>());
+
+        var naviBar = window.FindControl<ListBox>("NaviBar");
+        var mainContent = window.FindControl<ContentControl>("MainContent");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar, Is.Not.Null);
+            Assert.That(mainContent, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(defaultSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(defaultSelectedItem.View));
+        });
+
+        var changedSelectedItem = new ListItemTemplate(typeof(SetupView), null, "Setup");
+
+        // Click on Setup button.
+        window.MouseDown(new Point(135, 70), MouseButton.Left);
+        window.MouseUp(new Point(135, 70), MouseButton.Left);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(changedSelectedItem.View));
+        });
+
+        window.Close();
     }
 }

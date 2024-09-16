@@ -33,4 +33,10 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\StatusView.axaml.cs">
+        <DependentUpon>Status.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

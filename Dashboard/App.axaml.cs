@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -18,19 +19,18 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var locator = new ViewLocator();
+        DataTemplates.Add(locator);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            // Setup dependency injection
-            var services = DependencyInjection.ConfigureServices();
 
-            // Create an instance of the MainViewModel
-            desktop.MainWindow = new MainWindow()
+            desktop.MainWindow = new MainWindowView
             {
-                DataContext = services.GetRequiredService<ScrutineeringViewModel>()
+                DataContext = new MainWindowViewModel()
             };
         }
 

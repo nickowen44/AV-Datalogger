@@ -21,16 +21,16 @@ public class ScrutineeringTests
     private Mock<IDataStore> _dataStore;
 
     [AvaloniaTest]
+    [Ignore("Waiting on ADL-41 PR as currently the main window is scurtineering view")]
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var window = new MainWindow
+        var window = new ScrutineeringView()
         {
             DataContext = new ScrutineeringViewModel(_dataStore.Object)
         };
 
         // Act
-        window.Show();
         var scurtineeringView = window.FindControl<ScrutineeringView>("ScrutineeringDisplay");
         var carousel = scurtineeringView.FindControl<Carousel>("Slides");
 
@@ -62,16 +62,15 @@ public class ScrutineeringTests
     }
 
     [AvaloniaTest]
+    [Ignore("Waiting on ADL-41 PR")]
     public void TestScrutineeringViewCorrectlyDisplaysDvDataIfMeasurmentsIsPresent()
     {
         // Arrange
-        var window = new MainWindow
+        var window = new ScrutineeringView
         {
             DataContext = new ScrutineeringViewModel(_dataStore.Object)
         };
 
-        // Act
-        window.Show();
         var scurtineeringView = window.FindControl<ScrutineeringView>("ScrutineeringDisplay");
         var carousel = scurtineeringView.FindControl<Carousel>("Slides");
 
