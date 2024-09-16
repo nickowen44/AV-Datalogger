@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -32,8 +32,6 @@ public partial class App : Application
             {
                 DataContext = new MainWindowViewModel()
             };
-
-
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -100,9 +100,8 @@ namespace Dashboard.ViewModels
             new ListItemTemplate(typeof(ConsoleView), null, "Console"),
             new ListItemTemplate(typeof(AboutView), null, "About"),
             new ListItemTemplate(typeof(HelpView), null, "Help"),
-            new ListItemTemplate(typeof(ScrutineeringView), null, "Scrutineering"),
+            new ListItemTemplate(typeof(ScrutineeringView), typeof(ScrutineeringViewModel), "Scrutineering"),
             new ListItemTemplate(typeof(DataView), typeof(DataViewModel), "Data"),
-            new ListItemTemplate(typeof(TestWindowView), null, "Test"),
         ];
         public ObservableCollection<ListItemTemplate> Items { get; }
 
