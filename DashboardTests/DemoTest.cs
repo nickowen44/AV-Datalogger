@@ -10,15 +10,17 @@ namespace DashboardTests;
 [TestFixture]
 public class DemoTest
 {
-    private Mock<IDataStore> _dataStore;
-
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
 
+    private Mock<IDataStore> _dataStore;
+
+
     [AvaloniaTest]
+    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestMainWindow()
     {
         // Arrange
@@ -54,6 +56,7 @@ public class DemoTest
     }
 
     [AvaloniaTest]
+    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestDataStore()
     {
         // Arrange

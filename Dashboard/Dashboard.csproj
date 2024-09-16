@@ -21,5 +21,15 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="YamlDotNet" Version="16.1.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\AV_Inspection_Flow.yaml"/>
+        <!--Ensures the yaml file is present in the final output directiory where the app is built and run-->
+        <Content Include="Resources\AV_Inspection_Flow.yaml">
+            <!--The file will only be copied if it is newer than the version in the output directory-->
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>
