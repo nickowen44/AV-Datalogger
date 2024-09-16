@@ -44,8 +44,8 @@ namespace Dashboard.ViewModels
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
         }
-        
-        public MainWindowViewModel( IServiceProvider serviceProvider)
+
+        public MainWindowViewModel(IServiceProvider serviceProvider)
         {
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             _serviceProvider = serviceProvider;
