@@ -66,10 +66,10 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content   = new ScrutineeringView(),
+            Content = new ScrutineeringView(),
             DataContext = new ScrutineeringViewModel(_dataStore.Object)
         };
-        
+
         window.Show();
         // Get the Carousel
         // Have to do it in this odd fashion as Avalonia does not trigger the full rendering process with a UserControl View
