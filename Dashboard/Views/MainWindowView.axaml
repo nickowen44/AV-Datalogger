@@ -19,14 +19,16 @@
     </Design.DataContext>
     <Grid RowDefinitions="Auto, *, Auto">
         <Grid Grid.Row="0" >
-                <Image Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <Grid ColumnDefinitions="0.8*, 0.2*">
+            <Image Grid.Column="1" Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
+                   VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <RotateTransform Angle="90" />
                         </Image.RenderTransform>
                     </Image>
-                    <TextBlock TextAlignment="Left" VerticalAlignment="Center" FontSize="25" >Nuvotion FSAE-Scrutineering Tool</TextBlock>
-                    <!-- Menu to navigate between pages -->
+                    <TextBlock Grid.Column="0" FontWeight="Black" VerticalAlignment="Center" FontFeatures="Bold" Padding="10, 0, 0, 30"  FontSize="25" >Nuvotion FSAE-Scrutineering Tool</TextBlock>
+                    </Grid>
+                <!-- Menu to navigate between pages -->
                     <ListBox Name="NaviBar" VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
                              SelectedItem="{Binding SelectedListItem}">
                         <ListBox.Styles>
