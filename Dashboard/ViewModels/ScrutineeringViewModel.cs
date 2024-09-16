@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace Dashboard.ViewModels;
 
-public class ScrutineeringViewModel : ViewModelBase, IDisposable
+public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
     private readonly string _yamlFilePath;
-    private YamlData _yamlData;
+
+    [ObservableProperty] public YamlData _yamlData;
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
@@ -50,22 +52,6 @@ public class ScrutineeringViewModel : ViewModelBase, IDisposable
     }
 
     public double SteeringAngle => _dataStore.SteeringAngle;
-
-    /// <summary>
-    ///     Getter and Setter for the flow of steps for autonomous vehicle inspection
-    /// </summary>
-    public YamlData YamlData
-    {
-        get => _yamlData;
-        set
-        {
-            if (_yamlData != value)
-            {
-                _yamlData = value;
-                OnPropertyChanged();
-            }
-        }
-    }
 
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
