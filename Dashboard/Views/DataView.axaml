@@ -14,8 +14,8 @@
     <StackPanel>
         <TextBlock Text="Car Dashboard" FontSize="36" />
         <TextBlock Name="SpeedDisplay" Text="{Binding Speed, StringFormat='Speed: {0:0.##}'}" FontSize="24" />
-        <TextBlock Name="BrakePressureDisplay"
-                   Text="{Binding BrakeActuation, StringFormat='Brake Pressure: {0:0.##}'}"
+        <TextBlock Name="BrakeActuationDisplay"
+                   Text="{Binding BrakeActuation, StringFormat='Brake Actuation: {0:0.##}'}"
                    FontSize="24" />
         <TextBlock Name="SteeringAngleDisplay"
                    Text="{Binding SteeringAngle, StringFormat='Steering Angle: {0:0.##}'}"

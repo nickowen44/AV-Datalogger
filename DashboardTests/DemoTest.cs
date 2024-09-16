@@ -25,7 +25,6 @@ public class DemoTest
 
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestDataStore()
     {
         // Arrange
@@ -71,7 +70,6 @@ public class DemoTest
     }
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-32 PR as currently the main window is scurtineering view")]
     public void TestNullAvData()
     {
         // Arrange
