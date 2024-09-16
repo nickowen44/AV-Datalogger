@@ -91,7 +91,7 @@ public class DemoTest
             // DV Data should only be displayed if the specific slide has measurments to be displayed.
             var slide = (StepData)carousel.Items[i];
             if (slide.Measurements != null)
-            { 
+            {
                 // Assert the textblock is visible.
                 Assert.IsTrue(textBlock.IsVisible);
                 Assert.That(textBlock.Text, Is.EqualTo("DV Data"));
