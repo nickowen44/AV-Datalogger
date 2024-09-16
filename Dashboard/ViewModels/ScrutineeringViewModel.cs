@@ -20,7 +20,7 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
-        _dataStore.DataUpdated += OnDataChanged;
+        _dataStore.AvDataUpdated += OnDataChanged;
 
         // Dynamically locate the folder where the app is running and read the YAML file.
         // This works as the yaml file has been included in the output directory
@@ -51,14 +51,14 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
         LoadYamlData(_yamlFilePath);
     }
 
-    public double SteeringAngle => _dataStore.SteeringAngle;
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
 
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
     /// </summary>
     public void Dispose()
     {
-        _dataStore.DataUpdated -= OnDataChanged;
+        _dataStore.AvDataUpdated -= OnDataChanged;
 
         _dataStore.Dispose();
 

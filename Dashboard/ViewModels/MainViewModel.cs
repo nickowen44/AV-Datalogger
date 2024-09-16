@@ -8,15 +8,15 @@ public class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
 
-    public double Speed => _dataStore.Speed;
-    public double SteeringAngle => _dataStore.SteeringAngle;
-    public double BrakePressure => _dataStore.BrakePressure;
+    public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
+    public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
 
     public MainViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
 
-        _dataStore.DataUpdated += OnDataChanged;
+        _dataStore.AvDataUpdated += OnAvDataChanged;
     }
 
     public MainViewModel()
@@ -26,13 +26,15 @@ public class MainViewModel : ViewModelBase, IDisposable
     }
 
     /// <summary>
-    ///     Notifies the view that the data has changed.
+    ///     Notifies the view that the AV data has changed.
     /// </summary>
-    private void OnDataChanged(object? sender, EventArgs e)
+    private void OnAvDataChanged(object? sender, EventArgs e)
     {
+        Console.WriteLine("AV Data Updated in MainViewModel");
+
         OnPropertyChanged(nameof(Speed));
         OnPropertyChanged(nameof(SteeringAngle));
-        OnPropertyChanged(nameof(BrakePressure));
+        OnPropertyChanged(nameof(BrakeActuation));
     }
 
     /// <summary>
@@ -40,7 +42,7 @@ public class MainViewModel : ViewModelBase, IDisposable
     /// </summary>
     public void Dispose()
     {
-        _dataStore.DataUpdated -= OnDataChanged;
+        _dataStore.AvDataUpdated -= OnAvDataChanged;
 
         _dataStore.Dispose();
 
