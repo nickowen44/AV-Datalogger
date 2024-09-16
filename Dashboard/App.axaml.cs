@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -27,9 +27,10 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new MainWindow
+            // Create an instance of the MainViewModel
+            desktop.MainWindow = new MainWindow()
             {
-                DataContext = services.GetRequiredService<MainViewModel>()
+                DataContext = services.GetRequiredService<ScrutineeringViewModel>()
             };
         }
 

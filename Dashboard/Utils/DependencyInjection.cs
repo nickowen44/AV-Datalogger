@@ -22,6 +22,7 @@ public static class DependencyInjection
 
         services.AddTransient<MainViewModel>();
         services.AddTransient<ISerialPort, SerialPortWrapper>();
+        services.AddTransient<ScrutineeringViewModel>();
 
         return services.BuildServiceProvider();
     }
