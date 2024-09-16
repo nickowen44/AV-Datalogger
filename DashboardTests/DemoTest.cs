@@ -19,9 +19,11 @@ public class DemoTest
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
+        _serviceProvider = new Mock<IServiceProvider>();
     }
 
     private Mock<IDataStore> _dataStore;
+    private Mock<IServiceProvider> _serviceProvider;
 
 
     [AvaloniaTest]
@@ -100,14 +102,13 @@ public class DemoTest
     }
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-41 PR")]
     public void TestNavigation()
     {
 
         // Arrange
         var window = new MainWindowView()
         {
-            DataContext = new MainWindowViewModel()
+            DataContext = new MainWindowViewModel(_serviceProvider.Object)
         };
 
         // Act
@@ -120,7 +121,7 @@ public class DemoTest
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
         var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
-
+        
         Assert.Multiple(() =>
         {
             Assert.That(naviBar, Is.Not.Null);

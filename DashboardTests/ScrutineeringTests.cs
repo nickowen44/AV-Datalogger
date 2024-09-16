@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dashboard.Models;
@@ -21,7 +22,6 @@ public class ScrutineeringTests
     private Mock<IDataStore> _dataStore;
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-41 PR as currently the main window is scurtineering view")]
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
@@ -31,13 +31,11 @@ public class ScrutineeringTests
         };
 
         // Act
-        var scurtineeringView = window.FindControl<ScrutineeringView>("ScrutineeringDisplay");
-        var carousel = scurtineeringView.FindControl<Carousel>("Slides");
+        var carousel = window.FindControl<Carousel>("Slides");
 
         // Assert the scrutineering voew renders correctly
         Assert.Multiple(() =>
         {
-            Assert.That(scurtineeringView, Is.Not.Null);
             Assert.That(carousel, Is.Not.Null);
         });
 
@@ -62,7 +60,6 @@ public class ScrutineeringTests
     }
 
     [AvaloniaTest]
-    [Ignore("Waiting on ADL-41 PR")]
     public void TestScrutineeringViewCorrectlyDisplaysDvDataIfMeasurmentsIsPresent()
     {
         // Arrange
@@ -70,15 +67,14 @@ public class ScrutineeringTests
         {
             DataContext = new ScrutineeringViewModel(_dataStore.Object)
         };
-
-        var scurtineeringView = window.FindControl<ScrutineeringView>("ScrutineeringDisplay");
-        var carousel = scurtineeringView.FindControl<Carousel>("Slides");
-
+        
+        var carousel = window.FindControl<Carousel>("Slides");
+     
         // We need to loop through each Item to get each container for the slide to find the textblock.
         for (var i = 0; i < carousel.ItemCount; i++)
         {
             var container = carousel.ItemContainerGenerator.ContainerFromIndex(i);
-
+            
             // First we need to traverse the visual tree and find the stack panel which has the texxtblock inside of it.
             // We need to do this because items inside a DataTemplate is not directly accessible using FindControl
             // on the Carousel itself. It is overly complicated for no reason.
@@ -86,7 +82,7 @@ public class ScrutineeringTests
                 .FirstOrDefault(panel => panel.Name == "StackPanel");
             var textBlock = stackPanel.GetVisualDescendants().OfType<TextBlock>()
                 .FirstOrDefault(textBlock => textBlock.Name == "DvData");
-
+            
             // DV Data should only be displayed if the specific slide has measurments to be displayed.
             var slide = (StepData)carousel.Items[i];
             if (slide.Measurements != null)

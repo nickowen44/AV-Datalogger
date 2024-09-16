@@ -92,10 +92,10 @@
                                            FontWeight="Bold"
                                            TextAlignment="Center"
                                            IsVisible="{Binding Measurements, Converter={StaticResource MeasurmentVisibility}}" />
-                                <ItemsControl ItemsSource="{Binding Measurements}">
+                                <ItemsControl Name="Testing" ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center" />
+                                            <TextBlock Name="test2" Text="{Binding}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
