@@ -100,7 +100,7 @@ public class DemoTest
     }
 
     [AvaloniaTest]
-
+    [Ignore("Waiting on ADL-41 PR")]
     public void TestNavigation()
     {
 
