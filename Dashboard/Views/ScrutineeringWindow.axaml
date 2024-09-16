@@ -75,7 +75,7 @@
                     </Carousel.PageTransition>
                     <Carousel.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
+                            <StackPanel x:Name="StackPanel">
                                 <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="AV {0}: {1}">
@@ -86,12 +86,12 @@
                                 </TextBlock>
                                 <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center"
                                            Margin="20 0" />
-                                <TextBlock Text="DV Data"
+                                <TextBlock x:Name="DvData"
+                                           Text="DV Data"
                                            Margin="10"
                                            FontWeight="Bold"
                                            TextAlignment="Center"
                                            IsVisible="{Binding Measurements, Converter={StaticResource MeasurmentVisibility}}" />
-
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
