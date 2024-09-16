@@ -99,7 +99,7 @@
                             <!-- Other values -->
                             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="10">
                                 <!-- Autonomous Mission Indicator with White Box -->
-                                <Grid Margin="0,0,0,0">
+                                <Grid Margin="0,0,30,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -108,7 +108,7 @@
                                     <TextBlock Text="Inspection" FontSize="22" Grid.Column="1" VerticalAlignment="Center" Background="White" Padding="10,0" TextAlignment="Center"/>
                                 </Grid>
                                 <!-- Emergency Brake Service Status -->
-                                <Grid Margin="0,0,0,50">
+                                <Grid Margin="0,0,30,50">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -118,7 +118,7 @@
                                 </Grid>
                                 <!-- Steering Angle actual -->
                                 <TextBlock Text="Steering Angle (º Degrees)" FontSize="24" />
-                                <Grid HorizontalAlignment="Stretch">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
@@ -127,12 +127,12 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="500" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
+                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
                                     <TextBlock Text="Actual" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
                                     <TextBlock Text="13º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
                                 <!-- Steering Angle target -->
-                                <Grid Margin="0,0,0,0">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
@@ -141,7 +141,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="500" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
+                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
                                     <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
                                     <TextBlock Text="17º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
@@ -225,10 +225,10 @@
                                         </Canvas>
                                     </StackPanel>
                                     <!-- Remote Emergency Stop Status -->
-                                    <StackPanel Grid.Column="2">
-                                        <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom" Margin="80,10,0,0"/>
-                                        <Image Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="80,20,0,0"/>
-                                        <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22" Background="Green" Foreground="White" Padding="10,0" Margin="80,10,0,0"/>
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2" Margin="80,0,0,0">
+                                        <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom" Margin="30,0,0,0"/>
+                                        <Image Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="0,0,0,0"/>
+                                        <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22" Background="Green" Foreground="White" Padding="10,0" Margin="0,0,0,0" TextAlignment="Center" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
