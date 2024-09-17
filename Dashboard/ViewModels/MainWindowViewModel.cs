@@ -44,7 +44,17 @@ namespace Dashboard.ViewModels
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
         }
-
+        /// <summary>
+        ///  Constructor for testing purposes, used in DemoTest where it is provided a Mock serviceProvider
+        ///  so it does not try to access the serial ports COM21-22.
+        /// </summary>
+        public MainWindowViewModel(IServiceProvider serviceProvider)
+        {
+            _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
+            _serviceProvider = serviceProvider;
+            Items = new ObservableCollection<ListItemTemplate>(_templates);
+            SelectedListItem = Items.First();
+        }
 
         /// <summary>
         /// Command to react to navigation button presses.
