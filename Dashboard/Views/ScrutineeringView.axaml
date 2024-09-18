@@ -17,7 +17,8 @@
 
     <UserControl.Resources>
         <!-- This allows the conditional rendering of the "DV Data" header -->
-        <utils:MeasurmentVisibility x:Key="MeasurmentVisibility" />
+        <utils:DvDataVisibility x:Key="DvDataVisibility" />
+        <utils:DvDataVisibility x:Key="MeasurementValueVisibility" />
     </UserControl.Resources>
 
     <Panel>
@@ -91,11 +92,41 @@
                                            Margin="10"
                                            FontWeight="Bold"
                                            TextAlignment="Center"
-                                           IsVisible="{Binding Measurements, Converter={StaticResource MeasurmentVisibility}}" />
+                                           IsVisible="{Binding Measurements, Converter={StaticResource DvDataVisibility}}"
+                                           />
+                                <!-- Note:  We have to bind this way because regular bindings go to the carousels data context, so we need to get the relative data context, and cast it otherwise it thinks its an object-->
+                                <!-- This took so long to work lol -->
+                                <!-- <TextBlock Text="{Binding ((vm:ScrutineeringViewModel)DataContext).SteeringAngle, RelativeSource={RelativeSource AncestorType=UserControl}, StringFormat='{0:0.##}'}"/> -->
+                                <!-- TODO make back to 0, remove "" from steering angle, make invis  -->
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center" />
+                                            <TextBlock TextAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="- {0}: {1}{2}{3}{4}{5}">
+                                                        <Binding Path="" />
+                                                        <Binding 
+                                                            Path="((vm:ScrutineeringViewModel)DataContext).SteeringAngle"
+                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" 
+                                                            StringFormat='"{0:0.##}"'
+                                                            Converter="{StaticResource MeasurementValueVisibility}"
+                                                            ConverterParameter="{Binding Path=''}"/>  
+                                                        <Binding 
+                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousSystemState"
+                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />      
+                                                        <Binding 
+                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousMissionIndicator"
+                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />      
+                                                        <Binding 
+                                                            Path="((vm:ScrutineeringViewModel)DataContext).EmergencyBrakeState"
+                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />      
+                                                        <Binding 
+                                                            Path="((vm:ScrutineeringViewModel)DataContext).ServiceBrakeState"
+                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />      
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                            <!-- <TextBlock Text="{Binding}" TextAlignment="Center" /> -->
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

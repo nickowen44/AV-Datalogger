@@ -51,7 +51,14 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
         LoadYamlData(_yamlFilePath);
     }
 
-    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
+    public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
+    public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
+    
+    public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 1;
+    
+    public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 2;
+    
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 3;
 
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
@@ -120,6 +127,12 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
+        Console.WriteLine("AV Data Updated in ScrutineeringViewModel");
+
+        OnPropertyChanged(nameof(AutonomousSystemState));
+        OnPropertyChanged(nameof(EmergencyBrakeState));
+        OnPropertyChanged(nameof(AutonomousMissionIndicator));
+        OnPropertyChanged(nameof(ServiceBrakeState));
         OnPropertyChanged(nameof(SteeringAngle));
     }
 }
