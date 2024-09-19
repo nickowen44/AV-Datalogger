@@ -1,8 +1,52 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Dashboard.Views.AboutView">
-    Welcome to Avalonia!
+             x:Class="Dashboard.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:AboutViewModel />
+    </Design.DataContext>
+
+    <ScrollViewer>
+        <StackPanel Margin="5" Spacing="5">
+            <Border Background="White" Padding="5" BorderThickness="1" BorderBrush="Black">
+                <StackPanel Spacing="5">
+                    <TextBlock>
+                        This program was built for Nuvotion Pty Ltd. as a capstone project for RMIT University.
+                    </TextBlock>
+                    <TextBlock>
+                        <Run Text="Project Members:" FontWeight="Bold" />
+                        <LineBreak />
+                        <Run Text=" - Erin Lumsden" />
+                        <LineBreak />
+                        <Run Text=" - Sarmad Wani" />
+                        <LineBreak />
+                        <Run Text=" - Ariadne Ventura-Koumides" />
+                        <LineBreak />
+                        <Run Text=" - Nicholas Dagher" />
+                        <LineBreak />
+                        <Run Text=" - Richard Quach" />
+                    </TextBlock>
+                    <TextBlock>
+                        <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <Border Background="White" Padding="5" VerticalAlignment="Bottom" BorderThickness="1" BorderBrush="Black"
+                    MaxWidth="500" HorizontalAlignment="Left">
+                <StackPanel>
+                    <TextBlock FontWeight="Bold">Software Version:</TextBlock>
+                    <TextBlock Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
+                    <TextBlock Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+    </ScrollViewer>
 </UserControl>

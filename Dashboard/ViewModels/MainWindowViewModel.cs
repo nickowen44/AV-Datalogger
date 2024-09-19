@@ -9,8 +9,6 @@ using Dashboard.Utils;
 using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
 
-
-
 namespace Dashboard.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
@@ -98,7 +96,7 @@ namespace Dashboard.ViewModels
             new ListItemTemplate(typeof(SetupView), null, "Setup"),
             new ListItemTemplate(typeof(StatusView), null, "Status"),
             new ListItemTemplate(typeof(ConsoleView), null, "Console"),
-            new ListItemTemplate(typeof(AboutView), null, "About"),
+            new ListItemTemplate(typeof(AboutView), typeof(AboutViewModel), "About"),
             new ListItemTemplate(typeof(HelpView), null, "Help"),
             new ListItemTemplate(typeof(ScrutineeringView), typeof(ScrutineeringViewModel), "Scrutineering"),
             new ListItemTemplate(typeof(DataView), typeof(DataViewModel), "Data"),
