@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Dashboard.Views;
 
-public partial class StatusView : UserControl
+public partial class StatusView : Window
 {
     public StatusView()
     {

@@ -27,7 +27,7 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new StatusWindow
+            desktop.MainWindow = new StatusView
             {
                 DataContext = services.GetRequiredService<MainViewModel>()
             };

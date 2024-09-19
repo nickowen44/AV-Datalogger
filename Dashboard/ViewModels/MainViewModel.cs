@@ -8,9 +8,19 @@ public class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
 
-    public double Speed => _dataStore.Speed;
-    public double SteeringAngle => _dataStore.SteeringAngle;
-    public double BrakePressure => _dataStore.BrakePressure;
+    public double SpeedActual => _dataStore.SpeedActual;
+    
+    public double SpeedTarget => _dataStore.SpeedTarget;
+
+    public double SteeringAngleActual => _dataStore.SteeringAngleActual;
+    
+    public double SteeringAngleTarget => _dataStore.SteeringAngleTarget;
+
+    public double BrakePressureActual => _dataStore.BrakePressureActual;
+
+    public double BrakePressureTarget => _dataStore.BrakePressureTarget;
+
+    public bool RemoteEmergencyStopStatus => _dataStore.RemoteEmergencyStopStatus;
 
     public MainViewModel(IDataStore dataStore)
     {
@@ -30,9 +40,13 @@ public class MainViewModel : ViewModelBase, IDisposable
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
-        OnPropertyChanged(nameof(Speed));
-        OnPropertyChanged(nameof(SteeringAngle));
-        OnPropertyChanged(nameof(BrakePressure));
+        OnPropertyChanged(nameof(SpeedActual));
+        OnPropertyChanged(nameof(SpeedTarget));
+        OnPropertyChanged(nameof(SteeringAngleActual));
+        OnPropertyChanged(nameof(SteeringAngleTarget));
+        OnPropertyChanged(nameof(BrakePressureActual));
+        OnPropertyChanged(nameof(BrakePressureTarget));
+        OnPropertyChanged(nameof(RemoteEmergencyStopStatus));
     }
 
     /// <summary>

@@ -20,12 +20,12 @@
     <Panel>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
             <TextBlock Text="Car Dashboard" FontSize="36" />
-            <TextBlock Name="SpeedDisplay" Text="{Binding Speed, StringFormat='Speed: {0:0.##}'}" FontSize="24" />
+            <TextBlock Name="SpeedDisplay" Text="{Binding SpeedActual, StringFormat='Speed: {0:0.##}'}" FontSize="24" />
             <TextBlock Name="BrakePressureDisplay"
-                       Text="{Binding BrakePressure, StringFormat='Brake Pressure: {0:0.##}'}"
+                       Text="{Binding BrakePressureActual, StringFormat='Brake Pressure: {0:0.##}'}"
                        FontSize="24" />
             <TextBlock Name="SteeringAngleDisplay"
-                       Text="{Binding SteeringAngle, StringFormat='Steering Angle: {0:0.##}'}"
+                       Text="{Binding SteeringAngleActual, StringFormat='Steering Angle: {0:0.##}'}"
                        FontSize="24" />
         </StackPanel>
 

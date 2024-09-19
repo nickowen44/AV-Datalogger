@@ -5,18 +5,17 @@ namespace Dashboard.Models;
 public interface IDataStore
 {
     event EventHandler DataUpdated;
+    void UpdateData(string autonomousMissionIndicator, double speedActual, double speedTarget, double steeringAngleActual, double steeringAngleTarget, double brakePressureActual, double brakePressureTarget, bool remoteEmergencyStopStatus);
+    void OnDataUpdated(object? sender, EventArgs e);
 
-    double Speed { get; }
-    double SteeringAngle { get; }
-    double BrakePressure { get; }
-
-    /// <summary>
-    ///     Updates the data store with the new values.
-    /// </summary>
-    /// <param name="speed">The car's speed</param>
-    /// <param name="steeringAngle">The car's steering angle</param>
-    /// <param name="brakePressure">The car's brake pressure</param>
-    void UpdateData(double speed, double steeringAngle, double brakePressure);
+    string AutonomousMissionIndicator { get; }
+    double SpeedActual { get; }
+    double SpeedTarget { get; }
+    double SteeringAngleActual { get; }
+    double SteeringAngleTarget { get; }
+    double BrakePressureActual { get; }
+    double BrakePressureTarget { get; }
+    bool RemoteEmergencyStopStatus { get; }
 
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.

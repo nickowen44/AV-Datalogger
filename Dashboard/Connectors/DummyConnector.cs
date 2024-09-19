@@ -20,8 +20,16 @@ public class DummyConnector : IConnector
             while (!_shouldStop)
             {
                 DataUpdated?.Invoke(this,
-                    new DataUpdatedEventArgs(random.NextDouble() * 10, random.NextDouble() * 10,
-                        random.NextDouble() * 10));
+                    new DataUpdatedEventArgs(
+                        random.Next(0, 2) == 0 ? "Manual" : "Autonomous",
+                        random.NextDouble() * 100,
+                        random.NextDouble() * 100,
+                        random.NextDouble() * 100,
+                        random.NextDouble() * 100,
+                        random.NextDouble() * 100,
+                        random.NextDouble() * 100,
+                        random.Next(0, 2) == 0
+                        ));
                 Thread.Sleep(1000);
             }
         }).Start();
