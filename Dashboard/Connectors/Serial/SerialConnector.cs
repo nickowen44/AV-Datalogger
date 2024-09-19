@@ -42,14 +42,23 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         comPort.Close();
     }
 
+    public bool skipFirst = false;
     private void ParseMessage(string message)
     {
         // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
         // First we validate that we have the correct message format
         if (!message.StartsWith("#ID=") || !message.Contains("|UTC="))
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
-
-        var split = message.Split('|')[2..];
+        // Very dirty method right now, Need to ask Nick how to better handle the first message being out of format
+        // First Message produces
+        // #ID=A46|UTC=P2#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###
+        if (skipFirst == false)
+        {
+            skipFirst = true;
+            return;
+        }
+        
+        var split = message.Substring(1).Split('|');
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
         // GPS starts with "LAT", AV Status starts with "SA", and RES starts with "RES"
@@ -127,7 +136,9 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             ServiceBrakeState = ParseBool(values["SBS"]),
             LapCount = ParseInt(values["LAP"]),
             ConeCountPerLap = ParseInt(values["CCA"]),
-            ConeCountTotal = ParseInt(values["CCT"])
+            ConeCountTotal = ParseInt(values["CCT"]),
+            CarId = values["ID"],
+            UTCTime = values["UTC"]
         });
     }
 

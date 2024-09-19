@@ -51,5 +51,8 @@
     <Grid Grid.Row="1">
         <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
     </Grid>
+        <Grid Grid.Row="2">
+            <ContentControl Name="FooterContent" Content="{Binding Footer}"/> 
+        </Grid>
     </Grid>
 </Window>

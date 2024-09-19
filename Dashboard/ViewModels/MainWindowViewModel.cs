@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
@@ -20,6 +21,8 @@ namespace Dashboard.ViewModels
         /// </summary>
         [ObservableProperty]
         private object? _currentPage;
+        [ObservableProperty]
+        private UserControl? _footer;
         [ObservableProperty]
         private ListItemTemplate _selectedListItem;
         /// <summary>
@@ -43,6 +46,11 @@ namespace Dashboard.ViewModels
             _serviceProvider = DependencyInjection.ConfigureServices();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
+            
+            // Odd threading issue where if the system is too fast, the COM22 port will not be open and set before the footer trys to access it.
+            Thread.Sleep(50);
+            _footer = new FooterView();
+            _footer.DataContext = _serviceProvider.GetRequiredService<FooterViewModel>();
         }
 
 

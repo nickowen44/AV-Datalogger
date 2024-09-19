@@ -1,0 +1,44 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="100"
+             xmlns:vm="clr-namespace:Dashboard.ViewModels"
+             x:Class="Dashboard.Views.FooterView"
+             x:DataType="vm:FooterViewModel"
+             Foreground="White"
+             Background="Black">
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:FooterViewModel />
+    </Design.DataContext>
+    <Grid ColumnDefinitions="0.2*,0.2*, 0.6*" ShowGridLines="True">
+        <Grid Grid.Column="0">
+            <StackPanel VerticalAlignment="Center">
+            <TextBlock Name="CardId" Text="{Binding CarID, StringFormat='Car ID: {0} '}"/>
+            <TextBlock Name="CurTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Grid.RowDefinitions="0.5*,0.5*" Grid.ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Ellipse Name="ConnectionIndicator" Grid.Column="0" Grid.Row="0" Stroke="Black" StrokeThickness="3"
+                         Fill="Green" Width="20" Height="20"
+                         Canvas.Left="88" Canvas.Top="100"
+                         HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Name="Test" Text="Connection" HorizontalAlignment="Left"/>
+                <Ellipse Name="HeartBeat" Grid.Column="0" Grid.Row="1"  Stroke="Black" StrokeThickness="3"
+                         Fill="Orange" Width="20" Height="20"
+                         Canvas.Left="88" Canvas.Top="100"
+                         HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat" HorizontalAlignment="Left"/>
+        </Grid>
+        <Grid Grid.Column="2" RowDefinitions="Auto,Auto">
+            <ScrollViewer Grid.Row="1" VerticalAlignment="Center" Padding="10">
+                    <TextBox x:Name="ConsoleTextBox" Height="60" VerticalAlignment="Center" AcceptsReturn="True" TextWrapping="Wrap" Background="Gray" IsReadOnly="True" Text="Testing"/>
+            </ScrollViewer>
+        </Grid>
+        
+    </Grid>
+    
+</UserControl>
