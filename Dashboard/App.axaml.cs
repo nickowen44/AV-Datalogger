@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
-public class App : Application
+public partial class App : Application
 {
     public override void Initialize()
     {
@@ -19,18 +18,18 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        var locator = new ViewLocator();
-        DataTemplates.Add(locator);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
+            // Setup dependency injection
+            var services = DependencyInjection.ConfigureServices();
 
-            desktop.MainWindow = new MainWindowView
+            desktop.MainWindow = new StatusView
             {
-                DataContext = new MainWindowViewModel()
+                DataContext = services.GetRequiredService<MainViewModel>()
             };
         }
 

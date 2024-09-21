@@ -4,13 +4,6 @@ namespace Dashboard.Models;
 
 public interface IDataStore
 {
-    event EventHandler GpsDataUpdated;
-    event EventHandler AvDataUpdated;
-    event EventHandler ResDataUpdated;
-
-    GpsData? GpsData { get; }
-    AvData? AvStatusData { get; }
-    ResData? ResData { get; }
     event EventHandler DataUpdated;
     void UpdateData(string autonomousMissionIndicator, double speedActual, double speedTarget, double steeringAngleActual, double steeringAngleTarget, double brakePressureActual, double brakePressureTarget, bool remoteEmergencyStopStatus);
     void OnDataUpdated(object? sender, EventArgs e);

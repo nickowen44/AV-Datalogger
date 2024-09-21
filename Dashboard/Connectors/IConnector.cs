@@ -1,13 +1,10 @@
 ﻿using System;
-using Dashboard.Models;
 
 namespace Dashboard.Connectors;
 
 public interface IConnector
 {
-    event EventHandler<GpsData> GpsDataUpdated;
-    event EventHandler<AvData> AvDataUpdated;
-    event EventHandler<ResData> ResDataUpdated;
+    event EventHandler<DataUpdatedEventArgs> DataUpdated;
 
     /// <summary>
     ///     Handles setting up the connector to the data source.
