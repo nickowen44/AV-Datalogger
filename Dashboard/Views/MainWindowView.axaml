@@ -1,0 +1,55 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Dashboard.Views"
+        xmlns:vm="clr-namespace:Dashboard.ViewModels"
+        xmlns:models="clr-namespace:Dashboard.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Dashboard.Views.MainWindowView"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Nuvotion FSAE-Scrutineering Tool"
+        Icon="/Assets/nuvotion_logo.png"
+        Foreground="Black"
+        Background="#c4c4c4">
+        <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto, *, Auto">
+        <Grid Grid.Row="0" >
+            <Grid ColumnDefinitions="0.8*, 0.2*">
+            <Image Grid.Column="1" Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
+                   VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <RotateTransform Angle="90" />
+                        </Image.RenderTransform>
+                    </Image>
+                    <TextBlock Grid.Column="0" FontWeight="Black" VerticalAlignment="Center" FontFeatures="Bold" Padding="10, 0, 0, 30"  FontSize="25" >Nuvotion FSAE-Scrutineering Tool</TextBlock>
+                    </Grid>
+                <!-- Menu to navigate between pages -->
+                    <ListBox Name="NaviBar" VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
+                             SelectedItem="{Binding SelectedListItem}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                </StackPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:ListItemTemplate}">
+                                <TextBlock Text="{Binding Label}"></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+        </Grid>
+    <Grid Grid.Row="1">
+        <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
+    </Grid>
+    </Grid>
+</Window>

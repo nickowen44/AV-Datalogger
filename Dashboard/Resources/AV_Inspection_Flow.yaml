@@ -1,0 +1,75 @@
+steps:
+    -   step: "Connect FSAE-A Data logger to test laptop and observe CAN message data stream."
+        id: 7.1
+        inspection: "Visual Check"
+        measurements:
+    -   step: "Switch on LVMS and select inspection mission AMI. ASSI Should remain off. Verify function by monitoring EBS CAN mesages from data logger."
+        id: 7.2
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous Mission Indicator"
+    -   step: "Switch on ASMS. Activing TS from cockpit button should not be possible. Test that TS does not activate."
+        id: 7.3
+        inspection: "Team Demonstration"
+        measurements:
+    -   step: "Activate TS, and press RES Go button. Vehicle enters AS Ready. ASSI are yellow and continuous. Vehicle is not ready to drive, that is the state is not in AS Ready. All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle."
+        id: 7.4
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+    -   step: "Press RES Go button. Vehicle transitions to AS Driving state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
+        id: 7.5
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Steering Angle"
+    -   step: "Wait for transition to AS Finished. Vehicle transitions to AS Finished within 30 seconds after step 4. ASSI are blue and continuous. Brakes are engaged. EBS is not triggered (not activated) and ASSI are not flashing."
+        id: 7.6
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Service Brake State"
+            - "Emergency Brake System State"
+    -   step: "Blue ASSI is clearly visible in sunlight."
+        id: 7.7
+        inspection: "Visual Check"
+        measurements:
+    -   step: "Deactivate TS and turn off ASMS. Reset EBS if needed. TS turns off, ASSI turns off. Allow teams to reset EBS with manual action if needed. Brakes are disengaged."
+        id: 7.8
+        inspection: "Team Demonstration"
+        measurements:
+            - "Emergency Brake System State"
+            - "Service Brake State"
+    -   step: "Whilst observing the CAN messages from the data logger power cycle LV system and enter 'AS Ready' state. Vehicle enters 'AS Ready' state, ASSI are yellow and continuous. Vehicle is not in Ready to Drive, that is the state is not in AS Ready."
+        id: 7.9
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+    -   step: "Press on-board shutdown button while vehicle is in 'AS Ready' state. Vehicle transitions to 'AS Emergency' state, ASSI is blue and flashing, EBS is activated and brakes are engaged."
+        id: 7.10
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Emergency Brake System State"
+            - "Service Brake State"
+    -   step: "Turn off ASMS and reset EBS. Power cycle LV system and enter 'AS Driving' state again with inspection mission still selected. Vehicle transitions to 'AS Driving' state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
+        id: 7.11
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Emergency Brake System State"
+            - "Autonomous Mission Indicator"
+            - "Steering Angle"
+    -   step: "Press RES Shutdown button. TS deactivates without significant delay. Vehicle transitions to  'AS Emergency' state. ASSI are blue and flashing. EBS is activated and brakes are engaged. The reaction time betweem oppening the SDC must not exceed 200ms."
+        id: 7.12
+        inspection: "Team Demonstration"
+        measurements:
+            - "Autonomous System State"
+            - "Emergency Brake System State"
+            - "Service Brake State"
+    -   step: "Ensure that once any autonomous mission has been selected and activated no other method of control is possible, i.e. remote control. Receiving information from the vehicle via one-way-telemetry is allowed. The only device that is allowed to send commands by wireless communication at all times is the RES described."
+        id: 7.13
+        inspection: "Inspect & Provide Doccumented Evidence If Required"
+        measurements:
+top: "THE VEHICLE SHOULD BE ASSUMED TO BE LIVE AT ALL TIMES. VEHICLE MAY MOVE AT ANY TIME."
+bottom: "AFTER ALL STEPS ABOVE, TURN OFF THE VEHICLE, REMOVE THE HVD AND LOCK THE ASMS AND TSMS LOCKOUT."
