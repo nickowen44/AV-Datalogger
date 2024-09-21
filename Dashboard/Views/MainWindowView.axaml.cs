@@ -13,6 +13,7 @@ public partial class MainWindowView : Window
     public MainWindowView()
     {
         InitializeComponent();
+        Console.WriteLine("Something here" + DataContext);
     }
 
     protected override void OnClosed(EventArgs e)

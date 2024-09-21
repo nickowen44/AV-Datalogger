@@ -8,10 +8,12 @@ public class DataStore : IDataStore, IDisposable
     public event EventHandler? GpsDataUpdated;
     public event EventHandler? AvDataUpdated;
     public event EventHandler? ResDataUpdated;
+    public event EventHandler? RawDataUpdated;
 
     public GpsData? GpsData { get; private set; }
     public AvData? AvStatusData { get; private set; }
     public ResData? ResData { get; private set; }
+    public RawData? RawData { get; private set; }
 
     private readonly IConnector _connector;
 
@@ -22,6 +24,7 @@ public class DataStore : IDataStore, IDisposable
         _connector.GpsDataUpdated += OnGpsDataUpdated;
         _connector.AvDataUpdated += OnAvDataUpdated;
         _connector.ResDataUpdated += OnResDataUpdated;
+        _connector.RawDataUpdated += OnRawDataUpdated;
 
         _connector.Start();
     }
@@ -46,6 +49,13 @@ public class DataStore : IDataStore, IDisposable
 
         ResDataUpdated?.Invoke(this, EventArgs.Empty);
     }
+    
+    private void OnRawDataUpdated(object? sender, RawData e)
+    {
+        RawData = e;
+
+        RawDataUpdated?.Invoke(this, EventArgs.Empty);
+    }
 
     public void Dispose()
     {
@@ -53,6 +63,7 @@ public class DataStore : IDataStore, IDisposable
         _connector.GpsDataUpdated -= OnGpsDataUpdated;
         _connector.AvDataUpdated -= OnAvDataUpdated;
         _connector.ResDataUpdated -= OnResDataUpdated;
+        _connector.RawDataUpdated -= OnRawDataUpdated;
 
         _connector.Stop();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Dashboard.Connectors;
 using Dashboard.Models;
 
@@ -6,16 +7,60 @@ namespace Dashboard.ViewModels;
 
 public partial class FooterViewModel : ViewModelBase 
 {
+    public event Action<string>? RawMessageUpdated;
     private readonly IDataStore _dataStore;
+    public string CarID => _dataStore.RawData?.CarId ?? "0";
+    public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
+    public string UTCTime
+    {
+        // Convert the UTC value from data logger to proper UTC.
+        get
+        {
+            var utcTimeString = _dataStore.RawData?.UTCTime;
+            if (string.IsNullOrEmpty(utcTimeString))
+            {
+                return "Invalid time";
+            }
+            try
+            {
+                string datePart = "";
+                if (utcTimeString.Length == 20)
+                {
+                    // Manually extract year, month, and day
+                    datePart = utcTimeString.Substring(1, 4) + "0" + utcTimeString.Substring(5, 3); // Extracts "2024820"
+                }
+                else
+                {
+                    datePart = utcTimeString.Substring(1, 8);
+                }
+                string timePart = utcTimeString.Substring(9, 8);
+                // Parse the date
+                DateTime parsedDate = DateTime.ParseExact(datePart, "yyyyMMdd", CultureInfo.InvariantCulture);
 
-    public string CarID => _dataStore.AvStatusData?.CarId ?? "0";
-    public string UTCTime => _dataStore.AvStatusData?.UTCTime ?? "0";
+                // Parse the time
+                TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
+
+                // Convert to UTC
+                DateTime localDateTime = parsedDate.Add(parsedTime);
+
+                // Convert local time to UTC (assuming local time zone)
+                DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(localDateTime);
+
+                // Return the UTC time as a string
+                return utcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            catch (Exception ex) when (ex is FormatException || ex is ArgumentOutOfRangeException)
+            {
+                return "Invalid format";
+            }
+        }
+    }
     
     public FooterViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
 
-        _dataStore.AvDataUpdated += OnAvDataChanged;
+        _dataStore.RawDataUpdated += OnRawDataChanged;
     }
     public FooterViewModel()
     {
@@ -25,16 +70,18 @@ public partial class FooterViewModel : ViewModelBase
     /// <summary>
     ///     Notifies the view that the AV data has changed.
     /// </summary>
-    private void OnAvDataChanged(object? sender, EventArgs e)
+    private void OnRawDataChanged(object? sender, EventArgs e)
     {
-        Console.WriteLine("AV Data Updated in FooterViewModel");
+        Console.WriteLine("Data Updated in FooterViewModel");
         OnPropertyChanged(nameof(CarID));
         OnPropertyChanged(nameof(UTCTime));
+        OnPropertyChanged(nameof(RawMessage));
+        RawMessageUpdated?.Invoke(RawMessage);
     }
     
     public void Dispose()
     {
-        _dataStore.AvDataUpdated -= OnAvDataChanged;
+        _dataStore.RawDataUpdated -= OnRawDataChanged;
 
         _dataStore.Dispose();
 

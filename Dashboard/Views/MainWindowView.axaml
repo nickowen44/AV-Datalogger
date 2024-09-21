@@ -17,7 +17,7 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid RowDefinitions="Auto, *, Auto">
+    <Grid RowDefinitions="Auto, 0.90*, 0.1*">
         <Grid Grid.Row="0" >
             <Grid ColumnDefinitions="0.8*, 0.2*">
             <Image Grid.Column="1" Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"

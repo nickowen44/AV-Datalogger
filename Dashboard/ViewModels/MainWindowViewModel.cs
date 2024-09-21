@@ -42,15 +42,15 @@ namespace Dashboard.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             _serviceProvider = DependencyInjection.ConfigureServices();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
-            
-            // Odd threading issue where if the system is too fast, the COM22 port will not be open and set before the footer trys to access it.
-            Thread.Sleep(50);
-            _footer = new FooterView();
-            _footer.DataContext = _serviceProvider.GetRequiredService<FooterViewModel>();
+            _footer = new FooterView
+            {
+                DataContext = _serviceProvider.GetRequiredService<FooterViewModel>()
+            };
         }
 
 
@@ -119,7 +119,7 @@ namespace Dashboard.ViewModels
         public override void Dispose()
         {
             Console.WriteLine("Dispose for MainViewModel Triggered");
-            _serviceProvider.GetService<IDataStore>()?.Dispose();
+            _serviceProvider.GetService<IDataStore>().Dispose();
 
             GC.SuppressFinalize(this);
         }

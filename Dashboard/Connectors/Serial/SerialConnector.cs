@@ -10,6 +10,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
+    public event EventHandler<RawData>? RawDataUpdated;
 
     public void Start()
     {
@@ -84,6 +85,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         else
             throw new InvalidOperationException("Unknown message type received",
                 new Exception($"Buffer str: {message}"));
+        ParseRawMessage(values,message);
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
@@ -151,6 +153,16 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             K3State = ParseBool(values["K3B"]),
             ResRadioQuality = ParseInt(values["RRQ"]),
             ResNodeId = ParseInt(values["NID"])
+        });
+    }
+    private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
+    {
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = values["ID"],
+            UTCTime = values["UTC"],
+            RawMessage = rawMessage,
+ 
         });
     }
 

@@ -10,6 +10,7 @@ public class DummyConnector : IConnector
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
+    public event EventHandler<RawData>? RawDataUpdated;
 
     private bool _shouldStop;
 
