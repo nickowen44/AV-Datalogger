@@ -1,19 +1,15 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Dashboard.ViewModels"
-             xmlns:animations="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="using:Dashboard.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dashboard.Views.StatusView"
              x:DataType="vm:StatusViewModel"
-             Icon="/Assets/avalonia-logo.ico"
-             Title="Dashboard"
              Foreground="Black"
              Background="#c4c4c4">
 
-    <Window.Styles>
+    <UserControl.Styles>
         <Style Selector="TabItem">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Height" Value="34"/>
@@ -39,10 +35,9 @@
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="Padding" Value="10 0"/>
         </Style>
-    </Window.Styles>
+    </UserControl.Styles>
 
     <Grid>
-        <!-- Centering the content -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -60,7 +55,6 @@
                 <!-- AV Data Tab -->
                 <TabItem Header="AV Data">
                     <Grid>
-                        <!-- Centering the content -->
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -96,10 +90,9 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
-
-                            <!-- Other values -->
-                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="10">
-                                <!-- Autonomous Mission Indicator with White Box -->
+                            
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <!-- Autonomous Mission Indicator -->
                                 <Grid Margin="0,0,30,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -128,9 +121,9 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="13" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
+                                    <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="13" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
                                     <TextBlock Text="Actual" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-                                    <TextBlock Text="13º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
+                                    <TextBlock Grid.Row="0" Text="13º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
                                 <!-- Steering Angle target -->
                                 <Grid>
@@ -142,11 +135,11 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Slider Minimum="-100" Maximum="100" Value="17" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
+                                    <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="17" Width="800" IsEnabled="False" Grid.Column="0" Margin="0,0,20,0"/>
                                     <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-                                    <TextBlock Text="17º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
+                                    <TextBlock Grid.Row="0" Text="17º" FontSize="22" VerticalAlignment="Center" Background="White" Padding="20,0" TextAlignment="Center" Grid.Column="1"/>
                                 </Grid>
-                                <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0">
+                                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" /> <!-- Speed Actual Row -->
                                         <RowDefinition Height="Auto" /> <!-- Speed Target Row -->
@@ -251,4 +244,4 @@
             </TabControl>
         </Border>
     </Grid>
-</Window>
+</UserControl>

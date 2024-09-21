@@ -1,6 +1,6 @@
-using Dashboard.Views;
 using Dashboard.Models;
 using Dashboard.ViewModels;
+using Moq;
 
 namespace DashboardTests;
 
@@ -21,7 +21,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.SpeedActual).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.SpeedActual);
+        Assert.That(viewModel.SpeedActual, Is.EqualTo(10));
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.SpeedTarget).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.SpeedTarget);
+        Assert.That(viewModel.SpeedTarget, Is.EqualTo(10));
     }
 
     [Test]
@@ -37,7 +37,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.SteeringAngleActual).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.SteeringAngleActual);
+        Assert.That(viewModel.SteeringAngleActual, Is.EqualTo(10));
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.SteeringAngleTarget).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.SteeringAngleTarget);
+        Assert.That(viewModel.SteeringAngleTarget, Is.EqualTo(10));
     }
 
     [Test]
@@ -53,7 +53,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.BrakePressureActual).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.BrakePressureActual);
+        Assert.That(viewModel.BrakePressureActual, Is.EqualTo(10));
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.BrakePressureTarget).Returns(10);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(10, viewModel.BrakePressureTarget);
+        Assert.That(viewModel.BrakePressureTarget, Is.EqualTo(10));
     }
 
     [Test]
@@ -69,7 +69,7 @@ public class OverviewPageTest
     {
         _dataStore.SetupGet(x => x.RemoteEmergencyStopStatus).Returns(true);
         var viewModel = new MainViewModel(_dataStore.Object);
-        Assert.AreEqual(true, viewModel.RemoteEmergencyStopStatus);
+        Assert.That(viewModel.RemoteEmergencyStopStatus, Is.EqualTo(true));
     }
 
     [Test]
