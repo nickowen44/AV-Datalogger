@@ -1,0 +1,24 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Dashboard.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.DataView"
+             x:DataType="vm:DataViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:DataViewModel />
+    </Design.DataContext>
+    <StackPanel>
+        <TextBlock Text="Car Dashboard" FontSize="36" />
+        <TextBlock Name="SpeedDisplay" Text="{Binding Speed, StringFormat='Speed: {0:0.##}'}" FontSize="24" />
+        <TextBlock Name="BrakeActuationDisplay"
+                   Text="{Binding BrakeActuation, StringFormat='Brake Actuation: {0:0.##}'}"
+                   FontSize="24" />
+        <TextBlock Name="SteeringAngleDisplay"
+                   Text="{Binding SteeringAngle, StringFormat='Steering Angle: {0:0.##}'}"
+                   FontSize="24" />
+    </StackPanel>
+</UserControl>
