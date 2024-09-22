@@ -62,7 +62,8 @@ public class SerialPortWrapper : ISerialPort
         get
         {
             var timeSinceLastMessage = DateTime.Now - _lastMessageReceived;
-            return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
+            // return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
+            return _serialPort.IsOpen;
         }
     }
 
@@ -70,7 +71,15 @@ public class SerialPortWrapper : ISerialPort
     {
         if (_serialPort.IsOpen)
         {
-            _serialPort.Write(data);
+            _serialPort.WriteTimeout = 50;
+            try
+            {
+                _serialPort.Write(data);
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine("Error writing to serial port.");
+            }
         }
     }
 }

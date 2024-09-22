@@ -47,7 +47,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     {
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
-
+        _heartbeatTimer.AutoReset = false;
         _heartbeatTimer.Stop();
         _heartbeatTimer.Dispose();
         // Close the serial port
