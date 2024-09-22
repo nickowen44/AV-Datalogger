@@ -43,9 +43,9 @@ public class DataViewModel : ViewModelBase
     public override void Dispose()
     {
         _dataStore.AvDataUpdated -= OnAvDataChanged;
-
+        
         _dataStore.Dispose();
-
+        
         GC.SuppressFinalize(this);
     }
 }

@@ -11,6 +11,7 @@ public class DummyConnector : IConnector
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
+    public event EventHandler<bool>? HeartBeatUpdated;
 
     private bool _shouldStop;
 

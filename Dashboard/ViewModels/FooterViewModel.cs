@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Timers;
 using Dashboard.Connectors;
 using Dashboard.Models;
 
@@ -8,7 +9,9 @@ namespace Dashboard.ViewModels;
 public partial class FooterViewModel : ViewModelBase 
 {
     public event Action<string>? RawMessageUpdated;
+    public event Action<bool>? RawMessageUpdateConnection;
     private readonly IDataStore _dataStore;
+    public bool ConnectionStatus => _dataStore.RawData.ConnectionStatus;
     public string CarID => _dataStore.RawData?.CarId ?? "0";
     public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
     public string UTCTime
@@ -55,12 +58,19 @@ public partial class FooterViewModel : ViewModelBase
             }
         }
     }
-    
+    private Timer _connectionCheckTimer;
     public FooterViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
 
         _dataStore.RawDataUpdated += OnRawDataChanged;
+
+    }
+    
+    private void CheckConnectionStatus(object sender, ElapsedEventArgs e)
+    {
+        // Invoke the connection status update on the UI thread
+            RawMessageUpdateConnection?.Invoke(ConnectionStatus);
     }
     public FooterViewModel()
     {
@@ -79,11 +89,11 @@ public partial class FooterViewModel : ViewModelBase
         RawMessageUpdated?.Invoke(RawMessage);
     }
     
-    public void Dispose()
+    public override void Dispose()
     {
         _dataStore.RawDataUpdated -= OnRawDataChanged;
 
-        _dataStore.Dispose();
+        // _dataStore.Dispose();
 
         GC.SuppressFinalize(this);
     }

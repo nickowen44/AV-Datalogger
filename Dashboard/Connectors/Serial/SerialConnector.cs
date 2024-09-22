@@ -162,7 +162,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             CarId = values["ID"],
             UTCTime = values["UTC"],
             RawMessage = rawMessage,
- 
+            ConnectionStatus = comPort.IsConnected,
         });
     }
 

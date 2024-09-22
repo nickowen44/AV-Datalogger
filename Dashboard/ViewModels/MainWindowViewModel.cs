@@ -119,7 +119,8 @@ namespace Dashboard.ViewModels
         public override void Dispose()
         {
             Console.WriteLine("Dispose for MainViewModel Triggered");
-            _serviceProvider.GetService<IDataStore>().Dispose();
+
+            _serviceProvider.GetRequiredService<IDataStore>().Dispose();
 
             GC.SuppressFinalize(this);
         }
