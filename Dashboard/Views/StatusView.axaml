@@ -49,7 +49,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="900">
+        <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="870" Margin="0,20,0,0">
             <!-- TabControl for AV Data, GPS, and RES -->
             <TabControl>
                 <!-- AV Data Tab -->
@@ -62,13 +62,12 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <!-- AV Data Tab Content -->
                         <StackPanel Orientation="Horizontal" Width="1200">
                             <!-- Motor Moment Percentage -->
-                            <Grid Margin="10">
+                            <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -79,19 +78,19 @@
                                 <TextBlock Text="Motor Moment (%):" FontSize="24" Grid.Row="0" HorizontalAlignment="Center" Margin="0,15,0,0" />
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
                                     <StackPanel Margin="10">
-                                        <Slider Minimum="0" Maximum="100" Value="10" Orientation="Vertical" Height="650" Margin="10" IsEnabled="False" />
+                                        <Slider Minimum="0" Maximum="100" Value="10" Orientation="Vertical" Height="600" Margin="10" IsEnabled="False" />
                                         <TextBlock Text="Target" VerticalAlignment="Center" FontSize="24" Margin="10" />
                                         <TextBlock Text="10%" Background="White" Padding="10,0" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="10" />
                                     </StackPanel>
                                     <StackPanel Margin="10">
-                                        <Slider Minimum="0" Maximum="100" Value="13" Orientation="Vertical" Height="650" Margin="10" IsEnabled="False" />
+                                        <Slider Minimum="0" Maximum="100" Value="13" Orientation="Vertical" Height="600" Margin="10" IsEnabled="False" />
                                         <TextBlock Text="Actual" FontSize="24" Margin="10" />
                                         <TextBlock Text="13%" Background="White" Padding="10,0" TextAlignment="Center" FontSize="24" Margin="10" />
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
                             
-                            <StackPanel Orientation="Vertical" Margin="10">
+                            <StackPanel Orientation="Vertical" Margin="5">
                                 <!-- Autonomous Mission Indicator -->
                                 <Grid Margin="0,0,30,0">
                                     <Grid.ColumnDefinitions>
@@ -221,7 +220,7 @@
                                     <!-- Remote Emergency Stop Status -->
                                     <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2" Margin="80,0,0,0">
                                         <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom" Margin="30,0,0,0"/>
-                                        <Image Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="0,0,0,0"/>
+                                        <Image Name="ResIcon" Source="../Assets/emergency-stop.png" Width="200" Height="200" Margin="0,0,0,0"/>
                                         <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22" Background="Green" Foreground="White" Padding="10,0" Margin="0,0,0,0" TextAlignment="Center" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Grid>
