@@ -9,6 +9,7 @@ public interface IConnector
     event EventHandler<AvData> AvDataUpdated;
     event EventHandler<ResData> ResDataUpdated;
     event EventHandler<RawData> RawDataUpdated;
+    event EventHandler<bool> HeartBeatUpdated;
 
     /// <summary>
     ///     Handles setting up the connector to the data source.

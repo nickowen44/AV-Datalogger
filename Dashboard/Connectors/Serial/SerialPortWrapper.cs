@@ -65,4 +65,12 @@ public class SerialPortWrapper : ISerialPort
             return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
         }
     }
+
+    public void Write(string? data)
+    {
+        if (_serialPort.IsOpen)
+        {
+            _serialPort.Write(data);
+        }
+    }
 }

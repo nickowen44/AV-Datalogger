@@ -28,4 +28,6 @@ public interface ISerialPort
     void Configure(string portName, int baudRate);
 
     bool IsConnected { get; }
+    
+    void Write(string data);
 }

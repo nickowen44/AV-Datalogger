@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using Dashboard.Models;
 using Dashboard.Utils;
 
@@ -11,7 +12,8 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
-
+    public event EventHandler<bool>? HeartBeatUpdated;
+    private Timer _heartbeatTimer;
     public void Start()
     {
         // Set up the connection to the serial port
@@ -19,7 +21,14 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
-
+        _heartbeatTimer = new Timer(1000); // 1000 ms = 1 second
+        
+        // Hook up the Elapsed event for the timer.
+        _heartbeatTimer.Elapsed += SendHeartbeat;
+        
+        // Start the timer
+        _heartbeatTimer.AutoReset = true; // Ensure the timer repeats
+        _heartbeatTimer.Enabled = true;
         // Open our serial port
         comPort.Open();
     }
@@ -39,6 +48,8 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
 
+        _heartbeatTimer.Stop();
+        _heartbeatTimer.Dispose();
         // Close the serial port
         comPort.Close();
     }
@@ -182,6 +193,20 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     private bool ParseBool(string value)
     {
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
+    }
+    private void SendHeartbeat(object state, ElapsedEventArgs e)
+    {
+        if (comPort.IsConnected)
+        {
+            var HeartbeatMessage = "Heartbeat";
+            Console.WriteLine($"Sending heartbeat: {HeartbeatMessage}");
+            comPort.Write(HeartbeatMessage);
+            HeartBeatUpdated?.Invoke(this, true);
+        }
+        else
+        {
+            HeartBeatUpdated?.Invoke(this, false);
+        }
     }
 
 }

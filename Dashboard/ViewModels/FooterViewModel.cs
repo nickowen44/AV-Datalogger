@@ -8,8 +8,10 @@ namespace Dashboard.ViewModels;
 
 public partial class FooterViewModel : ViewModelBase 
 {
+    public bool? HeartBeat => _dataStore.HeartBeat;
+    public event Action<bool>? HeartbeatStatusUpdated;
     public event Action<string>? RawMessageUpdated;
-    public event Action<bool>? RawMessageUpdateConnection;
+    public event Action<bool>? ConnectionUpdate;
     private readonly IDataStore _dataStore;
     public bool ConnectionStatus => _dataStore.RawData.ConnectionStatus;
     public string CarID => _dataStore.RawData?.CarId ?? "0";
@@ -64,14 +66,10 @@ public partial class FooterViewModel : ViewModelBase
         _dataStore = dataStore;
 
         _dataStore.RawDataUpdated += OnRawDataChanged;
+        _dataStore.HeartBeatUpdated += OnHeartbeatStatusChanged;
 
     }
     
-    private void CheckConnectionStatus(object sender, ElapsedEventArgs e)
-    {
-        // Invoke the connection status update on the UI thread
-            RawMessageUpdateConnection?.Invoke(ConnectionStatus);
-    }
     public FooterViewModel()
     {
         _dataStore = new DataStore(new DummyConnector());
@@ -87,12 +85,19 @@ public partial class FooterViewModel : ViewModelBase
         OnPropertyChanged(nameof(UTCTime));
         OnPropertyChanged(nameof(RawMessage));
         RawMessageUpdated?.Invoke(RawMessage);
+        ConnectionUpdate?.Invoke(ConnectionStatus);
+    }
+    
+    private void OnHeartbeatStatusChanged(object? sender, bool isReceived)
+    {
+        OnPropertyChanged(nameof(HeartBeat));
+        HeartbeatStatusUpdated?.Invoke(isReceived);
     }
     
     public override void Dispose()
     {
         _dataStore.RawDataUpdated -= OnRawDataChanged;
-
+        _dataStore.HeartBeatUpdated -= OnHeartbeatStatusChanged;
         // _dataStore.Dispose();
 
         GC.SuppressFinalize(this);

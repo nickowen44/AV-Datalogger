@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -31,14 +32,15 @@ public partial class FooterView : UserControl
         if (DataContext is FooterViewModel viewModel)
         {
             viewModel.RawMessageUpdated += OnRawMessageUpdated;
-            viewModel.RawMessageUpdateConnection += OnRawMessageUpdateConnection;
+            viewModel.ConnectionUpdate += OnConnectionUpdate;
+            viewModel.HeartbeatStatusUpdated += OnHeartbeatStatusChanged;
         }
     }
-    private void OnRawMessageUpdateConnection(bool connectionStat)
+    private void OnConnectionUpdate(bool connectionStat)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            // Append the new message to the TextBox
+
             if (connectionStat)
             {
                 _connection.Fill = new SolidColorBrush(Colors.Green);
@@ -55,25 +57,7 @@ public partial class FooterView : UserControl
         {
             // Append the new message to the TextBox
             _consoleTextBox.Text += $"{newMessage}\n";
-
-            // Flash the HeartBeat Ellipse to Red
-            if (_heartBeart != null)
-            {
-                _heartBeart.Fill = Brushes.OrangeRed;
-            }
-        });
-
-        // Wait for 500 milliseconds before reverting the color
-        Thread.Sleep(500);
-
-        Dispatcher.UIThread.Post(() =>
-        {
-            // Revert the color back to Orange
-            if (_heartBeart != null)
-            {
-                _heartBeart.Fill = Brushes.Orange;
-            }
-
+            
             // Scroll the TextBox if necessary
             var scrollViewer = _consoleTextBox?.GetVisualDescendants()
                 .OfType<ScrollViewer>()
@@ -87,6 +71,26 @@ public partial class FooterView : UserControl
                     scrollViewer.ScrollToEnd();
                 }
             }
+        });
+    }
+    private async void OnHeartbeatStatusChanged(bool outcome)
+    {
+        // Ensure you are on the UI thread
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            if (outcome)
+            {
+                _heartBeart.Fill = Brushes.OrangeRed;
+            }
+        });
+
+        // Delay for a brief moment without blocking the UI
+        await Task.Delay(500);
+
+        // Return to the UI thread to update the color again
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            _heartBeart.Fill = Brushes.Orange;
         });
     }
 }
