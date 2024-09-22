@@ -1,9 +1,7 @@
-using Dashboard.Utils;
-
 namespace Dashboard.Models;
 
-public record StatusStore {
-
+public record StatusStore
+{
     public string AutonomousMissionIndicator { get; init; } = string.Empty;
 
     public double SpeedActual { get; init; }

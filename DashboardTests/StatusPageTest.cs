@@ -1,14 +1,13 @@
 using Avalonia.Controls;
+using Avalonia.Headless.NUnit;
 using Dashboard.Models;
 using Dashboard.ViewModels;
-using Avalonia.Headless.NUnit;
 using Dashboard.Views;
 using Moq;
 
 namespace DashboardTests;
 
 [TestFixture]
-
 public class OverviewPageTest
 {
     [SetUp]
@@ -26,7 +25,7 @@ public class OverviewPageTest
         {
             DataContext = new StatusViewModel(_dataStore.Object)
         };
-        
+
         Assert.IsNotNull(window);
 
         // Make sure there is a icon for RES
@@ -34,7 +33,6 @@ public class OverviewPageTest
         Assert.IsNotNull(resIcon);
 
         Assert.Pass("Status page rendered correctly");
-        
     }
 }
 
