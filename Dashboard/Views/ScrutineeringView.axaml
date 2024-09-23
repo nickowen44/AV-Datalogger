@@ -165,8 +165,9 @@
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
 
-            <Expander Grid.Row="4" Grid.Column="1" Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
-                      HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Margin="0 0 0 15">
+            <Expander Grid.Row="2" Grid.Column="2" Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
+                      HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Padding="10"
+                      Margin="10">
                 <ItemsControl Name="AllStepsList" Foreground="White" />
             </Expander>
         </Grid>
