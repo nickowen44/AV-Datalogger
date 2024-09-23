@@ -34,7 +34,7 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:FooterViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="0.2*,0.2*, 0.6*" ShowGridLines="True">
+    <Grid ColumnDefinitions="0.2*,0.2*, 0.6*" >
         <Grid Grid.Column="0">
             <StackPanel VerticalAlignment="Center">
             <TextBlock Name="CarId" Text="{Binding CarId, StringFormat='Car ID: {0}'}"/>
