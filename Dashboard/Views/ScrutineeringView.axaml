@@ -96,10 +96,10 @@
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <ContentControl>
+                                            <ContentControl x:Name="ContentControl">
                                                 <ContentControl.Template>
                                                     <ControlTemplate>
-                                                        <TextBlock TextAlignment="Center">
+                                                        <TextBlock TextAlignment="Center" x:Name="Measurements">
                                                             <TextBlock.Text>
                                                                 <MultiBinding
                                                                     Converter="{StaticResource MeasurementValueVisibility}">

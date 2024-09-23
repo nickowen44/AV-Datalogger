@@ -53,12 +53,12 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
-    
-    public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 1;
-    
-    public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 2;
-    
-    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 3;
+
+    public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
+
+    public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 0;
+
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
 
     /// <summary>
     ///     Handles the cleanup when the view model is no longer needed.
