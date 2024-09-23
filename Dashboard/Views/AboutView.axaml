@@ -16,10 +16,10 @@
         <StackPanel Margin="5" Spacing="5">
             <Border Background="White" Padding="5" BorderThickness="1" BorderBrush="Black">
                 <StackPanel Spacing="5">
-                    <TextBlock>
+                    <TextBlock Name="IntroParagraph">
                         This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
                     </TextBlock>
-                    <TextBlock>
+                    <TextBlock Name="TeamMembers">
                         <Run Text="Team Members:" FontWeight="Bold" />
                         <LineBreak />
                         <Run Text=" - Erin Lumsden" />
@@ -32,7 +32,7 @@
                         <LineBreak />
                         <Run Text=" - Richard Quach" />
                     </TextBlock>
-                    <TextBlock>
+                    <TextBlock Name="Supervisor">
                         <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
                     </TextBlock>
                 </StackPanel>
@@ -43,10 +43,10 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Stretch">
                     <StackPanel Spacing="5">
-                        <TextBlock FontWeight="Bold">Software Information:</TextBlock>
+                        <TextBlock Name="SoftwareInfo" FontWeight="Bold">Software Information:</TextBlock>
                         <StackPanel>
-                            <TextBlock Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
-                            <TextBlock Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
+                            <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
+                            <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -54,8 +54,9 @@
                         BorderBrush="Black"
                         HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <StackPanel Spacing="5">
-                        <Image Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
+                        <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
                         <TextBlock
+                            Name="CurrentYear"
                             Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
                     </StackPanel>
                 </Border>
