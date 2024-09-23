@@ -53,7 +53,7 @@ public class FooterTest
     }
 
     [AvaloniaTest]
-    public void TestFooterCarIDCurTimeConsoleUpdate()
+    public void TestFooterCarIdCurTimeConsoleUpdate()
     {
 
         // Arrange
