@@ -6,9 +6,7 @@
              xmlns:vm="clr-namespace:Dashboard.ViewModels"
              x:Class="Dashboard.Views.FooterView"
              x:DataType="vm:FooterViewModel"
-             Foreground="White"
-             Background="Black">
-    
+             >
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -17,7 +15,7 @@
     <Grid ColumnDefinitions="0.2*,0.2*, 0.6*" ShowGridLines="True">
         <Grid Grid.Column="0">
             <StackPanel VerticalAlignment="Center">
-            <TextBlock Name="CardId" Text="{Binding CarID, StringFormat='Car ID: {0} '}"/>
+            <TextBlock Name="CarId" Text="{Binding CarID, StringFormat='Car ID: {0}'}"/>
             <TextBlock Name="CurTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}"/>
             </StackPanel>
         </Grid>
@@ -32,7 +30,27 @@
                 <TextBlock Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat" HorizontalAlignment="Left"/>
         </Grid>
         <Grid Grid.Column="2"  VerticalAlignment="Center" >
-            <TextBox  Name="ConsoleTextBox" FontSize="10" Height="80" Margin="10,40,10,40" AcceptsReturn="True" TextWrapping="Wrap" Background="Gray" IsReadOnly="True" />
+            <TextBox Name="ConsoleTextBox" 
+                     FontSize="10" 
+                     Height="80" 
+                     Margin="10,40,10,40" 
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap" 
+                     Background="Gray" 
+                     IsReadOnly="True">
+                <TextBox.Styles>
+                    <Style Selector="TextBox">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Cursor" Value="IBeam"/>
+                    </Style>
+                    <Style Selector="TextBox:pointerover">
+                        <Setter Property="Background" Value="Transparent"/> <!-- Keep the same background on hover -->
+                    </Style>
+                </TextBox.Styles>
+            </TextBox>
+            <!-- <TextBox  Name="ConsoleTextBox" FontSize="10" Height="80" Margin="10,40,10,40" AcceptsReturn="True" TextWrapping="Wrap" Background="Gray" IsReadOnly="True" /> -->
         </Grid>
     </Grid>
     

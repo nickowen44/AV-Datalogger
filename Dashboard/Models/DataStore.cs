@@ -28,6 +28,7 @@ public class DataStore : IDataStore, IDisposable
         _connector.ResDataUpdated += OnResDataUpdated;
         _connector.RawDataUpdated += OnRawDataUpdated;
         _connector.HeartBeatUpdated += OnHeartbeatUpdated;
+        
         _connector.Start();
     }
     private void OnHeartbeatUpdated(object? sender, bool isReceived)

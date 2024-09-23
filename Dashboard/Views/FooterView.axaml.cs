@@ -43,21 +43,22 @@ public partial class FooterView : UserControl
 
             if (connectionStat)
             {
-                _connection.Fill = new SolidColorBrush(Colors.Green);
+                _connection.Fill = Brushes.Green;
             }
             else
             {
-                _connection.Fill = new SolidColorBrush(Colors.Red);
+                _connection.Fill = Brushes.Red;
             }
         });
     }
     private void OnRawMessageUpdated(string newMessage)
     {
+        
         Dispatcher.UIThread.Post(() =>
         {
+            Console.WriteLine("Console TextBox updated");
             // Append the new message to the TextBox
             _consoleTextBox.Text += $"{newMessage}\n";
-            
             // Scroll the TextBox if necessary
             var scrollViewer = _consoleTextBox?.GetVisualDescendants()
                 .OfType<ScrollViewer>()
@@ -75,7 +76,6 @@ public partial class FooterView : UserControl
     }
     private async void OnHeartbeatStatusChanged(bool outcome)
     {
-        // Ensure you are on the UI thread
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
             if (outcome)
@@ -83,11 +83,9 @@ public partial class FooterView : UserControl
                 _heartBeart.Fill = Brushes.OrangeRed;
             }
         });
-
-        // Delay for a brief moment without blocking the UI
+        
         await Task.Delay(500);
-
-        // Return to the UI thread to update the color again
+        
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
             _heartBeart.Fill = Brushes.Orange;

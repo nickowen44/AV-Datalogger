@@ -62,8 +62,7 @@ public class SerialPortWrapper : ISerialPort
         get
         {
             var timeSinceLastMessage = DateTime.Now - _lastMessageReceived;
-            // return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
-            return _serialPort.IsOpen;
+            return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
         }
     }
 
@@ -75,6 +74,7 @@ public class SerialPortWrapper : ISerialPort
             try
             {
                 _serialPort.Write(data);
+
             }
             catch (TimeoutException)
             {

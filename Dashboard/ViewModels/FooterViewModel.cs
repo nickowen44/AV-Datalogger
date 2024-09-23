@@ -13,7 +13,7 @@ public partial class FooterViewModel : ViewModelBase
     public event Action<string>? RawMessageUpdated;
     public event Action<bool>? ConnectionUpdate;
     private readonly IDataStore _dataStore;
-    public bool ConnectionStatus => _dataStore.RawData.ConnectionStatus;
+    public bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
     public string CarID => _dataStore.RawData?.CarId ?? "0";
     public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
     public string UTCTime
@@ -29,9 +29,9 @@ public partial class FooterViewModel : ViewModelBase
             try
             {
                 string datePart = "";
+                // Check if the UTC value includes the leading zero for months, if not add.
                 if (utcTimeString.Length == 20)
                 {
-                    // Manually extract year, month, and day
                     datePart = utcTimeString.Substring(1, 4) + "0" + utcTimeString.Substring(5, 3); // Extracts "2024820"
                 }
                 else
@@ -39,19 +39,14 @@ public partial class FooterViewModel : ViewModelBase
                     datePart = utcTimeString.Substring(1, 8);
                 }
                 string timePart = utcTimeString.Substring(9, 8);
-                // Parse the date
+                
                 DateTime parsedDate = DateTime.ParseExact(datePart, "yyyyMMdd", CultureInfo.InvariantCulture);
-
-                // Parse the time
                 TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
-
-                // Convert to UTC
                 DateTime localDateTime = parsedDate.Add(parsedTime);
 
                 // Convert local time to UTC (assuming local time zone)
                 DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(localDateTime);
-
-                // Return the UTC time as a string
+                
                 return utcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
             catch (Exception ex) when (ex is FormatException || ex is ArgumentOutOfRangeException)
@@ -60,11 +55,11 @@ public partial class FooterViewModel : ViewModelBase
             }
         }
     }
-    private Timer _connectionCheckTimer;
+    
     public FooterViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
-
+        
         _dataStore.RawDataUpdated += OnRawDataChanged;
         _dataStore.HeartBeatUpdated += OnHeartbeatStatusChanged;
 
@@ -76,7 +71,7 @@ public partial class FooterViewModel : ViewModelBase
     }
     
     /// <summary>
-    ///     Notifies the view that the AV data has changed.
+    ///     Notifies the view that the Footer data has changed.
     /// </summary>
     private void OnRawDataChanged(object? sender, EventArgs e)
     {
@@ -90,6 +85,7 @@ public partial class FooterViewModel : ViewModelBase
     
     private void OnHeartbeatStatusChanged(object? sender, bool isReceived)
     {
+        Console.WriteLine("Heart Beat change triggered");
         OnPropertyChanged(nameof(HeartBeat));
         HeartbeatStatusUpdated?.Invoke(isReceived);
     }

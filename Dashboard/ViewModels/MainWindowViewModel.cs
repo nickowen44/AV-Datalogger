@@ -130,7 +130,7 @@ namespace Dashboard.ViewModels
         {
             Console.WriteLine("Dispose for MainViewModel Triggered");
 
-            _serviceProvider.GetRequiredService<IDataStore>().Dispose();
+            _serviceProvider.GetService<IDataStore>()?.Dispose();
 
             GC.SuppressFinalize(this);
         }
