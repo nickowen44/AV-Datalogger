@@ -5,6 +5,6 @@
 /// </summary>
 public class ReceiptStep
 {
-    public double Id { get; set; }
+    public string Id { get; set; }
     public bool IsPassed { get; set; }
 }

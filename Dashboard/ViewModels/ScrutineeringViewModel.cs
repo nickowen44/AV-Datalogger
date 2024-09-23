@@ -105,7 +105,7 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
                     new()
                     {
                         Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                        Id = 0, Inspection = ""
+                        Id = "0", Inspection = ""
                     }
                 },
                 Top = "",

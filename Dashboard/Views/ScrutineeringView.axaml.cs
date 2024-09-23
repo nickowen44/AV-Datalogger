@@ -30,8 +30,7 @@ public partial class ScrutineeringView : UserControl
         _steps = new List<ReceiptStep>();
         for (var i = 1; i <= count; i++)
         {
-            var idString = $"7.{i}";
-            _steps.Add(new ReceiptStep { Id = Convert.ToDouble(idString), IsPassed = false });
+            _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false });
         }
     }
 
@@ -61,7 +60,7 @@ public partial class ScrutineeringView : UserControl
     private void OnStepClick(object sender, bool isPassed)
     {
         var button = sender as Button;
-        var id = Convert.ToDouble(button?.Tag);
+        var id = Convert.ToString(button?.Tag);
         var step = _steps.FirstOrDefault(s => s.Id == id);
 
         if (step == null) return;
@@ -77,7 +76,7 @@ public partial class ScrutineeringView : UserControl
     {
         AllStepsList.ItemsSource = _steps.Select(s => new TextBlock
         {
-            Text = $"Step {s.Id} {(s.IsPassed ? "Passed" : "Failed")}",
+            Text = $"Step {s.Id.ToString()} {(s.IsPassed ? "Passed" : "Failed")}",
             Foreground = s.IsPassed ? Brushes.White : Brushes.Red,
             Margin = new Thickness(0, 5, 0, 5),
             FontWeight = FontWeight.Light
