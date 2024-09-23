@@ -12,44 +12,42 @@
         Icon="/Assets/nuvotion_logo.png"
         Foreground="Black"
         Background="#c4c4c4">
-        <Design.DataContext>
+    <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid RowDefinitions="Auto, *, Auto">
-        <Grid Grid.Row="0" >
-            <Grid ColumnDefinitions="0.8*, 0.2*">
-            <Image Grid.Column="1" Source="/Assets/nuvotion_logo.png" Width="100" Height="100" HorizontalAlignment="Right"
-                   VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-                        <Image.RenderTransform>
-                            <RotateTransform Angle="90" />
-                        </Image.RenderTransform>
-                    </Image>
-                    <TextBlock Grid.Column="0" FontWeight="Black" VerticalAlignment="Center" FontFeatures="Bold" Padding="10, 0, 0, 30"  FontSize="25" >Nuvotion FSAE-Scrutineering Tool</TextBlock>
-                    </Grid>
-                <!-- Menu to navigate between pages -->
-                    <ListBox Name="NaviBar" VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
-                             SelectedItem="{Binding SelectedListItem}">
-                        <ListBox.Styles>
-                            <Style Selector="ListBoxItem">
-                            </Style>
-                        </ListBox.Styles>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                </StackPanel>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:ListItemTemplate}">
-                                <TextBlock Text="{Binding Label}"></TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+    <Grid RowDefinitions="60, Auto, *, Auto">
+        <Grid Grid.Row="0">
+            <Grid ColumnDefinitions="0.8*, 0.2*" Margin="10, 0">
+                <TextBlock Grid.Column="0" FontWeight="Black" FontFeatures="Bold"
+                           FontSize="25" VerticalAlignment="Center">
+                    Nuvotion FSAE-Scrutineering Tool
+                </TextBlock>
+                <Image Grid.Column="1" Source="/Assets/nuvotion_logo.png" Height="30" HorizontalAlignment="Right" />
+            </Grid>
         </Grid>
-    <Grid Grid.Row="1">
-        <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
-    </Grid>
+        <Grid Grid.Row="1">
+            <!-- Menu to navigate between pages -->
+            <ListBox Name="NaviBar" VerticalAlignment="Bottom" ItemsSource="{Binding Items}"
+                     SelectedItem="{Binding SelectedListItem}">
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem" />
+                </ListBox.Styles>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ListItemTemplate}">
+                        <TextBlock Text="{Binding Label}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <ContentControl Name="MainContent" Content="{Binding CurrentPage}" />
+        </Grid>
     </Grid>
 </Window>
