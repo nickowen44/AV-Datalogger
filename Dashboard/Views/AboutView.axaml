@@ -17,10 +17,10 @@
             <Border Background="White" Padding="5" BorderThickness="1" BorderBrush="Black">
                 <StackPanel Spacing="5">
                     <TextBlock>
-                        This program was built for Nuvotion Pty Ltd. as a capstone project for RMIT University.
+                        This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
                     </TextBlock>
                     <TextBlock>
-                        <Run Text="Project Members:" FontWeight="Bold" />
+                        <Run Text="Team Members:" FontWeight="Bold" />
                         <LineBreak />
                         <Run Text=" - Erin Lumsden" />
                         <LineBreak />
@@ -37,16 +37,29 @@
                     </TextBlock>
                 </StackPanel>
             </Border>
-
-            <Border Background="White" Padding="5" VerticalAlignment="Bottom" BorderThickness="1" BorderBrush="Black"
-                    MaxWidth="500" HorizontalAlignment="Left">
-                <StackPanel>
-                    <TextBlock FontWeight="Bold">Software Version:</TextBlock>
-                    <TextBlock Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
-                    <TextBlock Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
-                </StackPanel>
-            </Border>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <Border Background="White" Padding="5" BorderThickness="1"
+                        BorderBrush="Black"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Stretch">
+                    <StackPanel Spacing="5">
+                        <TextBlock FontWeight="Bold">Software Information:</TextBlock>
+                        <StackPanel>
+                            <TextBlock Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
+                            <TextBlock Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" Padding="5" BorderThickness="1"
+                        BorderBrush="Black"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <StackPanel Spacing="5">
+                        <Image Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
+                        <TextBlock
+                            Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
         </StackPanel>
-
     </ScrollViewer>
 </UserControl>
