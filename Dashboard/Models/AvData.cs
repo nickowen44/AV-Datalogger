@@ -4,7 +4,7 @@ namespace Dashboard.Models;
 
 public record AvData
 {
-    
+
 
     public ValuePair<double> Speed { get; init; } = new()
     {
@@ -36,6 +36,5 @@ public record AvData
     public int LapCount { get; init; }
     public int ConeCountPerLap { get; init; }
     public int ConeCountTotal { get; init; }
-    public string CarId { get; init; }
-    public string UTCTime { get; init; }
+
 }

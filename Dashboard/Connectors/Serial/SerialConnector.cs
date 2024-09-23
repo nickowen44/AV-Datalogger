@@ -13,9 +13,9 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-    private Timer _heartbeatTimer;
-    private static readonly string HeartBeatMessage = "HeartBeat";
-    
+    private Timer? _heartbeatTimer;
+    private const string HeartBeatMessage = "HeartBeat";
+
     public void Start()
     {
         // Set up the connection to the serial port
@@ -23,13 +23,13 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
-        
+
         // Setting up timer for heatbeat messages
-        _heartbeatTimer = new Timer(1000); 
+        _heartbeatTimer = new Timer(1000);
         _heartbeatTimer.Elapsed += SendHeartbeat;
         _heartbeatTimer.AutoReset = true; // Ensure the timer repeats
         _heartbeatTimer.Enabled = true;
-        
+
         // Open our serial port
         comPort.Open();
     }
@@ -48,17 +48,17 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     {
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
-        
+
         _heartbeatTimer.AutoReset = false;
         _heartbeatTimer.Stop();
         _heartbeatTimer.Dispose();
-        
+
         // Close the serial port
         comPort.Close();
     }
 
-    public bool skipFirst = false;
-    
+    public bool SkipedFirst = false;
+
     private void ParseMessage(string message)
     {
         // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
@@ -68,12 +68,12 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         // Very dirty method right now, Need to ask Nick how to better handle the first message being out of format
         // First Message produces
         // #ID=A46|UTC=P2#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###
-        if (skipFirst == false)
+        if (SkipedFirst == false)
         {
-            skipFirst = true;
+            SkipedFirst = true;
             return;
         }
-        
+
         var split = message.Substring(1).Split('|');
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
@@ -100,7 +100,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         else
             throw new InvalidOperationException("Unknown message type received",
                 new Exception($"Buffer str: {message}"));
-        ParseRawMessage(values,message);
+        ParseRawMessage(values, message);
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
@@ -154,8 +154,6 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             LapCount = ParseInt(values["LAP"]),
             ConeCountPerLap = ParseInt(values["CCA"]),
             ConeCountTotal = ParseInt(values["CCT"]),
-            CarId = values["ID"],
-            UTCTime = values["UTC"]
         });
     }
 
@@ -170,7 +168,7 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             ResNodeId = ParseInt(values["NID"])
         });
     }
-    
+
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
         RawDataUpdated?.Invoke(this, new RawData
@@ -199,12 +197,12 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     {
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
     }
-    
-    private void SendHeartbeat(object state, ElapsedEventArgs e)
+
+    private void SendHeartbeat(object? state, ElapsedEventArgs e)
     {
         if (comPort.IsConnected)
         {
-            
+
             Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
             comPort.Write(HeartBeatMessage);
             HeartBeatUpdated?.Invoke(this, true);

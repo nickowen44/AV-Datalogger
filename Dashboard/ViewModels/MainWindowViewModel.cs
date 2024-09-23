@@ -42,7 +42,7 @@ namespace Dashboard.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            
+
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             _serviceProvider = DependencyInjection.ConfigureServices();
             Items = new ObservableCollection<ListItemTemplate>(_templates);

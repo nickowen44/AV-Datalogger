@@ -6,7 +6,7 @@ using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
-public partial class FooterViewModel : ViewModelBase 
+public partial class FooterViewModel : ViewModelBase
 {
     public bool? HeartBeat => _dataStore.HeartBeat;
     public event Action<bool>? HeartbeatStatusUpdated;
@@ -14,9 +14,9 @@ public partial class FooterViewModel : ViewModelBase
     public event Action<bool>? ConnectionUpdate;
     private readonly IDataStore _dataStore;
     public bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
-    public string CarID => _dataStore.RawData?.CarId ?? "0";
+    public string CarId => _dataStore.RawData?.CarId ?? "0";
     public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
-    public string UTCTime
+    public string UTcTime
     {
         // Convert the UTC value from data logger to proper UTC.
         get
@@ -39,14 +39,14 @@ public partial class FooterViewModel : ViewModelBase
                     datePart = utcTimeString.Substring(1, 8);
                 }
                 string timePart = utcTimeString.Substring(9, 8);
-                
+
                 DateTime parsedDate = DateTime.ParseExact(datePart, "yyyyMMdd", CultureInfo.InvariantCulture);
                 TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
                 DateTime localDateTime = parsedDate.Add(parsedTime);
 
                 // Convert local time to UTC (assuming local time zone)
                 DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(localDateTime);
-                
+
                 return utcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
             catch (Exception ex) when (ex is FormatException || ex is ArgumentOutOfRangeException)
@@ -55,41 +55,40 @@ public partial class FooterViewModel : ViewModelBase
             }
         }
     }
-    
+
     public FooterViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
-        
+
         _dataStore.RawDataUpdated += OnRawDataChanged;
         _dataStore.HeartBeatUpdated += OnHeartbeatStatusChanged;
-
     }
-    
+
     public FooterViewModel()
     {
         _dataStore = new DataStore(new DummyConnector());
     }
-    
+
     /// <summary>
     ///     Notifies the view that the Footer data has changed.
     /// </summary>
     private void OnRawDataChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("Data Updated in FooterViewModel");
-        OnPropertyChanged(nameof(CarID));
-        OnPropertyChanged(nameof(UTCTime));
+        OnPropertyChanged(nameof(CarId));
+        OnPropertyChanged(nameof(UTcTime));
         OnPropertyChanged(nameof(RawMessage));
         RawMessageUpdated?.Invoke(RawMessage);
         ConnectionUpdate?.Invoke(ConnectionStatus);
     }
-    
+
     private void OnHeartbeatStatusChanged(object? sender, bool isReceived)
     {
         Console.WriteLine("Heart Beat change triggered");
         OnPropertyChanged(nameof(HeartBeat));
         HeartbeatStatusUpdated?.Invoke(isReceived);
     }
-    
+
     public override void Dispose()
     {
         _dataStore.RawDataUpdated -= OnRawDataChanged;
@@ -98,6 +97,5 @@ public partial class FooterViewModel : ViewModelBase
 
         GC.SuppressFinalize(this);
     }
-    
-}
 
+}

@@ -19,6 +19,7 @@ public class SerialConnectorTests
     {
         _serialPortMock = new Mock<ISerialPort>();
         _serialConnector = new SerialConnector(_serialPortMock.Object);
+        _serialConnector.SkipedFirst = true;
     }
 
     [Test]

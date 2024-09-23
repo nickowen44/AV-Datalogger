@@ -15,9 +15,9 @@ namespace Dashboard.Views;
 
 public partial class FooterView : UserControl
 {
-    private readonly TextBox? _consoleTextBox ;
-    private readonly Ellipse? _heartBeart ;
-    private readonly Ellipse? _connection ;
+    private readonly TextBox? _consoleTextBox;
+    private readonly Ellipse? _heartBeart;
+    private readonly Ellipse? _connection;
     public FooterView()
     {
         InitializeComponent();
@@ -53,7 +53,7 @@ public partial class FooterView : UserControl
     }
     private void OnRawMessageUpdated(string newMessage)
     {
-        
+
         Dispatcher.UIThread.Post(() =>
         {
             Console.WriteLine("Console TextBox updated");
@@ -83,15 +83,12 @@ public partial class FooterView : UserControl
                 _heartBeart.Fill = Brushes.OrangeRed;
             }
         });
-        
+
         await Task.Delay(500);
-        
+
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
             _heartBeart.Fill = Brushes.Orange;
         });
     }
 }
-    
-
-

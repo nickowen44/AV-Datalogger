@@ -6,7 +6,29 @@
              xmlns:vm="clr-namespace:Dashboard.ViewModels"
              x:Class="Dashboard.Views.FooterView"
              x:DataType="vm:FooterViewModel"
-             >
+             Background="#ff2b2b2b"
+             Foreground="White">
+    <UserControl.Styles>
+        <!-- Style to remove Avalonia's default hover and selected effects for Textboxes -->
+        <Style Selector="TextBox">
+            <Style Selector="^:focus">
+                <Setter Property="BorderBrush" Value="Red"/>
+                        <Style Selector="^ /template/ Border#PART_BorderElement">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1" />
+                    </Style>
+                </Style>
+            <Style Selector="^:pointerover">
+                <Setter Property="BorderBrush" Value="Red"/>
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderBrush" Value="White"/>
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </Style>
+        </Style>
+    </UserControl.Styles>
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -15,8 +37,8 @@
     <Grid ColumnDefinitions="0.2*,0.2*, 0.6*" ShowGridLines="True">
         <Grid Grid.Column="0">
             <StackPanel VerticalAlignment="Center">
-            <TextBlock Name="CarId" Text="{Binding CarID, StringFormat='Car ID: {0}'}"/>
-            <TextBlock Name="CurTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}"/>
+            <TextBlock Name="CarId" Text="{Binding CarId, StringFormat='Car ID: {0}'}"/>
+            <TextBlock Name="CurTime" Text="{Binding UTcTime, StringFormat='UTC Time: {0}'}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Grid.RowDefinitions="0.5*,0.5*" Grid.ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -29,28 +51,17 @@
                          HorizontalAlignment="Right"/>
                 <TextBlock Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat" HorizontalAlignment="Left"/>
         </Grid>
-        <Grid Grid.Column="2"  VerticalAlignment="Center" >
-            <TextBox Name="ConsoleTextBox" 
-                     FontSize="10" 
+        <Grid Grid.Column="2"  VerticalAlignment="Center">
+            <TextBox Name="ConsoleTextBox"
                      Height="80" 
                      Margin="10,40,10,40" 
                      AcceptsReturn="True" 
-                     TextWrapping="Wrap" 
-                     Background="Gray" 
+                     Background="White"
+                     Foreground="Black"
+                     FontSize="10"
+                     TextWrapping="Wrap"
                      IsReadOnly="True">
-                <TextBox.Styles>
-                    <Style Selector="TextBox">
-                        <Setter Property="Background" Value="Gray"/>
-                        <Setter Property="BorderBrush" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="Cursor" Value="IBeam"/>
-                    </Style>
-                    <Style Selector="TextBox:pointerover">
-                        <Setter Property="Background" Value="Transparent"/> <!-- Keep the same background on hover -->
-                    </Style>
-                </TextBox.Styles>
             </TextBox>
-            <!-- <TextBox  Name="ConsoleTextBox" FontSize="10" Height="80" Margin="10,40,10,40" AcceptsReturn="True" TextWrapping="Wrap" Background="Gray" IsReadOnly="True" /> -->
         </Grid>
     </Grid>
     

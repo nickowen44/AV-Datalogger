@@ -10,7 +10,7 @@ public class DataStore : IDataStore, IDisposable
     public event EventHandler? ResDataUpdated;
     public event EventHandler? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-    
+
     public bool? HeartBeat { get; private set; }
     public GpsData? GpsData { get; private set; }
     public AvData? AvStatusData { get; private set; }
@@ -28,7 +28,7 @@ public class DataStore : IDataStore, IDisposable
         _connector.ResDataUpdated += OnResDataUpdated;
         _connector.RawDataUpdated += OnRawDataUpdated;
         _connector.HeartBeatUpdated += OnHeartbeatUpdated;
-        
+
         _connector.Start();
     }
     private void OnHeartbeatUpdated(object? sender, bool isReceived)
@@ -57,7 +57,7 @@ public class DataStore : IDataStore, IDisposable
 
         ResDataUpdated?.Invoke(this, EventArgs.Empty);
     }
-    
+
     private void OnRawDataUpdated(object? sender, RawData e)
     {
         RawData = e;
