@@ -102,7 +102,7 @@ public class FooterTest
         Assert.Multiple(() =>
         {
             Assert.That(carID.Text, Is.EqualTo("Car ID: A46"));
-            Assert.That(utcTime.Text, Is.EqualTo("UTC Time: 2024-08-19 20:56:04"));
+            Assert.That(utcTime.Text, Is.EqualTo("UTC Time: 2024-08-20 06:56:04"));
             Assert.That(console.Text, Is.EqualTo("ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\n"));
         });
     }

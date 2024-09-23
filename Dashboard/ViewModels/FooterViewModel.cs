@@ -44,10 +44,7 @@ public partial class FooterViewModel : ViewModelBase
                 TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
                 DateTime localDateTime = parsedDate.Add(parsedTime);
 
-                // Convert local time to UTC (assuming local time zone)
-                DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(localDateTime);
-
-                return utcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                return localDateTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
             catch (Exception ex) when (ex is FormatException || ex is ArgumentOutOfRangeException)
             {
