@@ -31,7 +31,6 @@ public class OverviewPageTest
         // Make sure there is a icon for RES
         var resIcon = window.FindControl<Image>("ResIcon");
         Assert.IsNotNull(resIcon);
-        
     }
 }
 
