@@ -62,6 +62,10 @@ namespace Dashboard.ViewModels
             _serviceProvider = serviceProvider;
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
+            _footer = new FooterView
+            {
+                DataContext = _serviceProvider.GetRequiredService<FooterViewModel>()
+            };
         }
 
         /// <summary>

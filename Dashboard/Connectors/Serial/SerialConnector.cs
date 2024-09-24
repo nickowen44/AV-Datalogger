@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Timers;
 using Dashboard.Models;
 using Dashboard.Utils;
+using Timer = System.Timers.Timer;
 
 namespace Dashboard.Connectors.Serial;
 
@@ -13,9 +16,12 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-    private Timer? _heartbeatTimer;
-    private const string HeartBeatMessage = "HeartBeat";
-
+    private const string HeartBeatMessage = "CON?";
+    private bool _heartBeatShouldRun = true;
+    private DateTime _lastMessageReceived = DateTime.Now;
+    private Thread? _heartbeatThread;
+    private int _timeOut = 5;
+    private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
     public void Start()
     {
         // Set up the connection to the serial port
@@ -23,13 +29,24 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
-
-        // Setting up timer for heatbeat messages
-        _heartbeatTimer = new Timer(1000);
-        _heartbeatTimer.Elapsed += SendHeartbeat;
-        _heartbeatTimer.AutoReset = true; // Ensure the timer repeats
-        _heartbeatTimer.Enabled = true;
-
+        
+        //Set up Heart Beat thread 
+        _heartbeatThread = new Thread(() =>
+        {
+            while (_heartBeatShouldRun)
+            {
+                var timeSinceLastMessage = DateTime.Now - _lastMessageReceived;
+                if (timeSinceLastMessage.TotalSeconds > _timeOut)
+                {
+                    // If Heart beat should be sent then write and wait 1 second.
+                    SendHeartbeat();
+                    Thread.Sleep(1000);
+                }
+                _heartbeatEvent.WaitOne(1000);
+            }
+        });
+        _heartbeatThread.Start();
+        
         // Open our serial port
         comPort.Open();
     }
@@ -39,7 +56,8 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         // If multiple messages are received at once, we need to handle them. To do this, we read the entire buffer
         var buffer = data.Buffer;
         var messages = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-
+        // Get the time this message was received for Heart Beat.
+        _lastMessageReceived = DateTime.Now;
         // Then we split the buffer by the carriage return delimiter, and parse each message
         foreach (var msg in messages) ParseMessage(msg);
     }
@@ -48,11 +66,11 @@ public class SerialConnector(ISerialPort comPort) : IConnector
     {
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
-
-        _heartbeatTimer.AutoReset = false;
-        _heartbeatTimer.Stop();
-        _heartbeatTimer.Dispose();
-
+        
+        // Stop the Heart Beat thread
+        _heartBeatShouldRun = false;
+        _heartbeatEvent.Set();
+        
         // Close the serial port
         comPort.Close();
     }
@@ -169,16 +187,41 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         });
     }
 
+    private DateTime ParseUTCTime(string timeString)
+    {
+
+        string datePart = "";
+        // Check if the UTC value includes the leading zero for months, if not add.
+        if (timeString.Length == 20)
+        {
+            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3); // Extracts "2024820"
+        }
+        else
+        {
+            datePart = timeString.Substring(1, 8);
+        }
+
+        string timePart = timeString.Substring(9, 8);
+
+        DateTime parsedDate = DateTime.ParseExact(datePart, "yyyyMMdd", CultureInfo.InvariantCulture);
+        TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
+
+        DateTime localDateTime = parsedDate.Add(parsedTime);
+
+        return localDateTime;
+    }
+
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = values["ID"],
-            UTCTime = values["UTC"],
+            UTCTime = ParseUTCTime(values["UTC"]),
             RawMessage = rawMessage,
             ConnectionStatus = comPort.IsConnected,
         });
     }
+
 
     // TODO: Remove below when we have the actual values
     private readonly Random _random = new();
@@ -198,19 +241,9 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
     }
 
-    private void SendHeartbeat(object? state, ElapsedEventArgs e)
+    private void SendHeartbeat()
     {
-        if (comPort.IsConnected)
-        {
-
-            Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
-            comPort.Write(HeartBeatMessage);
-            HeartBeatUpdated?.Invoke(this, true);
-        }
-        else
-        {
-            HeartBeatUpdated?.Invoke(this, false);
-        }
+        Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
+        HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
     }
-
 }

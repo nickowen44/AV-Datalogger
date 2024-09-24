@@ -3,11 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
 using Avalonia.Input;
-using Avalonia.Layout;
 using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace DashboardTests;
@@ -15,15 +15,19 @@ namespace DashboardTests;
 [TestFixture]
 public class DemoTest
 {
+    private Mock<IDataStore> _dataStore;
+    private Mock<IServiceProvider> _serviceProvider;
+
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
         _serviceProvider = new Mock<IServiceProvider>();
+        var footerViewModel = new FooterViewModel(_dataStore.Object);
+        _serviceProvider.Setup(sp => sp.GetService(typeof(FooterViewModel)))
+            .Returns(footerViewModel);
     }
-
-    private Mock<IDataStore> _dataStore;
-    private Mock<IServiceProvider> _serviceProvider;
+    
 
 
     [AvaloniaTest]
@@ -104,7 +108,7 @@ public class DemoTest
     [AvaloniaTest]
     public void TestNavigation()
     {
-
+        
         // Arrange
         var window = new MainWindowView()
         {

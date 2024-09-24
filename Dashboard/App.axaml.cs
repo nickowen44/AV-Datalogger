@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
@@ -27,10 +28,12 @@ public class App : Application
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
+            var _serviceProvider = DependencyInjection.ConfigureServices();
 
+            _serviceProvider.GetService<IDataStore>();
             desktop.MainWindow = new MainWindowView
             {
-                DataContext = new MainWindowViewModel()
+                DataContext = new MainWindowViewModel(_serviceProvider)
             };
         }
 

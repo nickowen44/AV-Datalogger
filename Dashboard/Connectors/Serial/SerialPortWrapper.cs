@@ -55,7 +55,7 @@ public class SerialPortWrapper : ISerialPort
 
     private DateTime _lastMessageReceived = DateTime.Now;
 
-    private const double ConnectionTimeout = 5.0;
+    private const double ConnectionTimeout = 15.0;
 
     public bool IsConnected
     {
@@ -66,7 +66,7 @@ public class SerialPortWrapper : ISerialPort
         }
     }
 
-    public void Write(string? data)
+    public bool Write(string? data)
     {
         if (_serialPort.IsOpen)
         {
@@ -74,12 +74,21 @@ public class SerialPortWrapper : ISerialPort
             try
             {
                 _serialPort.Write(data);
-
+                
+                // If the AV Logger doesn't respond OK then connection is dead.
+                if (_serialPort.ReadLine() != "OK")
+                {
+                    return false;
+                }
+                Console.WriteLine("Wrote Heatbeat to SerialPort");
+                return true;
             }
             catch (TimeoutException)
             {
                 Console.WriteLine("Error writing to serial port.");
+                return false;
             }
         }
+        return false;
     }
 }

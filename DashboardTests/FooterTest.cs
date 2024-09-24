@@ -40,13 +40,15 @@ public class FooterTest
         Assert.That(window, Is.InstanceOf<FooterView>());
 
         var carID = window.FindControl<TextBlock>("CarId");
-        var utcTime = window.FindControl<TextBlock>("CurTime");
+        var utcTime = window.FindControl<TextBlock>("UTCTime");
+        var localTime = window.FindControl<TextBlock>("LocalTime");
         var console = window.FindControl<TextBox>("ConsoleTextBox");
 
         Assert.Multiple(() =>
         {
             Assert.That(carID, Is.Not.Null);
             Assert.That(utcTime, Is.Not.Null);
+            Assert.That(localTime, Is.Not.Null);
             Assert.That(console, Is.Not.Null);
         });
 
@@ -60,7 +62,7 @@ public class FooterTest
         _dataStore.SetupGet(x => x.RawData).Returns(new RawData()
         {
             CarId = "A46",
-            UTCTime = "P2024820T06:56:04.00",
+            UTCTime = DateTime.Parse("2024-08-20 06:56:04"),
             RawMessage = "ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###"
         });
 
@@ -87,7 +89,10 @@ public class FooterTest
             .FirstOrDefault(tb => tb.Name == "CarId");
         var utcTime = window.GetVisualDescendants()
             .OfType<TextBlock>()
-            .FirstOrDefault(tb => tb.Name == "CurTime");
+            .FirstOrDefault(tb => tb.Name == "UTCTime");
+        var localTime = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .FirstOrDefault(tb => tb.Name == "LocalTime");
         var console = window.GetVisualDescendants()
             .OfType<TextBox>()
             .FirstOrDefault(tb => tb.Name == "ConsoleTextBox");
@@ -96,6 +101,7 @@ public class FooterTest
         {
             Assert.That(carID, Is.Not.Null);
             Assert.That(utcTime, Is.Not.Null);
+            Assert.That(localTime, Is.Not.Null);
             Assert.That(console, Is.Not.Null);
         });
 
@@ -103,6 +109,7 @@ public class FooterTest
         {
             Assert.That(carID.Text, Is.EqualTo("Car ID: A46"));
             Assert.That(utcTime.Text, Is.EqualTo("UTC Time: 2024-08-20 06:56:04"));
+            Assert.That(localTime.Text, Is.EqualTo("Local Time: 2024-08-20 16:56:04"));
             Assert.That(console.Text, Is.EqualTo("ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\n"));
         });
     }

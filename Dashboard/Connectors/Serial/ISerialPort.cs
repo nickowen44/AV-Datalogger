@@ -29,5 +29,5 @@ public interface ISerialPort
 
     bool IsConnected { get; }
 
-    void Write(string data);
+    bool Write(string data);
 }

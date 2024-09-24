@@ -19,7 +19,6 @@ public static class DependencyInjection
 
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IConnector, SerialConnector>();
-        services.AddSingleton<ISerialPort, SerialPortWrapper>();
 
         services.AddTransient<DataViewModel>();
         services.AddTransient<MainWindowViewModel>();
