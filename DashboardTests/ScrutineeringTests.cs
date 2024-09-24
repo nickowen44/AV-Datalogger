@@ -340,12 +340,10 @@ public class ScrutineeringTests
         // Check the current slide is now the first slide
         currentIndex = carousel.SelectedIndex;
         Assert.That(currentIndex, Is.EqualTo(0));
-        
+
         // Check all steps in the expander have been set to failed.
         var expanderItems = stepsList.Items.OfType<TextBlock>().ToList();
         for (var i = 0; i < carousel.ItemCount; i++)
-        {
             Assert.That(expanderItems[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
-        }
     }
 }
