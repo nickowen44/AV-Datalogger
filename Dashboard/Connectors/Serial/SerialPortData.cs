@@ -2,5 +2,5 @@
 
 public record SerialPortData
 {
-    public string Buffer { get; init; } = string.Empty;
+    public required string Buffer { get; init; }
 }
