@@ -19,7 +19,7 @@ public class SerialPortWrapper : ISerialPort
         // Don't open the port if it's already open
         if (_serialPort.IsOpen)
             return;
-        
+
         _serialPort.Open();
 
         // Initialise a read thread so our main (UI) thread doesn't block
