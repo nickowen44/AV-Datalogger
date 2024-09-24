@@ -6,6 +6,7 @@ using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
@@ -31,7 +32,7 @@ public class App : Application
 
             // Initialise our data store so a serial connection is established
             // TODO: Reassess this once we have the proper connection page in place, and initialise from there
-            services.GetService(typeof(IDataStore));
+            services.GetService<IDataStore>();
 
             desktop.MainWindow = new MainWindowView
             {
