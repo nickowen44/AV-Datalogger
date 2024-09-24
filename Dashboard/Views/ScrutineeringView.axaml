@@ -165,11 +165,16 @@
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
 
-            <Expander Grid.Row="2" Grid.Column="2" Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
-                      HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Padding="10"
-                      Margin="10">
-                <ItemsControl Name="AllStepsList" Foreground="White" />
-            </Expander>
+            <StackPanel Grid.Row="2" Grid.Column="2">
+                <Expander Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
+                          HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"
+                          Padding="10" Margin="10">
+                    <ItemsControl Name="AllStepsList" Foreground="White" />
+                </Expander>
+                <Button Background="White" Foreground="Black" Click="OnReset"
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Content="Reset" Margin="5" FontSize="18"
+                        FontWeight="Bold" />
+            </StackPanel>
         </Grid>
     </Panel>
 </UserControl>

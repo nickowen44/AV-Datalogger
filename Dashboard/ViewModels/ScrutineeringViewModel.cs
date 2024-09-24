@@ -61,22 +61,10 @@ public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
 
     /// <summary>
-    ///     Handles the cleanup when the view model is no longer needed.
-    /// </summary>
-    public void Dispose()
-    {
-        _dataStore.AvDataUpdated -= OnDataChanged;
-
-        _dataStore.Dispose();
-
-        GC.SuppressFinalize(this);
-    }
-
-    /// <summary>
     ///     Load in yaml data from specified file.
     /// </summary>
     /// <param name="filePath">The yaml's filepath</param>
-    public void LoadYamlData(string filePath)
+    private void LoadYamlData(string filePath)
     {
         try
         {

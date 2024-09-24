@@ -29,9 +29,8 @@ public partial class ScrutineeringView : UserControl
     {
         _steps = new List<ReceiptStep>();
         for (var i = 1; i <= count; i++)
-        {
-            _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false });
-        }
+            // The "o" ensures the time is formatted as an ISO string
+            _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false, Date = DateTime.UtcNow.ToString("o") });
     }
 
     public void Next(object source, RoutedEventArgs args)
@@ -65,7 +64,21 @@ public partial class ScrutineeringView : UserControl
 
         if (step == null) return;
         step.IsPassed = isPassed;
-        Console.WriteLine($"Step {id} {(isPassed ? "passed" : "failed")}");
+        step.Date = DateTime.UtcNow.ToString("o");
+        Console.WriteLine($"Step {id} {(isPassed ? "passed" : "failed")} at {step.Date}");
+        PopulateAllStepsList();
+    }
+
+    /// <summary>
+    ///     Reset all the data on the page to what it is initialised to on page reset.
+    /// </summary>
+    private void OnReset(object sender, RoutedEventArgs e)
+    {
+        var time = DateTime.UtcNow.ToString("o");
+        Console.WriteLine($"Scrutineering inspection has been reset at {time}");
+
+        Slides.SelectedIndex = 0;
+        InitializeSteps(StepCount);
         PopulateAllStepsList();
     }
 

@@ -5,6 +5,7 @@
 /// </summary>
 public class ReceiptStep
 {
-    public string Id { get; set; }
-    public bool IsPassed { get; set; }
+    public required string Id { get; set; }
+    public required bool IsPassed { get; set; }
+    public required string Date { get; set; }
 }

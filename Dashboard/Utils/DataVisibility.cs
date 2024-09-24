@@ -11,13 +11,13 @@ namespace Dashboard.Utils;
 /// </summary>
 public class DvDataVisibility : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is List<string> { Count: > 0 };
     }
 
     // ConvertBack is not used but we need it here to correctly implement the value converter interface
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException();
     }
