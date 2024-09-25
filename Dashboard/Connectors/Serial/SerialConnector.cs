@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Dashboard.Models;
 using Dashboard.Utils;
 
 namespace Dashboard.Connectors.Serial;
 
-public class SerialConnector(ISerialPort comPort) : IConnector
+public partial class SerialConnector(ISerialPort comPort) : IConnector
 {
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
+
+    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    private static partial Regex MyRegex();
 
     public void Start()
     {
@@ -25,12 +29,8 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
     private void OnDataReceived(object? _, SerialPortData data)
     {
-        // If multiple messages are received at once, we need to handle them. To do this, we read the entire buffer
-        var buffer = data.Buffer;
-        var messages = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-
-        // Then we split the buffer by the carriage return delimiter, and parse each message
-        foreach (var msg in messages) ParseMessage(msg);
+        // We got a new message from the serial port, parse it, removing the newline / return characters
+        ParseMessage(data.Buffer.Trim());
     }
 
     public void Stop()
@@ -44,11 +44,11 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
     private void ParseMessage(string message)
     {
-        // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
         // First we validate that we have the correct message format
-        if (!message.StartsWith("#ID=") || !message.Contains("|UTC="))
+        if (!MyRegex().IsMatch(message))
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
 
+        // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
         var split = message.Split('|')[2..];
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message

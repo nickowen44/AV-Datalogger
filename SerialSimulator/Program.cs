@@ -55,7 +55,7 @@ var start = new ProcessStartInfo
 {
     FileName = python,
     // Run for 99999 minutes
-    Arguments = $"{scriptPath} 1",
+    Arguments = $"{scriptPath} 99999",
     UseShellExecute = false,
     RedirectStandardOutput = true,
     RedirectStandardError = true

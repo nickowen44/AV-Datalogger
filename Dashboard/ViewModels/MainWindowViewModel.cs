@@ -5,7 +5,6 @@ using System.Linq;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
-using Dashboard.Utils;
 using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,24 +31,13 @@ namespace Dashboard.ViewModels
 
         /// <summary>
         ///  Main constructor, creates a Dict with the ViewModels and their names,
-        /// _serviceProvider to allow dependency injection for ViewModels as needed,
-        /// and sets the first page
-        /// </summary>
-        public MainWindowViewModel()
-        {
-            _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
-            _serviceProvider = DependencyInjection.ConfigureServices();
-            Items = new ObservableCollection<ListItemTemplate>(_templates);
-            SelectedListItem = Items.First();
-        }
-        /// <summary>
-        ///  Constructor for testing purposes, used in DemoTest where it is provided a Mock serviceProvider
-        ///  so it does not try to access the serial ports COM21-22.
+        ///  and sets up the first page
         /// </summary>
         public MainWindowViewModel(IServiceProvider serviceProvider)
         {
-            _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             _serviceProvider = serviceProvider;
+
+            _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
         }
