@@ -63,6 +63,7 @@ public partial class ScrutineeringView : UserControl
         var step = _steps.FirstOrDefault(s => s.Id == id);
 
         if (step == null) return;
+        if (step.IsPassed == isPassed) return;
         step.IsPassed = isPassed;
         step.Date = DateTime.UtcNow.ToString("o");
         Console.WriteLine($"Step {id} {(isPassed ? "passed" : "failed")} at {step.Date}");
