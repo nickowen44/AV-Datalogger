@@ -32,7 +32,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
-        
+
         //Set up Heart Beat thread 
         _heartbeatThread = new Thread(() =>
         {
@@ -49,7 +49,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             }
         });
         _heartbeatThread.Start();
-        
+
         // Open our serial port
         comPort.Open();
     }
@@ -65,11 +65,11 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
-        
+
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
-        
+
         // Close the serial port
         comPort.Close();
     }
@@ -159,7 +159,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             ServiceBrakeState = ParseBool(values["SBS"]),
             LapCount = ParseInt(values["LAP"]),
             ConeCountPerLap = ParseInt(values["CCA"]),
-            ConeCountTotal = ParseInt(values["CCT"]),
+            ConeCountTotal = ParseInt(values["CCT"])
         });
     }
 

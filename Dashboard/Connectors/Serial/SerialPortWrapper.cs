@@ -21,7 +21,7 @@ public class SerialPortWrapper : ISerialPort
             return;
 
         _serialPort.Open();
-        
+
         // Initialise a read thread so our main (UI) thread doesn't block
         var thread = new Thread(() =>
         {
@@ -85,7 +85,7 @@ public class SerialPortWrapper : ISerialPort
             try
             {
                 _serialPort.Write(data);
-                
+
                 // If the AV Logger doesn't respond OK then connection is dead.
                 if (_serialPort.ReadLine() != "OK")
                 {

@@ -27,7 +27,7 @@ public class DemoTest
         _serviceProvider.Setup(sp => sp.GetService(typeof(FooterViewModel)))
             .Returns(footerViewModel);
     }
-    
+
 
 
     [AvaloniaTest]
@@ -108,7 +108,7 @@ public class DemoTest
     [AvaloniaTest]
     public void TestNavigation()
     {
-        
+
         // Arrange
         var window = new MainWindowView()
         {

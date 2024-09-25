@@ -57,7 +57,7 @@ public partial class FooterViewModel : ViewModelBase
     {
         _dataStore.RawDataUpdated -= OnRawDataChanged;
         _dataStore.HeartBeatUpdated -= OnHeartbeatStatusChanged;
-    
+
         GC.SuppressFinalize(this);
     }
 
