@@ -74,18 +74,18 @@
                                     <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
                                         <!-- Autonomous Mission Indicator -->
                                         <Grid Margin="0,0,30,10" ColumnDefinitions="Auto, *">
-                                            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24" 
+                                            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24"
                                                        Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="Inspection" FontSize="22" 
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White" 
+                                            <TextBlock Text="Inspection" FontSize="22"
+                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                         <!-- Emergency Brake Service Status -->
                                         <Grid Grid.Row="1" Margin="0,0,30,50" ColumnDefinitions="Auto, *">
-                                            <TextBlock Text="Emergency Brake Service Status:" FontSize="24" 
+                                            <TextBlock Text="Emergency Brake Service Status:" FontSize="24"
                                                        Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="Ready" FontSize="22" 
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White" 
+                                            <TextBlock Text="Ready" FontSize="22"
+                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </Grid>
