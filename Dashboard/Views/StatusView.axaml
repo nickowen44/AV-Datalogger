@@ -73,20 +73,20 @@
                                 <StackPanel Orientation="Vertical" Margin="5">
                                     <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
                                         <!-- Autonomous Mission Indicator -->
-                                        <Grid Margin="0,0,30,0" ColumnDefinitions="Auto, *">
-                                            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24"
-                                                       Grid.Column="0" Margin="0,15,10,10" VerticalAlignment="Center" />
-                                            <TextBlock Text="Inspection" FontSize="22" Grid.Column="1"
-                                                       VerticalAlignment="Center" Background="White" Padding="10,0"
-                                                       TextAlignment="Center" />
+                                        <Grid Margin="0,0,30,10" ColumnDefinitions="Auto, *">
+                                            <TextBlock Text="Autonomous Mission Indicator:" FontSize="24" 
+                                                       Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Inspection" FontSize="22" 
+                                                       Grid.Column="1" VerticalAlignment="Center" Background="White" 
+                                                       Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                         <!-- Emergency Brake Service Status -->
                                         <Grid Grid.Row="1" Margin="0,0,30,50" ColumnDefinitions="Auto, *">
-                                            <TextBlock Text="Emergency Brake Service Status:" FontSize="24"
-                                                       Grid.Column="0" Margin="0,0,10,10" VerticalAlignment="Center" />
-                                            <TextBlock Text="Ready" FontSize="22" Grid.Column="1"
-                                                       VerticalAlignment="Center" Background="White" Padding="10,0"
-                                                       TextAlignment="Center" />
+                                            <TextBlock Text="Emergency Brake Service Status:" FontSize="24" 
+                                                       Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Ready" FontSize="22" 
+                                                       Grid.Column="1" VerticalAlignment="Center" Background="White" 
+                                                       Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </Grid>
                                     <!-- Steering Angle actual -->
@@ -117,13 +117,13 @@
                                                     VerticalAlignment="Center" Margin="0,10,10,10">
                                             <TextBlock Text="Speed - Actual:" FontSize="24" VerticalAlignment="Center" />
                                             <TextBlock Text="20 km/h" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,10,10,10" VerticalAlignment="Center" />
+                                                       Margin="10,0,10,0" VerticalAlignment="Center" />
                                         </StackPanel>
                                         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal"
                                                     VerticalAlignment="Center" Margin="0,90,10,10">
                                             <TextBlock Text="Speed - Target:" FontSize="24" VerticalAlignment="Center" />
                                             <TextBlock Text="24 km/h" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,10,10,10" VerticalAlignment="Center" />
+                                                       Margin="10,0,10,0" VerticalAlignment="Center" />
                                         </StackPanel>
 
                                         <!-- Speedometer Canvas -->
@@ -157,15 +157,15 @@
                                         <!-- Brake Actual Text -->
                                         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal"
                                                     VerticalAlignment="Center">
-                                            <TextBlock Text="Brake - Actual:" FontSize="24" VerticalAlignment="Center" />
+                                            <TextBlock Text="Brake - Actual:" FontSize="24" />
                                             <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,10,10,10" VerticalAlignment="Center" />
+                                                       Margin="10,0,10,0" />
                                         </StackPanel>
                                         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal"
-                                                    Margin="0,90,10,10">
+                                                    Margin="0,90,10,10" VerticalAlignment="Center">
                                             <TextBlock Text="Brake - Target:" FontSize="24" />
                                             <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,10,10,10" />
+                                                       Margin="10,0,10,0" />
                                         </StackPanel>
 
                                         <!-- Brake Canvas -->
