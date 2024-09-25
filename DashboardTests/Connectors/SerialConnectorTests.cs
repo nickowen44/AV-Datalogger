@@ -19,7 +19,6 @@ public class SerialConnectorTests
     {
         _serialPortMock = new Mock<ISerialPort>();
         _serialConnector = new SerialConnector(_serialPortMock.Object);
-        _serialConnector.SkipedFirst = true;
     }
 
     [Test]
@@ -90,13 +89,14 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         // First input is Res data, second is AV data
-        const string input =
-            "#ID=A46|UTC=P2024820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255|NID=203445\r\n" +
+        const string input1 = "#ID=A46|UTC=P2024820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255|NID=203445\r\n";
+        const string input2 =
             "#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start();
-        RaiseDataReceivedEvent(input);
+        RaiseDataReceivedEvent(input1);
+        RaiseDataReceivedEvent(input2);
         _serialConnector.Stop();
 
         // Assert

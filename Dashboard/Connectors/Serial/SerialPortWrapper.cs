@@ -1,34 +1,49 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Threading;
 
 namespace Dashboard.Connectors.Serial;
 
 public class SerialPortWrapper : ISerialPort
 {
-    private readonly SerialPort _serialPort = new();
-
     public event EventHandler<SerialPortData>? DataReceived;
 
-    private void SerialPortDataReceived(object _, SerialDataReceivedEventArgs __)
-    {
-        DataReceived?.Invoke(this, new SerialPortData
-        {
-            Buffer = _serialPort.ReadExisting()
-        });
-    }
+    private readonly SerialPort _serialPort = new();
+
+    private bool _shouldRun = true;
+    private const double ConnectionTimeout = 5.0;
+    private DateTime _lastMessageReceived = DateTime.Now;
 
     public void Open()
     {
-        _serialPort.Open();
+        // Don't open the port if it's already open
+        if (_serialPort.IsOpen)
+            return;
 
-        _serialPort.DataReceived += SerialPortDataReceived;
+        _serialPort.Open();
+        
+        // Initialise a read thread so our main (UI) thread doesn't block
+        var thread = new Thread(() =>
+        {
+            while (_shouldRun)
+            {
+                var data = ReadLine();
+                DataReceived?.Invoke(this, new SerialPortData
+                {
+                    Buffer = data
+                });
+            }
+        });
+
+        thread.Start();
     }
 
     public void Close()
     {
-        _serialPort.Close();
+        _shouldRun = false;
 
-        _serialPort.DataReceived -= SerialPortDataReceived;
+        if (_serialPort.IsOpen)
+            _serialPort.Close();
     }
 
     public void Configure(string portName, int baudRate)
@@ -47,15 +62,11 @@ public class SerialPortWrapper : ISerialPort
             _serialPort.Open();
     }
 
-    public string ReadExisting()
+    private string ReadLine()
     {
         _lastMessageReceived = DateTime.Now;
-        return _serialPort.ReadExisting();
+        return _serialPort.ReadLine();
     }
-
-    private DateTime _lastMessageReceived = DateTime.Now;
-
-    private const double ConnectionTimeout = 15.0;
 
     public bool IsConnected
     {

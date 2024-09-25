@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
-using System.Timers;
+using System.Text.RegularExpressions;
 using Dashboard.Models;
 using Dashboard.Utils;
-using Timer = System.Timers.Timer;
 
 namespace Dashboard.Connectors.Serial;
 
-public class SerialConnector(ISerialPort comPort) : IConnector
+public partial class SerialConnector(ISerialPort comPort) : IConnector
 {
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
+
+    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    private static partial Regex MyRegex();
+
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
     private const string HeartBeatMessage = "CON?";
@@ -53,13 +56,9 @@ public class SerialConnector(ISerialPort comPort) : IConnector
 
     private void OnDataReceived(object? _, SerialPortData data)
     {
-        // If multiple messages are received at once, we need to handle them. To do this, we read the entire buffer
-        var buffer = data.Buffer;
-        var messages = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-        // Get the time this message was received for Heart Beat.
+        // We got a new message from the serial port, parse it, removing the newline / return characters
+        ParseMessage(data.Buffer.Trim());
         _lastMessageReceived = DateTime.Now;
-        // Then we split the buffer by the carriage return delimiter, and parse each message
-        foreach (var msg in messages) ParseMessage(msg);
     }
 
     public void Stop()
@@ -75,22 +74,11 @@ public class SerialConnector(ISerialPort comPort) : IConnector
         comPort.Close();
     }
 
-    public bool SkipedFirst = false;
-
     private void ParseMessage(string message)
     {
-        // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
         // First we validate that we have the correct message format
-        if (!message.StartsWith("#ID=") || !message.Contains("|UTC="))
+        if (!MyRegex().IsMatch(message))
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
-        // Very dirty method right now, Need to ask Nick how to better handle the first message being out of format
-        // First Message produces
-        // #ID=A46|UTC=P2#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###
-        if (SkipedFirst == false)
-        {
-            SkipedFirst = true;
-            return;
-        }
 
         var split = message.Substring(1).Split('|');
 
@@ -103,11 +91,11 @@ public class SerialConnector(ISerialPort comPort) : IConnector
             var pair = s.Split('=');
 
             // If we don't have a key-value pair, we throw an exception
-            if (pair.Length != 2)
+            if (pair.Length < 2)
                 throw new InvalidOperationException($"Invalid key-value pair: {s}",
                     new Exception($"Buffer str: {message}"));
 
-            values.Add(pair[0], pair[1]);
+            values[pair[0]] = pair[1];
         }
 
         if (values.ContainsKey("LAT"))

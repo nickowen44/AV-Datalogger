@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -28,12 +27,16 @@ public class App : Application
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            var _serviceProvider = DependencyInjection.ConfigureServices();
+            // Setup our dependency injection
+            var services = DependencyInjection.ConfigureServices();
 
-            _serviceProvider.GetService<IDataStore>();
+            // Initialise our data store so a serial connection is established
+            // TODO: Reassess this once we have the proper connection page in place, and initialise from there
+            services.GetService<IDataStore>();
+
             desktop.MainWindow = new MainWindowView
             {
-                DataContext = new MainWindowViewModel(_serviceProvider)
+                DataContext = new MainWindowViewModel(services)
             };
         }
 
