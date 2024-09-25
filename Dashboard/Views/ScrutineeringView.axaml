@@ -17,18 +17,19 @@
 
     <UserControl.Resources>
         <!-- This allows the conditional rendering of the "DV Data" header -->
-        <utils:MeasurmentVisibility x:Key="MeasurmentVisibility" />
+        <utils:DvDataVisibility x:Key="DvDataVisibility" />
+        <utils:MeasurementValueVisibility x:Key="MeasurementValueVisibility" />
     </UserControl.Resources>
 
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
-                <!-- Top 10% of the screen -->
                 <RowDefinition Height="Auto" />
                 <!-- Auto sizes to the height of the content -->
                 <RowDefinition Height="Auto" />
                 <!-- Middle 70% of the screen (the carousel) -->
                 <RowDefinition Height="0.7*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -91,14 +92,53 @@
                                            Margin="10"
                                            FontWeight="Bold"
                                            TextAlignment="Center"
-                                           IsVisible="{Binding Measurements, Converter={StaticResource MeasurmentVisibility}}" />
+                                           IsVisible="{Binding Measurements, Converter={StaticResource DvDataVisibility}}" />
                                 <ItemsControl ItemsSource="{Binding Measurements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center" />
+                                            <ContentControl x:Name="ContentControl">
+                                                <ContentControl.Template>
+                                                    <ControlTemplate>
+                                                        <TextBlock TextAlignment="Center" x:Name="Measurements">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding
+                                                                    Converter="{StaticResource MeasurementValueVisibility}">
+                                                                    <MultiBinding.Bindings>
+                                                                        <Binding />
+                                                                        <!-- Note:  We have to bind this way because regular bindings go to the carousels data context, so we need to get the relative data context, and cast it otherwise it thinks its an object-->
+                                                                        <Binding
+                                                                            Path="((vm:ScrutineeringViewModel)DataContext).SteeringAngle"
+                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}"
+                                                                            StringFormat="F2" />
+                                                                        <Binding
+                                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousMissionIndicator"
+                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                        <Binding
+                                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousSystemState"
+                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                        <Binding
+                                                                            Path="((vm:ScrutineeringViewModel)DataContext).ServiceBrakeState"
+                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                        <Binding
+                                                                            Path="((vm:ScrutineeringViewModel)DataContext).EmergencyBrakeState"
+                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                    </MultiBinding.Bindings>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </ControlTemplate>
+                                                </ContentControl.Template>
+                                            </ContentControl>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Pass" Background="Green" Foreground="White" Margin="5"
+                                            Click="OnPass" Tag="{Binding Id}" />
+                                    <Button Content="Fail" Background="Red" Foreground="White" Margin="5"
+                                            Click="OnFail" Tag="{Binding Id}" />
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </Carousel.ItemTemplate>
@@ -124,6 +164,17 @@
                 <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="White" FontSize="18"
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
+
+            <StackPanel Grid.Row="2" Grid.Column="2">
+                <Expander Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
+                          HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"
+                          Padding="10" Margin="10">
+                    <ItemsControl Name="AllStepsList" Foreground="White" />
+                </Expander>
+                <Button Background="White" Foreground="Black" Click="OnReset"
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Content="Reset" Margin="5" FontSize="18"
+                        FontWeight="Bold" />
+            </StackPanel>
         </Grid>
     </Panel>
 </UserControl>
