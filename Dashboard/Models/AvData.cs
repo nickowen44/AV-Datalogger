@@ -23,6 +23,7 @@ public record AvData
     {
         Actual = 0, Target = 0
     };
+
     public double LateralAcceleration { get; init; }
     public double LongitudinalAcceleration { get; init; }
     public double YawRate { get; init; }

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
 using Avalonia.Input;
-using Avalonia.Layout;
 using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
@@ -46,7 +45,7 @@ public class DemoTest
             }
         });
 
-        var window = new DataView()
+        var window = new DataView
         {
             DataContext = new DataViewModel(_dataStore.Object)
         };
@@ -98,15 +97,13 @@ public class DemoTest
             Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
             Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 0"));
         });
-
     }
 
     [AvaloniaTest]
     public void TestNavigation()
     {
-
         // Arrange
-        var window = new MainWindowView()
+        var window = new MainWindowView
         {
             DataContext = new MainWindowViewModel(_serviceProvider.Object)
         };

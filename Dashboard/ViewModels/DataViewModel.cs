@@ -8,10 +8,6 @@ public class DataViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
 
-    public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
-    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
-    public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
-
     public DataViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
@@ -24,6 +20,10 @@ public class DataViewModel : ViewModelBase
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector());
     }
+
+    public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
+    public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
+    public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
 
     /// <summary>
     ///     Notifies the view that the AV data has changed.

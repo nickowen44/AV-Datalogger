@@ -6,13 +6,13 @@ namespace Dashboard.Connectors.Serial;
 
 public class SerialPortWrapper : ISerialPort
 {
-    public event EventHandler<SerialPortData>? DataReceived;
+    private const double ConnectionTimeout = 5.0;
 
     private readonly SerialPort _serialPort = new();
+    private DateTime _lastMessageReceived = DateTime.Now;
 
     private bool _shouldRun = true;
-    private const double ConnectionTimeout = 5.0;
-    private DateTime _lastMessageReceived = DateTime.Now;
+    public event EventHandler<SerialPortData>? DataReceived;
 
     public void Open()
     {
@@ -62,12 +62,6 @@ public class SerialPortWrapper : ISerialPort
             _serialPort.Open();
     }
 
-    private string ReadLine()
-    {
-        _lastMessageReceived = DateTime.Now;
-        return _serialPort.ReadLine();
-    }
-
     public bool IsConnected
     {
         get
@@ -75,5 +69,11 @@ public class SerialPortWrapper : ISerialPort
             var timeSinceLastMessage = DateTime.Now - _lastMessageReceived;
             return timeSinceLastMessage.TotalSeconds < ConnectionTimeout && _serialPort.IsOpen;
         }
+    }
+
+    private string ReadLine()
+    {
+        _lastMessageReceived = DateTime.Now;
+        return _serialPort.ReadLine();
     }
 }

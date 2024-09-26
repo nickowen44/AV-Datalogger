@@ -6,19 +6,19 @@ namespace DashboardTests.Connectors;
 [TestFixture]
 public class SerialConnectorTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        _serialPortMock = new Mock<ISerialPort>();
+        _serialConnector = new SerialConnector(_serialPortMock.Object);
+    }
+
     private SerialConnector _serialConnector;
     private Mock<ISerialPort> _serialPortMock;
 
     private void RaiseDataReceivedEvent(string input)
     {
         _serialPortMock.Raise(s => s.DataReceived += null, this, new SerialPortData { Buffer = input });
-    }
-
-    [SetUp]
-    public void Setup()
-    {
-        _serialPortMock = new Mock<ISerialPort>();
-        _serialConnector = new SerialConnector(_serialPortMock.Object);
     }
 
     [Test]

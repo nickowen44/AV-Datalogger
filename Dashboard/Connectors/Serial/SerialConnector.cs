@@ -8,12 +8,11 @@ namespace Dashboard.Connectors.Serial;
 
 public partial class SerialConnector(ISerialPort comPort) : IConnector
 {
+    // TODO: Remove below when we have the actual values
+    private readonly Random _random = new();
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
-
-    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
-    private static partial Regex MyRegex();
 
     public void Start()
     {
@@ -27,12 +26,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         comPort.Open();
     }
 
-    private void OnDataReceived(object? _, SerialPortData data)
-    {
-        // We got a new message from the serial port, parse it, removing the newline / return characters
-        ParseMessage(data.Buffer.Trim());
-    }
-
     public void Stop()
     {
         // Remove the event handler
@@ -40,6 +33,15 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
         // Close the serial port
         comPort.Close();
+    }
+
+    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    private static partial Regex MyRegex();
+
+    private void OnDataReceived(object? _, SerialPortData data)
+    {
+        // We got a new message from the serial port, parse it, removing the newline / return characters
+        ParseMessage(data.Buffer.Trim());
     }
 
     private void ParseMessage(string message)
@@ -143,9 +145,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         });
     }
 
-    // TODO: Remove below when we have the actual values
-    private readonly Random _random = new();
-
     private double ParseDouble(string value)
     {
         return value.StartsWith('#') ? _random.NextDouble() * 10 : double.Parse(value);
@@ -160,5 +159,4 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
     }
-
 }

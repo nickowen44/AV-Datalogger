@@ -4,6 +4,8 @@ namespace Dashboard.Connectors.Serial;
 
 public interface ISerialPort
 {
+    bool IsConnected { get; }
+
     /// <summary>
     ///     Called when data is received from the serial port.
     /// </summary>
@@ -26,6 +28,4 @@ public interface ISerialPort
     /// <param name="portName">The name of the port to connect to.</param>
     /// <param name="baudRate">The baudRate to listen at.</param>
     void Configure(string portName, int baudRate);
-
-    bool IsConnected { get; }
 }

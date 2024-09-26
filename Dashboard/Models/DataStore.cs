@@ -5,14 +5,6 @@ namespace Dashboard.Models;
 
 public class DataStore : IDataStore, IDisposable
 {
-    public event EventHandler? GpsDataUpdated;
-    public event EventHandler? AvDataUpdated;
-    public event EventHandler? ResDataUpdated;
-
-    public GpsData? GpsData { get; private set; }
-    public AvData? AvStatusData { get; private set; }
-    public ResData? ResData { get; private set; }
-
     private readonly IConnector _connector;
 
     public DataStore(IConnector connector)
@@ -24,6 +16,26 @@ public class DataStore : IDataStore, IDisposable
         _connector.ResDataUpdated += OnResDataUpdated;
 
         _connector.Start();
+    }
+
+    public event EventHandler? GpsDataUpdated;
+    public event EventHandler? AvDataUpdated;
+    public event EventHandler? ResDataUpdated;
+
+    public GpsData? GpsData { get; private set; }
+    public AvData? AvStatusData { get; private set; }
+    public ResData? ResData { get; private set; }
+
+    public void Dispose()
+    {
+        // Stop the connector
+        _connector.GpsDataUpdated -= OnGpsDataUpdated;
+        _connector.AvDataUpdated -= OnAvDataUpdated;
+        _connector.ResDataUpdated -= OnResDataUpdated;
+
+        _connector.Stop();
+
+        GC.SuppressFinalize(this);
     }
 
     private void OnGpsDataUpdated(object? sender, GpsData e)
@@ -45,17 +57,5 @@ public class DataStore : IDataStore, IDisposable
         ResData = e;
 
         ResDataUpdated?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void Dispose()
-    {
-        // Stop the connector
-        _connector.GpsDataUpdated -= OnGpsDataUpdated;
-        _connector.AvDataUpdated -= OnAvDataUpdated;
-        _connector.ResDataUpdated -= OnResDataUpdated;
-
-        _connector.Stop();
-
-        GC.SuppressFinalize(this);
     }
 }

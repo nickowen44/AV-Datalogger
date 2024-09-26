@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Threading;
 using Dashboard.Models;
 using Dashboard.Utils;
@@ -7,11 +7,10 @@ namespace Dashboard.Connectors;
 
 public class DummyConnector : IConnector
 {
+    private bool _shouldStop;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
-
-    private bool _shouldStop;
 
     public void Start()
     {
