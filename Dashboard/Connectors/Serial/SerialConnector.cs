@@ -21,9 +21,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     public event EventHandler<bool>? HeartBeatUpdated;
     private const string HeartBeatMessage = "CON?";
     private bool _heartBeatShouldRun = true;
-    private DateTime _lastMessageReceived = DateTime.Now;
     private Thread? _heartbeatThread;
-    private int _timeOut = 5;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
     public void Start()
     {
@@ -38,8 +36,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         {
             while (_heartBeatShouldRun)
             {
-                var timeSinceLastMessage = DateTime.Now - _lastMessageReceived;
-                if (timeSinceLastMessage.TotalSeconds > _timeOut)
+                if (!comPort.IsConnected)
                 {
                     // If Heart beat should be sent then write and wait 1 second.
                     SendHeartbeat();
@@ -58,7 +55,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         // We got a new message from the serial port, parse it, removing the newline / return characters
         ParseMessage(data.Buffer.Trim());
-        _lastMessageReceived = DateTime.Now;
     }
 
     public void Stop()
@@ -182,21 +178,16 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Check if the UTC value includes the leading zero for months, if not add.
         if (timeString.Length == 20)
         {
-            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3); // Extracts "2024820"
+            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8); 
         }
         else
         {
-            datePart = timeString.Substring(1, 8);
+            datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
         }
 
-        string timePart = timeString.Substring(9, 8);
+        DateTime parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
 
-        DateTime parsedDate = DateTime.ParseExact(datePart, "yyyyMMdd", CultureInfo.InvariantCulture);
-        TimeSpan parsedTime = TimeSpan.ParseExact(timePart, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
-
-        DateTime localDateTime = parsedDate.Add(parsedTime);
-
-        return localDateTime;
+        return parsedDate;
     }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
