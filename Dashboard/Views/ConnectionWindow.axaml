@@ -1,10 +1,16 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        x:Class="Dashboard.ConnectionWindow"
-        Title="ConnectionWindow"
-        Width="800"
-        Height="500">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
+             x:DataType="vm:ConnectionWindowViewModel"
+             x:Class="Dashboard.Views.ConnectionWindow"
+             Width="800"
+             Height="500">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:ConnectionWindowViewModel />
+    </Design.DataContext>
     <DockPanel>
 
         <!-- Main Content Grid -->
@@ -17,41 +23,39 @@
             <StackPanel Grid.Column="0" Margin="20">
                 <!-- Connection Type -->
                 <TextBlock Text="Connection Type" Margin="0, 10, 0, 5"/>
-                <ComboBox Width="200">
+                <ComboBox Width="200" SelectedItem="{Binding SelectedConnectionType}">
                     <ComboBoxItem>Serial Port</ComboBoxItem>
                     <ComboBoxItem>TCP</ComboBoxItem>
                     <ComboBoxItem>File (.CSV)</ComboBoxItem>
-                    
                 </ComboBox>
 
                 <!-- Serial Port -->
-
-                 <TextBlock Text="Serial Port" Margin="0, 10, 0, 5"/>
-                <StackPanel Orientation="Horizontal">
-
-                    <ComboBox x:Name="cmbSerialPort" Width="200" Margin="0, 10, 0, 5"></ComboBox>
-
-                    <!-- Refresh Button -->
-                    <Button Content="↻" Width="30" Click="RefreshPorts" Margin="5,5,0,0"/>
-
+                <StackPanel IsVisible="{Binding IsSerialPortVisible}" Margin="0, 10, 0, 5">
+                    <TextBlock Text="Serial Port" />
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="cmbSerialPort" Width="200" Items="{Binding AvailablePorts}"></ComboBox>
+                        <Button Content="↻" Width="30" Command="{Binding RefreshPortsCommand}" Margin="5,5,0,0"/>
+                    </StackPanel>
                 </StackPanel>
-               
 
+                <!-- TCP -->
+                <StackPanel IsVisible="{Binding IsTCPVisible}" Margin="0, 10, 0, 5">
+                    <TextBlock Text="IP Address" />
+                    <TextBox Width="200" HorizontalAlignment="Left"/>
+                </StackPanel>
 
-                 <!-- IP Address -->
-                <TextBlock Text="IP Address" Margin="0, 15, 0, 5"/>
-                <TextBox Width="200" HorizontalAlignment="Left"/>
-
-                <!-- Simulation -->
-                <TextBlock Text="Simulation" Margin="0, 10, 0, 5"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="200"/>
-                    <Button Content="..." Width="30" Margin="5,0,0,0"/>
+                <!-- File -->
+                <StackPanel IsVisible="{Binding IsFileVisible}" Margin="0, 10, 0, 5">
+                    <TextBlock Text="Simulation" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="200"/>
+                        <Button Content="..." Width="30" Margin="5,0,0,0"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- Connect Button -->
-                <Button Content="Connect"  Margin="0,30,0,0" Background="#00FFFF" FontWeight="Bold" Foreground="White" IsEnabled="False"/>
+                <Button Content="Connect" Margin="0,30,0,0" Background="#00FFFF" FontWeight="Bold" Foreground="White" IsEnabled="False"/>
             </StackPanel>
         </Grid>
     </DockPanel>
-</Window>
+</UserControl>

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dashboard;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -27,20 +27,17 @@ public partial class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-          /*  desktop.MainWindow = new MainWindow
-            {
-                DataContext = services.GetRequiredService<MainViewModel>()
-            };*/
+              desktop.MainWindow = new MainWindow()
+              {
+                  DataContext = services.GetRequiredService<ConnectionWindowViewModel>()
+              };
 
-            desktop.MainWindow = new ConnectionWindow()
+            /*desktop.MainWindow = new ConnectionWindow
             {
                 DataContext = services.GetRequiredService<ConnectionWindowViewModel>()
-            };
-
+            };*/
         }
 
         base.OnFrameworkInitializationCompleted();
     }
-
-
 }

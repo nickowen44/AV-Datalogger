@@ -1,38 +1,28 @@
-using Avalonia;
+using System;
+using System.IO.Ports;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Dashboard.ViewModels;
-using DynamicData;
-using DynamicData.Kernel;
-using System;
-using System.ComponentModel;
-using System.IO.Ports;
-using System.Runtime.CompilerServices;
 
-namespace Dashboard;
+namespace Dashboard.Views;
 
-public partial class ConnectionWindow : Window
+public partial class ConnectionWindow : UserControl
 {
     public ConnectionWindow()
     {
         InitializeComponent();
-       
     }
 
 
-    private void InitializeComponent()
+    /*private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-
     }
 
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-
-    }
+    }*/
 
     private void RefreshPorts(object? sender, RoutedEventArgs? e)
     {
@@ -64,5 +54,4 @@ public partial class ConnectionWindow : Window
             cmbSerialPort.Items.Add("No Ports Available");
         }
     }
-
 }
