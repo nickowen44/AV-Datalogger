@@ -1,8 +1,4 @@
-using System;
-using System.IO.Ports;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 namespace Dashboard.Views;
 
@@ -24,7 +20,7 @@ public partial class ConnectionWindow : UserControl
         base.OnClosed(e);
     }*/
 
-    private void RefreshPorts(object? sender, RoutedEventArgs? e)
+    /*private void RefreshPorts(object? sender, RoutedEventArgs? e)
     {
         var cmbSerialPort = this.Find<ComboBox>("cmbSerialPort");
         //cmbSerialPort.Items.Add(null);
@@ -53,5 +49,5 @@ public partial class ConnectionWindow : UserControl
         {
             cmbSerialPort.Items.Add("No Ports Available");
         }
-    }
+    }*/
 }

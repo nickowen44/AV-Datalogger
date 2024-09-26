@@ -27,10 +27,10 @@ public class App : Application
             // Setup dependency injection
             var services = DependencyInjection.ConfigureServices();
 
-              desktop.MainWindow = new MainWindow()
-              {
-                  DataContext = services.GetRequiredService<ConnectionWindowViewModel>()
-              };
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = services.GetRequiredService<ConnectionWindowViewModel>()
+            };
 
             /*desktop.MainWindow = new ConnectionWindow
             {

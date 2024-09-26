@@ -5,9 +5,8 @@ namespace Dashboard.Connectors;
 
 public class DummyConnector : IConnector
 {
-    public event EventHandler<DataUpdatedEventArgs>? DataUpdated;
-
     private bool _shouldStop;
+    public event EventHandler<DataUpdatedEventArgs>? DataUpdated;
 
     public void Start()
     {

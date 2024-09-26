@@ -10,13 +10,13 @@ namespace DashboardTests;
 [TestFixture]
 public class DemoTest
 {
-    private Mock<IDataStore> _dataStore;
-
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
+
+    private Mock<IDataStore> _dataStore;
 
     [AvaloniaTest]
     public void TestMainWindow()

@@ -4,11 +4,10 @@ namespace Dashboard.Models;
 
 public interface IDataStore
 {
-    event EventHandler DataUpdated;
-
     double Speed { get; }
     double SteeringAngle { get; }
     double BrakePressure { get; }
+    event EventHandler DataUpdated;
 
     /// <summary>
     ///     Updates the data store with the new values.

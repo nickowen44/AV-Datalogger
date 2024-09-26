@@ -5,12 +5,6 @@ namespace Dashboard.Models;
 
 public class DataStore : IDataStore, IDisposable
 {
-    public event EventHandler? DataUpdated;
-
-    public double Speed { get; private set; }
-    public double SteeringAngle { get; private set; }
-    public double BrakePressure { get; private set; }
-
     private readonly IConnector _connector;
 
     public DataStore(IConnector connector)
@@ -21,6 +15,12 @@ public class DataStore : IDataStore, IDisposable
         _connector.Start();
     }
 
+    public event EventHandler? DataUpdated;
+
+    public double Speed { get; private set; }
+    public double SteeringAngle { get; private set; }
+    public double BrakePressure { get; private set; }
+
     public void UpdateData(double speed, double steeringAngle, double brakePressure)
     {
         Speed = speed;
@@ -30,11 +30,6 @@ public class DataStore : IDataStore, IDisposable
         DataUpdated?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnDataUpdated(object? sender, DataUpdatedEventArgs e)
-    {
-        UpdateData(e.Speed, e.SteeringAngle, e.BrakePressure);
-    }
-
     public void Dispose()
     {
         _connector.DataUpdated -= OnDataUpdated;
@@ -42,5 +37,10 @@ public class DataStore : IDataStore, IDisposable
         _connector.Stop();
 
         GC.SuppressFinalize(this);
+    }
+
+    private void OnDataUpdated(object? sender, DataUpdatedEventArgs e)
+    {
+        UpdateData(e.Speed, e.SteeringAngle, e.BrakePressure);
     }
 }
