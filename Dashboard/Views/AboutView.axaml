@@ -1,0 +1,66 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Dashboard.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:AboutViewModel />
+    </Design.DataContext>
+
+    <ScrollViewer>
+        <StackPanel Margin="5" Spacing="5">
+            <Border Background="White" Padding="5" BorderThickness="1" BorderBrush="Black">
+                <StackPanel Spacing="5">
+                    <TextBlock Name="IntroParagraph">
+                        This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
+                    </TextBlock>
+                    <TextBlock Name="TeamMembers">
+                        <Run Text="Team Members:" FontWeight="Bold" />
+                        <LineBreak />
+                        <Run Text=" - Erin Lumsden" />
+                        <LineBreak />
+                        <Run Text=" - Sarmad Wani" />
+                        <LineBreak />
+                        <Run Text=" - Ariadne Ventura-Koumides" />
+                        <LineBreak />
+                        <Run Text=" - Nicholas Dagher" />
+                        <LineBreak />
+                        <Run Text=" - Richard Quach" />
+                    </TextBlock>
+                    <TextBlock Name="Supervisor">
+                        <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <Border Background="White" Padding="5" BorderThickness="1"
+                        BorderBrush="Black"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Stretch">
+                    <StackPanel Spacing="5">
+                        <TextBlock Name="SoftwareInfo" FontWeight="Bold">Software Information:</TextBlock>
+                        <StackPanel>
+                            <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
+                            <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" Padding="5" BorderThickness="1"
+                        BorderBrush="Black"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <StackPanel Spacing="5">
+                        <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
+                        <TextBlock
+                            Name="CurrentYear"
+                            Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

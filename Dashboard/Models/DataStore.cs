@@ -5,42 +5,57 @@ namespace Dashboard.Models;
 
 public class DataStore : IDataStore, IDisposable
 {
+    public event EventHandler? GpsDataUpdated;
+    public event EventHandler? AvDataUpdated;
+    public event EventHandler? ResDataUpdated;
+
+    public GpsData? GpsData { get; private set; }
+    public AvData? AvStatusData { get; private set; }
+    public ResData? ResData { get; private set; }
+
     private readonly IConnector _connector;
 
     public DataStore(IConnector connector)
     {
         _connector = connector;
-        _connector.DataUpdated += OnDataUpdated;
+
+        _connector.GpsDataUpdated += OnGpsDataUpdated;
+        _connector.AvDataUpdated += OnAvDataUpdated;
+        _connector.ResDataUpdated += OnResDataUpdated;
 
         _connector.Start();
     }
 
-    public event EventHandler? DataUpdated;
-
-    public double Speed { get; private set; }
-    public double SteeringAngle { get; private set; }
-    public double BrakePressure { get; private set; }
-
-    public void UpdateData(double speed, double steeringAngle, double brakePressure)
+    private void OnGpsDataUpdated(object? sender, GpsData e)
     {
-        Speed = speed;
-        SteeringAngle = steeringAngle;
-        BrakePressure = brakePressure;
+        GpsData = e;
 
-        DataUpdated?.Invoke(this, EventArgs.Empty);
+        GpsDataUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnAvDataUpdated(object? sender, AvData e)
+    {
+        AvStatusData = e;
+
+        AvDataUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnResDataUpdated(object? sender, ResData e)
+    {
+        ResData = e;
+
+        ResDataUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public void Dispose()
     {
-        _connector.DataUpdated -= OnDataUpdated;
+        // Stop the connector
+        _connector.GpsDataUpdated -= OnGpsDataUpdated;
+        _connector.AvDataUpdated -= OnAvDataUpdated;
+        _connector.ResDataUpdated -= OnResDataUpdated;
 
         _connector.Stop();
 
         GC.SuppressFinalize(this);
-    }
-
-    private void OnDataUpdated(object? sender, DataUpdatedEventArgs e)
-    {
-        UpdateData(e.Speed, e.SteeringAngle, e.BrakePressure);
     }
 }

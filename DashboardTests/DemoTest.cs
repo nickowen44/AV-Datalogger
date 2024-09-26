@@ -1,6 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Dashboard.Models;
+using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
 using Moq;
@@ -14,65 +19,42 @@ public class DemoTest
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
+        _serviceProvider = new Mock<IServiceProvider>();
     }
 
     private Mock<IDataStore> _dataStore;
+    private Mock<IServiceProvider> _serviceProvider;
 
-    [AvaloniaTest]
-    public void TestMainWindow()
-    {
-        // Arrange
-        var window = new MainWindow
-        {
-            DataContext = new MainViewModel(_dataStore.Object)
-        };
-
-        // Act
-        window.Show();
-
-        // Assert
-        Assert.That(window, Is.Not.Null);
-        Assert.That(window, Is.InstanceOf<MainWindow>());
-
-        var speed = window.FindControl<TextBlock>("SpeedDisplay");
-        var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
-        var brakePressure = window.FindControl<TextBlock>("BrakePressureDisplay");
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(speed, Is.Not.Null);
-            Assert.That(steeringAngle, Is.Not.Null);
-            Assert.That(brakePressure, Is.Not.Null);
-        });
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(speed.Text, Is.EqualTo("Speed: 0"));
-            Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
-            Assert.That(brakePressure.Text, Is.EqualTo("Brake Pressure: 0"));
-        });
-    }
 
     [AvaloniaTest]
     public void TestDataStore()
     {
         // Arrange
-        _dataStore.SetupGet(x => x.Speed).Returns(50);
-        _dataStore.SetupGet(x => x.SteeringAngle).Returns(90);
-        _dataStore.SetupGet(x => x.BrakePressure).Returns(100);
-
-        var window = new MainWindow
+        _dataStore.SetupGet(x => x.AvStatusData).Returns(new AvData
         {
-            DataContext = new MainViewModel(_dataStore.Object)
-        };
+            Speed = new ValuePair<double>
+            {
+                Actual = 50, Target = 50
+            },
+            SteeringAngle = new ValuePair<double>
+            {
+                Actual = 90, Target = 90
+            },
+            BrakeActuation = new ValuePair<double>
+            {
+                Actual = 100, Target = 100
+            }
+        });
 
-        // Act
-        window.Show();
+        var window = new DataView()
+        {
+            DataContext = new DataViewModel(_dataStore.Object)
+        };
 
         // Assert
         var speed = window.FindControl<TextBlock>("SpeedDisplay");
         var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
-        var brakePressure = window.FindControl<TextBlock>("BrakePressureDisplay");
+        var brakePressure = window.FindControl<TextBlock>("BrakeActuationDisplay");
 
         Assert.Multiple(() =>
         {
@@ -85,7 +67,85 @@ public class DemoTest
         {
             Assert.That(speed.Text, Is.EqualTo("Speed: 50"));
             Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 90"));
-            Assert.That(brakePressure.Text, Is.EqualTo("Brake Pressure: 100"));
+            Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 100"));
         });
+    }
+
+    [AvaloniaTest]
+    public void TestNullAvData()
+    {
+        // Arrange
+        var window = new DataView
+        {
+            DataContext = new DataViewModel(_dataStore.Object)
+        };
+
+        // Assert
+        var speed = window.FindControl<TextBlock>("SpeedDisplay");
+        var steeringAngle = window.FindControl<TextBlock>("SteeringAngleDisplay");
+        var brakePressure = window.FindControl<TextBlock>("BrakeActuationDisplay");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(speed, Is.Not.Null);
+            Assert.That(steeringAngle, Is.Not.Null);
+            Assert.That(brakePressure, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(speed.Text, Is.EqualTo("Speed: 0"));
+            Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
+            Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 0"));
+        });
+
+    }
+
+    [AvaloniaTest]
+    public void TestNavigation()
+    {
+
+        // Arrange
+        var window = new MainWindowView()
+        {
+            DataContext = new MainWindowViewModel(_serviceProvider.Object)
+        };
+
+        // Act
+        window.Show();
+
+        // Assert
+        Assert.That(window, Is.Not.Null);
+        Assert.That(window, Is.InstanceOf<MainWindowView>());
+
+        var naviBar = window.FindControl<ListBox>("NaviBar");
+        var mainContent = window.FindControl<ContentControl>("MainContent");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar, Is.Not.Null);
+            Assert.That(mainContent, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(defaultSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(defaultSelectedItem.View));
+        });
+
+        var changedSelectedItem = new ListItemTemplate(typeof(SetupView), null, "Setup");
+
+        // Click on Setup button.
+        window.MouseDown(new Point(135, 70), MouseButton.Left);
+        window.MouseUp(new Point(135, 70), MouseButton.Left);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
+            Assert.That(mainContent.Content, Is.InstanceOf(changedSelectedItem.View));
+        });
+
+        window.Close();
     }
 }
