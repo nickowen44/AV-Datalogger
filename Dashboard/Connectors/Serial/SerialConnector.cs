@@ -178,7 +178,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Check if the UTC value includes the leading zero for months, if not add.
         if (timeString.Length == 20)
         {
-            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8); 
+            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
         }
         else
         {
