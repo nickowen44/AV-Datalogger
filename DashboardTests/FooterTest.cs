@@ -121,6 +121,9 @@ public class FooterTest
         // Arrange
         _dataStore.SetupGet(x => x.RawData).Returns(new RawData()
         {
+            CarId = "A46",
+            UTCTime = DateTime.Parse("2024-08-20 06:56:04"),
+            RawMessage = "ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###",
             ConnectionStatus = false,
         });
 

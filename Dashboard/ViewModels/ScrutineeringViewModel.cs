@@ -51,25 +51,20 @@ public partial class ScrutineeringViewModel : ViewModelBase
         LoadYamlData(_yamlFilePath);
     }
 
+    public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
+    public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
+
+    public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
+
+    public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 0;
+
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
-
-    /// <summary>
-    ///     Handles the cleanup when the view model is no longer needed.
-    /// </summary>
-    public override void Dispose()
-    {
-        _dataStore.AvDataUpdated -= OnDataChanged;
-
-        _dataStore.Dispose();
-
-        GC.SuppressFinalize(this);
-    }
 
     /// <summary>
     ///     Load in yaml data from specified file.
     /// </summary>
     /// <param name="filePath">The yaml's filepath</param>
-    public void LoadYamlData(string filePath)
+    private void LoadYamlData(string filePath)
     {
         try
         {
@@ -98,7 +93,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
                     new()
                     {
                         Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                        Id = 0, Inspection = ""
+                        Id = "0", Inspection = ""
                     }
                 },
                 Top = "",
@@ -120,6 +115,12 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
+        Console.WriteLine("AV Data Updated in ScrutineeringViewModel");
+
+        OnPropertyChanged(nameof(AutonomousSystemState));
+        OnPropertyChanged(nameof(EmergencyBrakeState));
+        OnPropertyChanged(nameof(AutonomousMissionIndicator));
+        OnPropertyChanged(nameof(ServiceBrakeState));
         OnPropertyChanged(nameof(SteeringAngle));
     }
 }

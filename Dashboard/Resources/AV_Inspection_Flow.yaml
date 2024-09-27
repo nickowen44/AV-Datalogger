@@ -29,7 +29,7 @@ steps:
         measurements:
             - "Autonomous System State"
             - "Service Brake State"
-            - "Emergency Brake System State"
+            - "Emergency Brake State"
     -   step: "Blue ASSI is clearly visible in sunlight."
         id: 7.7
         inspection: "Visual Check"
@@ -38,7 +38,7 @@ steps:
         id: 7.8
         inspection: "Team Demonstration"
         measurements:
-            - "Emergency Brake System State"
+            - "Emergency Brake State"
             - "Service Brake State"
     -   step: "Whilst observing the CAN messages from the data logger power cycle LV system and enter 'AS Ready' state. Vehicle enters 'AS Ready' state, ASSI are yellow and continuous. Vehicle is not in Ready to Drive, that is the state is not in AS Ready."
         id: 7.9
@@ -50,14 +50,14 @@ steps:
         inspection: "Team Demonstration"
         measurements:
             - "Autonomous System State"
-            - "Emergency Brake System State"
+            - "Emergency Brake State"
             - "Service Brake State"
     -   step: "Turn off ASMS and reset EBS. Power cycle LV system and enter 'AS Driving' state again with inspection mission still selected. Vehicle transitions to 'AS Driving' state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
         id: 7.11
         inspection: "Team Demonstration"
         measurements:
             - "Autonomous System State"
-            - "Emergency Brake System State"
+            - "Emergency Brake State"
             - "Autonomous Mission Indicator"
             - "Steering Angle"
     -   step: "Press RES Shutdown button. TS deactivates without significant delay. Vehicle transitions to  'AS Emergency' state. ASSI are blue and flashing. EBS is activated and brakes are engaged. The reaction time betweem oppening the SDC must not exceed 200ms."
@@ -65,7 +65,7 @@ steps:
         inspection: "Team Demonstration"
         measurements:
             - "Autonomous System State"
-            - "Emergency Brake System State"
+            - "Emergency Brake State"
             - "Service Brake State"
     -   step: "Ensure that once any autonomous mission has been selected and activated no other method of control is possible, i.e. remote control. Receiving information from the vehicle via one-way-telemetry is allowed. The only device that is allowed to send commands by wireless communication at all times is the RES described."
         id: 7.13
