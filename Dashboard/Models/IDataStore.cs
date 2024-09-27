@@ -7,10 +7,13 @@ public interface IDataStore
     event EventHandler GpsDataUpdated;
     event EventHandler AvDataUpdated;
     event EventHandler ResDataUpdated;
-
+    event EventHandler RawDataUpdated;
+    event EventHandler<bool> HeartBeatUpdated;
     GpsData? GpsData { get; }
     AvData? AvStatusData { get; }
     ResData? ResData { get; }
+    RawData? RawData { get; }
+    bool? HeartBeat { get; }
 
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.

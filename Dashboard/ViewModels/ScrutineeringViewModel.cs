@@ -8,7 +8,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Dashboard.ViewModels;
 
-public partial class ScrutineeringViewModel : ViewModelBase, IDisposable
+public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;

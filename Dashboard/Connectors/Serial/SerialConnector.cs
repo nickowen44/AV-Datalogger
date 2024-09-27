@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Text.RegularExpressions;
 using Dashboard.Models;
 using Dashboard.Utils;
@@ -15,6 +17,12 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
     private static partial Regex MyRegex();
 
+    public event EventHandler<RawData>? RawDataUpdated;
+    public event EventHandler<bool>? HeartBeatUpdated;
+    private const string HeartBeatMessage = "CON?";
+    private bool _heartBeatShouldRun = true;
+    private Thread? _heartbeatThread;
+    private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
     public void Start()
     {
         // Set up the connection to the serial port
@@ -22,6 +30,22 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
+
+        //Set up Heart Beat thread 
+        _heartbeatThread = new Thread(() =>
+        {
+            while (_heartBeatShouldRun)
+            {
+                if (!comPort.IsConnected)
+                {
+                    // If Heart beat should be sent then write and wait 1 second.
+                    SendHeartbeat();
+                    Thread.Sleep(1000);
+                }
+                _heartbeatEvent.WaitOne(1000);
+            }
+        });
+        _heartbeatThread.Start();
 
         // Open our serial port
         comPort.Open();
@@ -38,6 +62,10 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
 
+        // Stop the Heart Beat thread
+        _heartBeatShouldRun = false;
+        _heartbeatEvent.Set();
+
         // Close the serial port
         comPort.Close();
     }
@@ -48,8 +76,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         if (!MyRegex().IsMatch(message))
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
 
-        // All messages start with the format "#ID=<ID>|UTC=<TIME>|<MSG>", so we split the message by the '|', and remove the first 2 elements
-        var split = message.Split('|')[2..];
+        var split = message.Substring(1).Split('|');
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
         // GPS starts with "LAT", AV Status starts with "SA", and RES starts with "RES"
@@ -60,11 +87,11 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             var pair = s.Split('=');
 
             // If we don't have a key-value pair, we throw an exception
-            if (pair.Length != 2)
+            if (pair.Length < 2)
                 throw new InvalidOperationException($"Invalid key-value pair: {s}",
                     new Exception($"Buffer str: {message}"));
 
-            values.Add(pair[0], pair[1]);
+            values[pair[0]] = pair[1];
         }
 
         if (values.ContainsKey("LAT"))
@@ -75,6 +102,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         else
             throw new InvalidOperationException("Unknown message type received",
                 new Exception($"Buffer str: {message}"));
+        ParseRawMessage(values, message);
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
@@ -143,6 +171,37 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         });
     }
 
+    private DateTime ParseUTCTime(string timeString)
+    {
+
+        string datePart = "";
+        // Check if the UTC value includes the leading zero for months, if not add.
+        if (timeString.Length == 20)
+        {
+            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
+        }
+        else
+        {
+            datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
+        }
+
+        DateTime parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
+
+        return parsedDate;
+    }
+
+    private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
+    {
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = values["ID"],
+            UTCTime = ParseUTCTime(values["UTC"]),
+            RawMessage = rawMessage,
+            ConnectionStatus = comPort.IsConnected,
+        });
+    }
+
+
     // TODO: Remove below when we have the actual values
     private readonly Random _random = new();
 
@@ -161,4 +220,9 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         return value.StartsWith('#') ? _random.Next() % 2 == 0 : value == "1";
     }
 
+    private void SendHeartbeat()
+    {
+        Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
+        HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+    }
 }

@@ -18,6 +18,8 @@ namespace Dashboard.ViewModels
         [ObservableProperty]
         private object? _currentPage;
         [ObservableProperty]
+        private UserControl? _footer;
+        [ObservableProperty]
         private ListItemTemplate _selectedListItem;
         /// <summary>
         /// Dictionary of the Views with their ViewModel and shorthand names.
@@ -40,6 +42,10 @@ namespace Dashboard.ViewModels
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
             SelectedListItem = Items.First();
+            _footer = new FooterView
+            {
+                DataContext = _serviceProvider.GetRequiredService<FooterViewModel>()
+            };
         }
 
         /// <summary>
@@ -107,6 +113,7 @@ namespace Dashboard.ViewModels
         public override void Dispose()
         {
             Console.WriteLine("Dispose for MainViewModel Triggered");
+
             _serviceProvider.GetService<IDataStore>()?.Dispose();
 
             GC.SuppressFinalize(this);

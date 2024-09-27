@@ -8,6 +8,8 @@ public interface IConnector
     event EventHandler<GpsData> GpsDataUpdated;
     event EventHandler<AvData> AvDataUpdated;
     event EventHandler<ResData> ResDataUpdated;
+    event EventHandler<RawData> RawDataUpdated;
+    event EventHandler<bool> HeartBeatUpdated;
 
     /// <summary>
     ///     Handles setting up the connector to the data source.
