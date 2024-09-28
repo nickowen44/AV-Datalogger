@@ -105,7 +105,7 @@
                                     <!-- Steering Angle actual -->
                                     <TextBlock Text="Steering Angle (º Degrees)" FontSize="24" />
                                     <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleTarget}"  Width="800"
+                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleActual}"  Width="800"
                                                 IsEnabled="False" Grid.Column="0" Margin="0,0,20,0" />
                                         <TextBlock Text="Actual" VerticalAlignment="Center" Grid.Column="0"
                                                    Grid.Row="1" />
@@ -115,7 +115,7 @@
                                     </Grid>
                                     <!-- Steering Angle target -->
                                     <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleActual}" Width="800"
+                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleTarget}" Width="800"
                                                 IsEnabled="False" Grid.Column="0" Margin="0,0,20,0" />
                                         <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0"
                                                    Grid.Row="1" />
