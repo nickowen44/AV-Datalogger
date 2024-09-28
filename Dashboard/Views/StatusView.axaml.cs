@@ -18,7 +18,7 @@ public partial class StatusView : UserControl
         _RESIcon = this.FindControl<Image>("ResIcon");
         Loaded += StatusViewLoaded;
     }
-    
+
     private void StatusViewLoaded(object? sender, EventArgs e)
     {
         if (DataContext is StatusViewModel viewModel)
@@ -26,15 +26,15 @@ public partial class StatusView : UserControl
             viewModel.RESDataUpdated += OnRESUpdate;
         }
     }
-    
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     private void OnRESUpdate(bool RESState)
     {
- 
+
         Dispatcher.UIThread.Post(() =>
         {
             if (RESState)

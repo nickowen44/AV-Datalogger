@@ -212,7 +212,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private int ParseInt(string value)
     {
-        return value.StartsWith('#') ? _random.Next(0,5) : int.Parse(value);
+        return value.StartsWith('#') ? _random.Next(0, 5) : int.Parse(value);
     }
 
     private bool ParseBool(string value)

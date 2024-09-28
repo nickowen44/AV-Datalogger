@@ -14,7 +14,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         _dataStore.AvDataUpdated += OnAVDataChanged;
         _dataStore.ResDataUpdated += OnResDataChanged;
     }
-    
+
     public StatusViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
@@ -43,7 +43,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
     public bool RemoteEmergency => _dataStore.ResData?.ResState ?? true;
-    
+
     private void OnAVDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
