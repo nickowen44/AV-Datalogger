@@ -11,7 +11,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
-        _dataStore.AvDataUpdated += OnAVDataChanged;
+        _dataStore.AvDataUpdated += OnAvDataChanged;
         _dataStore.ResDataUpdated += OnResDataChanged;
     }
 
@@ -42,9 +42,9 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
-    public bool RemoteEmergency => _dataStore.ResData?.ResState ?? true;
+    public bool RemoteEmergency => _dataStore.ResData?.ResState ?? false;
 
-    private void OnAVDataChanged(object? sender, EventArgs e)
+    private void OnAvDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
         OnPropertyChanged(nameof(SteeringAngleActual));
