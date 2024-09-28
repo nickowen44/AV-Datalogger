@@ -35,7 +35,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
 
     public double BrakePressureTarget => _dataStore.AvStatusData?.BrakeActuation.Target ?? 0;
 
-    public double MotorMomentTarget => _dataStore.AvStatusData?.MotorMoment.Target ?? 0;
+    public double MotorMomentTarget => _dataStore.AvStatusData?.MotorMoment.Target ?? 0;for
 
     public int MissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 0;
 

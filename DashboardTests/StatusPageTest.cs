@@ -13,13 +13,13 @@ namespace DashboardTests;
 public class OverviewPageTest
 {
     private Mock<IDataStore> _dataStore;
-    
+
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
-    
+
 
     [AvaloniaTest]
     public void TestThatStatusPageRendersCorrectly()
@@ -35,7 +35,7 @@ public class OverviewPageTest
         var resIcon = window.FindControl<Image>("ResIcon");
         Assert.IsNotNull(resIcon);
     }
-    
+
     [AvaloniaTest]
     public void TestStatusPageValues()
     {
@@ -58,7 +58,7 @@ public class OverviewPageTest
                 Actual = 100, Target = 80
             }
         });
-        
+
         var window = new StatusView
         {
             DataContext = new StatusViewModel(_dataStore.Object)
@@ -73,7 +73,7 @@ public class OverviewPageTest
         var MotorTextTarget = window.FindControl<TextBlock>("MotorTextTarget");
         var SpeedTextActual = window.FindControl<TextBlock>("SpeedTextActual");
         var SpeedTextTarget = window.FindControl<TextBlock>("SpeedTextTarget");
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(MotorSliderActual, Is.Not.Null);
