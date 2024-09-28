@@ -224,6 +224,45 @@
                         <StackPanel Width="1200">
                             <!-- Content for GPS -->
                             <TextBlock Text="GPS data here" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <!-- Need two columns -->
+                            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                                <StackPanel Grid.Column="0" Grid.Row="0">
+                                    <TextBlock Text="SFA:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <TextBlock Text="NOS:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0">
+                                    <TextBlock Text="HDOP:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Grid.Column="0">
+                                    <TextBlock Text="HFA:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="4" Grid.Column="0">
+                                    <TextBlock Text="SPFA:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="5" Grid.Column="0">
+                                    <TextBlock Text="MPS:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="0" Grid.Column="1">
+                                    <TextBlock Text="KMH:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1">
+                                    <TextBlock Text="AFA:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1">
+                                    <TextBlock Text="ALM:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Grid.Column="1">
+                                    <TextBlock Text="AKM:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="4" Grid.Column="1">
+                                    <TextBlock Text="Longitude:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="5" Grid.Column="1">
+                                    <TextBlock Text="Latitude:"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </TabItem>
 
@@ -231,7 +270,20 @@
                     <TabItem Header="RES">
                         <StackPanel Width="1200">
                             <!-- Content for RES -->
-                            <TextBlock Text="RES data here" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                                <StackPanel Grid.Row="0" Grid.Column="0">
+                                    <TextBlock Text="K2T"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <TextBlock Text="K3B"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0">
+                                    <TextBlock Text="RRQ"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Grid.Column="0">
+                                    <TextBlock Text="NID"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </TabItem>
                 </TabControl>
