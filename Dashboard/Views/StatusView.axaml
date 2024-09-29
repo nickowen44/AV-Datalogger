@@ -223,42 +223,90 @@
                     <TabItem Header="GPS">
                         <StackPanel Width="1200">
                             <!-- Content for GPS -->
-                            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
                                 <StackPanel Grid.Column="0" Grid.Row="0">
-                                    <TextBlock Text="SFA:"/>
+                                    <Grid ColumnDefinitions="Auto, *" Margin="0, 30, 0, 0">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="SFA:"/>
+                                        <TextBlock Text="{Binding SatFixAge}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="0">
-                                    <TextBlock Text="NOS:"/>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="NOS:"/>
+                                        <TextBlock Text="{Binding SatCount}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                        </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="2" Grid.Column="0">
-                                    <TextBlock Text="HDOP:"/>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:"/>
+                                        <TextBlock Text="{Binding Hdop}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                        </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="3" Grid.Column="0">
-                                    <TextBlock Text="HFA:"/>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="HFA:"/>
+                                        <TextBlock Text="{Binding HdopFixAge}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="4" Grid.Column="0">
-                                    <TextBlock Text="SPFA:"/>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:"/>
+                                        <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="5" Grid.Column="0">
-                                    <TextBlock Text="MPS:"/>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Grid.Column="0" FontSize="24" Text="MPS:"/>
+                                        <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                        </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="0" Grid.Column="1">
-                                    <TextBlock Text="KMH:"/>
+                                    <TextBlock FontSize="24" Text="KMH:"/>
+                                    <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="1">
-                                    <TextBlock Text="AFA:"/>
+                                    <TextBlock FontSize="24" Text="AFA:"/>
+                                    <TextBlock Text="{Binding AltFixAge}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="2" Grid.Column="1">
-                                    <TextBlock Text="ALM:"/>
+                                    <TextBlock FontSize="24" Text="ALM:"/>
+                                    <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock Text="AKM:"/>
+                                    <TextBlock FontSize="24" Text="AKM:"/>
+                                    <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="4" Grid.Column="1">
-                                    <TextBlock Text="Longitude:"/>
+                                    <TextBlock FontSize="24" Text="Longitude:"/>
+                                    <TextBlock Text="{Binding Longitude}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="5" Grid.Column="1">
-                                    <TextBlock Text="Latitude:"/>
+                                    <TextBlock FontSize="24" Text="Latitude:"/>
+                                    <TextBlock Text="{Binding Latitude}" FontSize="22"
+                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                               Padding="10,0" TextAlignment="Center" />
                                 </StackPanel>
                             </Grid>
                             <!-- Remote Emergency Stop Status -->

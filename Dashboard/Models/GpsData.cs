@@ -4,10 +4,10 @@ public record GpsData
 {
     public double Latitude { get; init; }
     public double Longitude { get; init; }
-    public double AltitudeMeters { get; init; }
-    public double AltitudeKilmeters { get; init; }
-    public double MeterPerSecond { get; init; }
-    public double KilometersPerHour { get; init; }
+    public double AltitudeMetres { get; init; }
+    public double AltitudeKilometres { get; init; }
+    public double MetresPerSecond { get; init; }
+    public double KilometresPerHour { get; init; }
     public int HdopFixAge { get; init; }
     public double Hdop { get; init; }
     public int HVal { get; init; }

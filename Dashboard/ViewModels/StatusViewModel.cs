@@ -35,6 +35,32 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
 
+    public int SatCount => _dataStore.GpsData?.SatCount ?? 0;
+    
+    public double Hdop => _dataStore.GpsData?.Hdop ?? 0;
+    
+    public int HdopFixAge => _dataStore.GpsData?.HdopFixAge ?? 0;
+    
+    public int HVal  => _dataStore.GpsData?.HVal ?? 0;
+    
+    public int SatFixAge  => _dataStore.GpsData?.SatFixAge ?? 0;
+    
+    public int SpeedFixAge  => _dataStore.GpsData?.SpeedFixAge ?? 0;
+    
+    public int AltFixAge  => _dataStore.GpsData?.AltFixAge ?? 0;
+    
+    public double AltitudeMetres  => _dataStore.GpsData?.AltitudeMetres ?? 0;
+    
+    public double AltitudeKilometres => _dataStore.GpsData?.AltitudeKilometres ?? 0;
+    
+    public double MetresPerSecond => _dataStore.GpsData?.MetresPerSecond ?? 0;
+    
+    public double KilometresPerHour => _dataStore.GpsData?.KilometresPerHour ?? 0;
+    
+    public double Latitude => _dataStore.GpsData?.Latitude ?? 0;
+    
+    public double Longitude => _dataStore.GpsData?.Longitude ?? 0;
+
     private void OnDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
@@ -48,6 +74,18 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(MissionIndicator));
         OnPropertyChanged(nameof(EmergencyBrakeState));
         OnPropertyChanged(nameof(ServiceBrakeState));
+        OnPropertyChanged(nameof(SatCount));
+        OnPropertyChanged(nameof(Hdop));
+        OnPropertyChanged(nameof(HdopFixAge));
+        OnPropertyChanged(nameof(HVal));
+        OnPropertyChanged(nameof(SatFixAge));
+        OnPropertyChanged(nameof(SpeedFixAge));
+        OnPropertyChanged(nameof(AltitudeMetres));
+        OnPropertyChanged(nameof(AltitudeKilometres));
+        OnPropertyChanged(nameof(MetresPerSecond));
+        OnPropertyChanged(nameof(KilometresPerHour));
+        OnPropertyChanged(nameof(Latitude));
+        OnPropertyChanged(nameof(Longitude));
     }
 
     public void Dispose()
