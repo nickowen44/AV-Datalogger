@@ -223,8 +223,6 @@
                     <TabItem Header="GPS">
                         <StackPanel Width="1200">
                             <!-- Content for GPS -->
-                            <TextBlock Text="GPS data here" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <!-- Need two columns -->
                             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
                                 <StackPanel Grid.Column="0" Grid.Row="0">
                                     <TextBlock Text="SFA:"/>
@@ -263,6 +261,19 @@
                                     <TextBlock Text="Latitude:"/>
                                 </StackPanel>
                             </Grid>
+                            <!-- Remote Emergency Stop Status -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2"
+                                        Margin="80,0,0,0">
+                                <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
+                                           Margin="30,0,0,0" />
+                                <Image Name="ResIconGps" Source="../Assets/emergency-stop.png" Width="200"
+                                       Height="200" Margin="0,0,0,0" />
+                                <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22"
+                                           Background="Green" Foreground="White" Padding="10,0"
+                                           Margin="0,0,0,0" TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
                         </StackPanel>
                     </TabItem>
 
@@ -284,6 +295,19 @@
                                     <TextBlock Text="NID"/>
                                 </StackPanel>
                             </Grid>
+                            <!-- Remote Emergency Stop Status -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2"
+                                        Margin="80,0,0,0">
+                                <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
+                                           Margin="30,0,0,0" />
+                                <Image Name="ResIconRes" Source="../Assets/emergency-stop.png" Width="200"
+                                       Height="200" Margin="0,0,0,0" />
+                                <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22"
+                                           Background="Green" Foreground="White" Padding="10,0"
+                                           Margin="0,0,0,0" TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
                         </StackPanel>
                     </TabItem>
                 </TabControl>
