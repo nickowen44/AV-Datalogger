@@ -103,12 +103,23 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         }
 
         if (values.ContainsKey("LAT"))
+        {
             ParseGpsMessage(values);
+        }
         else if (values.ContainsKey("SA"))
+        {
             ParseAvStatusMessage(values);
-        else if (values.ContainsKey("RES")) ParseResMessage(values);
+        }
+        else if (values.ContainsKey("RES"))
+        {
+            ParseResMessage(values);
+        }
         else
+        {
             logger.LogError("Unknown message type received: {message}", message);
+            throw new InvalidOperationException("Unknown message type received",
+                new Exception($"Buffer str: {message}"));
+        }
         
         ParseRawMessage(values, message);
     }

@@ -8,6 +8,7 @@ using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests;
@@ -27,9 +28,9 @@ public class ScrutineeringTests
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var window = new ScrutineeringView
+        var window = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance)
         {
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         // Act
@@ -65,8 +66,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -114,8 +115,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -194,8 +195,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -275,8 +276,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();

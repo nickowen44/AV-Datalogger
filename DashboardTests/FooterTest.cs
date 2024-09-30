@@ -5,9 +5,9 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dashboard.Models;
-using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests;
@@ -31,7 +31,7 @@ public class FooterTest
         // Arrange
         var window = new FooterView()
         {
-            DataContext = new FooterViewModel(_dataStore.Object)
+            DataContext = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance)
         };
 
 
@@ -70,7 +70,7 @@ public class FooterTest
         {
             Content = new FooterView
             {
-                DataContext = new FooterViewModel(_dataStore.Object)
+                DataContext = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance)
             }
         };
 
@@ -131,7 +131,7 @@ public class FooterTest
         {
             Content = new FooterView
             {
-                DataContext = new FooterViewModel(_dataStore.Object)
+                DataContext = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance)
             }
         };
 

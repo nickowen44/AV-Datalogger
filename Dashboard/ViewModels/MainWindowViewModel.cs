@@ -8,6 +8,7 @@ using Dashboard.Models;
 using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels
 {
@@ -41,6 +42,8 @@ namespace Dashboard.ViewModels
         public MainWindowViewModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            _logger = serviceProvider.GetService<ILogger<MainWindowViewModel>>() ??
+                      NullLogger<MainWindowViewModel>.Instance;
 
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
@@ -49,8 +52,6 @@ namespace Dashboard.ViewModels
             {
                 DataContext = _serviceProvider.GetRequiredService<FooterViewModel>()
             };
-
-            _logger = serviceProvider.GetRequiredService<ILogger<MainWindowViewModel>>();
         }
 
         /// <summary>
