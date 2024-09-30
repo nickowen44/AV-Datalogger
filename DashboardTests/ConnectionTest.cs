@@ -65,8 +65,11 @@ public class ConnectionTest
         // Arrange
         var window = new Window()
         {
+            Height = 450,
+            Width = 800,
             Content = new ConnectionView()
             {
+
                 DataContext = new ConnectionViewModel()
             }
         };
@@ -96,10 +99,10 @@ public class ConnectionTest
         });
 
         // Change Connection Type to IP Address
-        window.MouseDown(new Point(60, 48), MouseButton.Left);
-        window.MouseUp(new Point(60, 48), MouseButton.Left);
-        window.MouseDown(new Point(51, 108), MouseButton.Left);
-        window.MouseUp(new Point(51, 108), MouseButton.Left);
+        window.MouseDown(new Point(370, 170), MouseButton.Left);
+        window.MouseUp(new Point(370, 170), MouseButton.Left);
+        window.MouseDown(new Point(360, 220), MouseButton.Left);
+        window.MouseUp(new Point(360, 220), MouseButton.Left);
 
         Assert.Multiple(() =>
         {

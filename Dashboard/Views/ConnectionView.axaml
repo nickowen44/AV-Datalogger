@@ -13,51 +13,58 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:ConnectionViewModel />
     </Design.DataContext>
-    <Panel>
+    <Panel VerticalAlignment="Center" HorizontalAlignment="Center">
         <ThemeVariantScope RequestedThemeVariant="Light">
-        <!-- Main Content Grid -->
-        <Grid RowDefinitions="Auto,Auto">
             <Grid>
-            <StackPanel Grid.Row="0" Margin="20" >
-                <!-- Connection Type -->
-                <TextBlock Text="Connection Type" Margin="0, 10, 0, 5" />
-                <ComboBox 
-                    x:Name="ConnectionTypeCombo"
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <!-- Connection Type -->
+    <StackPanel Grid.Row="0" Margin="0,0,50,0" Name="ConnectionTypeSelectionSeection">
+        <TextBlock Text="Connection Type" Margin="0, 10, 0, 5"/>
+        <ComboBox
+            x:Name="ConnectionTypeCombo"
+            Width="200"
+            SelectedItem="{Binding CurrentConnectionType}"
+            ItemsSource="{Binding ConnectionTypes}"
+            Foreground="Black"/>
+    </StackPanel>
+    <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> 
+            <RowDefinition Height="Auto"/> 
+            <RowDefinition Height="Auto"/> 
+        </Grid.RowDefinitions>
+        <!-- Serial Port Section -->
+        <StackPanel Grid.Row="0" Margin="0, 10, 0, 5" Name="SerialPortSection" IsVisible="True">
+            <TextBlock Text="Serial Port" Margin="0, 0, 0, 5" />
+            <StackPanel Orientation="Horizontal">
+                <ComboBox
+                    Name="SerialPortCombo"
                     Width="200"
-                    SelectedItem="{Binding CurrentConnectionType}"
-                    ItemsSource="{Binding ConnectionTypes}"
-                    Foreground="Black"/>
-                <!-- Serial Port Section -->
-                <StackPanel Name="SerialPortSection" IsVisible="False" Margin="0, 10, 0, 5">
-                    <TextBlock Text="Serial Port"/>
-                    <StackPanel Orientation="Horizontal">
-                        <ComboBox 
-                            Name="SerialPortCombo"
-                            Width="200" 
-                            SelectedItem="{Binding SelectedSerialPort}"
-                            ItemsSource="{Binding SerialPorts, Mode=TwoWay}"/>
-                        <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}" Margin="5,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
-                <!-- TCP Section -->
-                <StackPanel Name="TCPSection" IsVisible="False" Margin="0, 10, 0, 5">
-                    <TextBlock Text="IP Address" />
-                    <TextBox Width="200" HorizontalAlignment="Left" />
-                </StackPanel>
-                <!-- File Section -->
-                <StackPanel Name="FileSection" IsVisible="True" Margin="0, 10, 0, 5">
-                    <TextBlock Text="Log File" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Width="200" Name="LogFileSelected"/>
-                        <Button Click="FileSelectionClicked" Content="..." Width="30" Margin="5,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
-                <!-- Connect Button -->
+                    SelectedItem="{Binding SelectedSerialPort}"
+                    ItemsSource="{Binding SerialPorts, Mode=TwoWay}"/>
+                <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}" Margin="5,0,0,0"/>
             </StackPanel>
-            </Grid>
-        <Grid Grid.Row="1">
-            <Button  Content="Connect" Margin="20,0,0,50" FontWeight="Bold" HorizontalAlignment="Left"/>
-        </Grid>
+        </StackPanel>
+        <!-- TCP Section -->
+        <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsVisible="False">
+            <TextBlock Text="IP Address" Margin="0, 0, 0, 5" />
+            <TextBox Width="200" HorizontalAlignment="Left"/>
+        </StackPanel>
+        <!-- File Section -->
+        <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsVisible="False">
+            <TextBlock Text="Log File" Margin="0, 0, 0, 5" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="200" Name="LogFileSelected"/>
+                <Button Click="FileSelectionClicked" Content="..." Width="30" Margin="5,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+    <!-- Connect Button -->
+    <Button Grid.Row="2" Content="Connect" Margin="0,10,50,50" FontWeight="Bold" HorizontalAlignment="Left"/>
         </Grid>
         </ThemeVariantScope>
     </Panel>
