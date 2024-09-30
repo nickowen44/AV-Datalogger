@@ -1,4 +1,5 @@
 ﻿using Dashboard.Connectors.Serial;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests.Connectors;
@@ -18,7 +19,7 @@ public class SerialConnectorTests
     public void Setup()
     {
         _serialPortMock = new Mock<ISerialPort>();
-        _serialConnector = new SerialConnector(_serialPortMock.Object);
+        _serialConnector = new SerialConnector(_serialPortMock.Object, NullLogger<SerialConnector>.Instance);
     }
 
     [Test]

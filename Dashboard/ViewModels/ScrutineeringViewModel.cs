@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -13,14 +14,17 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
     private readonly string _yamlFilePath;
+    private readonly ILogger<ScrutineeringViewModel> _logger;
 
     [ObservableProperty] public YamlData _yamlData;
 
-    public ScrutineeringViewModel(IDataStore dataStore)
+    public ScrutineeringViewModel(IDataStore dataStore, ILogger<ScrutineeringViewModel> logger)
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
         _dataStore.AvDataUpdated += OnDataChanged;
+
+        _logger = logger;
 
         // Dynamically locate the folder where the app is running and read the YAML file.
         // This works as the yaml file has been included in the output directory
@@ -80,11 +84,12 @@ public partial class ScrutineeringViewModel : ViewModelBase
 
             // Update the Steps collection with parsed steps
             YamlData = yamlData;
-            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
+
+            _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: " + ex.Message);
+            _logger.LogError("Error loading the yaml file: {message}", ex.Message);
 
             YamlData = new YamlData
             {
@@ -115,8 +120,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
-        Console.WriteLine("AV Data Updated in ScrutineeringViewModel");
-
+        _logger.LogDebug("AV Status data changed");
+        
         OnPropertyChanged(nameof(AutonomousSystemState));
         OnPropertyChanged(nameof(EmergencyBrakeState));
         OnPropertyChanged(nameof(AutonomousMissionIndicator));

@@ -56,7 +56,6 @@ public partial class FooterView : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            Console.WriteLine("Console TextBox updated");
             // Append the new message to the TextBox
             _consoleTextBox.Text += $"{newMessage}\n";
             // Scroll the TextBox if necessary
@@ -74,6 +73,7 @@ public partial class FooterView : UserControl
             }
         });
     }
+    
     private async void OnHeartbeatStatusChanged(bool outcome)
     {
         await Dispatcher.UIThread.InvokeAsync(() =>

@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Views;
 
@@ -13,9 +14,12 @@ public partial class ScrutineeringView : UserControl
 {
     private const int StepCount = 13;
     private List<ReceiptStep> _steps;
+    private readonly ILogger<ScrutineeringView> _logger;
 
-    public ScrutineeringView()
+    public ScrutineeringView(ILogger<ScrutineeringView> logger)
     {
+        _logger = logger;
+        
         InitializeComponent();
         InitializeSteps(StepCount);
         PopulateAllStepsList();
@@ -66,7 +70,9 @@ public partial class ScrutineeringView : UserControl
         if (step.IsPassed == isPassed) return;
         step.IsPassed = isPassed;
         step.Date = DateTime.UtcNow.ToString("o");
-        Console.WriteLine($"Step {id} {(isPassed ? "passed" : "failed")} at {step.Date}");
+
+        _logger.LogInformation("Step {id} {status} at {date}", id, isPassed ? "passed" : "failed", step.Date);
+        
         PopulateAllStepsList();
     }
 
@@ -75,8 +81,7 @@ public partial class ScrutineeringView : UserControl
     /// </summary>
     private void OnReset(object sender, RoutedEventArgs e)
     {
-        var time = DateTime.UtcNow.ToString("o");
-        Console.WriteLine($"Scrutineering inspection has been reset at {time}");
+        _logger.LogInformation("Scrutineering inspection has been reset");
 
         Slides.SelectedIndex = 0;
         InitializeSteps(StepCount);
