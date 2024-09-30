@@ -1,5 +1,6 @@
 ﻿using System;
 using Dashboard.Connectors;
+using Serilog;
 
 namespace Dashboard.Models;
 
@@ -21,6 +22,8 @@ public class DataStore : IDataStore, IDisposable
 
     public DataStore(IConnector connector)
     {
+        Log.Information("DataStore created");
+        
         _connector = connector;
 
         _connector.GpsDataUpdated += OnGpsDataUpdated;
