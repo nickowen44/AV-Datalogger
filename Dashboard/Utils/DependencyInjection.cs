@@ -17,6 +17,8 @@ public static class DependencyInjection
     {
         var services = new ServiceCollection();
 
+        services.AddLogging(builder => builder.AddLogger());
+
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IConnector, SerialConnector>();
 

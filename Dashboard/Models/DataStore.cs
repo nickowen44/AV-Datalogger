@@ -1,6 +1,6 @@
 ﻿using System;
 using Dashboard.Connectors;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Models;
 
@@ -19,12 +19,14 @@ public class DataStore : IDataStore, IDisposable
     public RawData? RawData { get; private set; }
 
     private readonly IConnector _connector;
+    private readonly ILogger<DataStore> _logger;
 
-    public DataStore(IConnector connector)
+    public DataStore(IConnector connector, ILogger<DataStore> logger)
     {
-        Log.Information("DataStore created");
-        
         _connector = connector;
+        _logger = logger;
+
+        _logger.LogDebug("DataStore created");
 
         _connector.GpsDataUpdated += OnGpsDataUpdated;
         _connector.AvDataUpdated += OnAvDataUpdated;
@@ -36,12 +38,14 @@ public class DataStore : IDataStore, IDisposable
     }
     private void OnHeartbeatUpdated(object? sender, bool isReceived)
     {
+        _logger.LogDebug("Heartbeat received: {isReceived}", isReceived);
         HeartBeat = isReceived;
         HeartBeatUpdated?.Invoke(this, isReceived);
     }
 
     private void OnGpsDataUpdated(object? sender, GpsData e)
     {
+        _logger.LogDebug("GPS data received: {e}", e);
         GpsData = e;
 
         GpsDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -49,6 +53,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnAvDataUpdated(object? sender, AvData e)
     {
+        _logger.LogDebug("AV data received: {e}", e);
         AvStatusData = e;
 
         AvDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -56,6 +61,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnResDataUpdated(object? sender, ResData e)
     {
+        _logger.LogDebug("RES data received: {e}", e);
         ResData = e;
 
         ResDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -63,6 +69,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnRawDataUpdated(object? sender, RawData e)
     {
+        _logger.LogDebug("Raw data received: {e}", e);
         RawData = e;
 
         RawDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -70,6 +77,8 @@ public class DataStore : IDataStore, IDisposable
 
     public void Dispose()
     {
+        _logger.LogDebug("DataStore disposed");
+        
         // Stop the connector
         _connector.GpsDataUpdated -= OnGpsDataUpdated;
         _connector.AvDataUpdated -= OnAvDataUpdated;

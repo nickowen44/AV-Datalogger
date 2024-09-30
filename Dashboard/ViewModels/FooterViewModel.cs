@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Globalization;
-using System.Timers;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
 
@@ -29,7 +28,7 @@ public partial class FooterViewModel : ViewModelBase
 
     public FooterViewModel()
     {
-        _dataStore = new DataStore(new DummyConnector());
+        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
     }
 
     /// <summary>

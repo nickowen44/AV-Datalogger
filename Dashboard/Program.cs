@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Serilog;
 
 namespace Dashboard;
 
@@ -12,26 +11,8 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.File("logs/dashboard.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
-        try
-        {
-            Log.Information("Starting Dashboard");
-
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "Application start-up failed");
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
