@@ -98,7 +98,7 @@ namespace Dashboard.ViewModels
             // When adding to the list use typeof(New Item View/ViewModel).
             new ListItemTemplate(typeof(ConnectionView), null, "Connection"),
             new ListItemTemplate(typeof(SetupView), null, "Setup"),
-            new ListItemTemplate(typeof(StatusView), null, "Status"),
+            new ListItemTemplate(typeof(StatusView), typeof(StatusViewModel), "Status"),
             new ListItemTemplate(typeof(ConsoleView), null, "Console"),
             new ListItemTemplate(typeof(AboutView), typeof(AboutViewModel), "About"),
             new ListItemTemplate(typeof(HelpView), null, "Help"),

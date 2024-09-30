@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Dashboard.ViewModels"
+             xmlns:utils="using:Dashboard.Utils"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -8,7 +9,14 @@
              x:DataType="vm:StatusViewModel"
              Foreground="Black"
              Background="#c4c4c4">
-
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:StatusViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <utils:GaugeConverter x:Key="GaugeConverter"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TabItem">
             <Setter Property="FontSize" Value="18" />
@@ -36,36 +44,41 @@
             <Setter Property="Padding" Value="10 0" />
         </Style>
     </UserControl.Styles>
+    <Panel>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto, *">
-            <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="870" Margin="0,20,0,0">
+        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto, *" >
+            <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="870" Margin="0,20,0,0" >
                 <!-- TabControl for AV Data, GPS, and RES -->
                 <TabControl>
                     <!-- AV Data Tab -->
                     <TabItem Header="AV Data">
-                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*,*">
+                        <Grid  RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*,*">
                             <!-- AV Data Tab Content -->
                             <StackPanel Orientation="Horizontal" Width="1200">
                                 <!-- Motor Moment Percentage -->
-                                <Grid Margin="5" RowDefinitions="Auto, Auto" ColumnDefinitions="*">
+                                <Grid  Margin="5" RowDefinitions="Auto, Auto" ColumnDefinitions="*">
                                     <TextBlock Text="Motor Moment (%):" FontSize="24" Grid.Row="0"
                                                HorizontalAlignment="Center" Margin="0,15,0,0" />
                                     <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
                                         <StackPanel Margin="10">
-                                            <Slider Minimum="0" Maximum="100" Value="10" Orientation="Vertical"
-                                                    Height="600" Margin="10" IsEnabled="False" />
+                                            <Slider Minimum="0" Maximum="100" Value="{Binding MotorMomentTarget}" Orientation="Vertical"
+                                                    Height="600" Margin="10" IsEnabled="False" Name="MotorSliderTarget" />
                                             <TextBlock Text="Target" VerticalAlignment="Center" FontSize="24"
                                                        Margin="10" />
-                                            <TextBlock Text="10%" Background="White" Padding="10,0"
+                                            <TextBlock Text="{Binding MotorMomentTarget, StringFormat='{}{0:0.0}%'}" Background="White" Padding="10,0"
                                                        TextAlignment="Center" VerticalAlignment="Center" FontSize="24"
-                                                       Margin="10" />
+                                                       Width="100"
+                                                       Margin="10" 
+                                                       Name="MotorTextTarget"/>
                                         </StackPanel>
                                         <StackPanel Margin="10">
-                                            <Slider Minimum="0" Maximum="100" Value="13" Orientation="Vertical"
-                                                    Height="600" Margin="10" IsEnabled="False" />
+                                            <Slider Minimum="0" Maximum="100" Value="{Binding MotorMomentActual}" Orientation="Vertical"
+                                                    Height="600" Margin="10" IsEnabled="False" Name="MotorSliderActual" />
                                             <TextBlock Text="Actual" FontSize="24" Margin="10" />
-                                            <TextBlock Text="13%" Background="White" Padding="10,0"
-                                                       TextAlignment="Center" FontSize="24" Margin="10" />
+                                            <TextBlock Text="{Binding MotorMomentActual, StringFormat='{}{0:0.0}%'}" Background="White" Padding="10,0"
+                                                       TextAlignment="Center" FontSize="24" Margin="10" 
+                                                       Width="100"
+                                                       Name="MotorTextActual"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Grid>
@@ -76,54 +89,57 @@
                                         <Grid Margin="0,0,30,10" ColumnDefinitions="Auto, *">
                                             <TextBlock Text="Autonomous Mission Indicator:" FontSize="24"
                                                        Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="Inspection" FontSize="22"
+                                            <TextBlock Text="{Binding MissionIndicator}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Padding="10,0" TextAlignment="Center" />
+                                                       Padding="10,0,0,0" 
+                                                       Margin ="26,0,0,0"
+                                                       TextAlignment="Center" Width="150"/>
                                         </Grid>
                                         <!-- Emergency Brake Service Status -->
                                         <Grid Grid.Row="1" Margin="0,0,30,50" ColumnDefinitions="Auto, *">
                                             <TextBlock Text="Emergency Brake Service Status:" FontSize="24"
                                                        Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="Ready" FontSize="22"
+                                            <TextBlock Text="{Binding EmergencyBrakeState}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Padding="10,0" TextAlignment="Center" />
+                                                       Padding="9,0,0,0" TextAlignment="Center" Width="150" />
                                         </Grid>
                                     </Grid>
                                     <!-- Steering Angle actual -->
                                     <TextBlock Text="Steering Angle (º Degrees)" FontSize="24" />
                                     <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="13" Width="800"
+                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleActual}"  Width="800"
                                                 IsEnabled="False" Grid.Column="0" Margin="0,0,20,0" />
                                         <TextBlock Text="Actual" VerticalAlignment="Center" Grid.Column="0"
                                                    Grid.Row="1" />
-                                        <TextBlock Grid.Row="0" Text="13º" FontSize="22" VerticalAlignment="Center"
-                                                   Background="White" Padding="20,0" TextAlignment="Center"
+                                        <TextBlock Grid.Row="0" Text="{Binding SteeringAngleActual, StringFormat='0º'}" FontSize="22" VerticalAlignment="Center"
+                                                   Background="White" Padding="20,0" TextAlignment="Center" Width="80"
                                                    Grid.Column="1" />
                                     </Grid>
                                     <!-- Steering Angle target -->
                                     <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="17" Width="800"
+                                        <Slider Grid.Row="0" Minimum="-100" Maximum="100" Value="{Binding SteeringAngleTarget}" Width="800"
                                                 IsEnabled="False" Grid.Column="0" Margin="0,0,20,0" />
                                         <TextBlock Text="Target" VerticalAlignment="Center" Grid.Column="0"
                                                    Grid.Row="1" />
-                                        <TextBlock Grid.Row="0" Text="17º" FontSize="22" VerticalAlignment="Center"
-                                                   Background="White" Padding="20,0" TextAlignment="Center"
+                                        <TextBlock Grid.Row="0" Text="{Binding SteeringAngleTarget, StringFormat='0º'}" FontSize="22" VerticalAlignment="Center"
+                                                   Background="White" Padding="20,0" TextAlignment="Center" Width="80"
                                                    Grid.Column="1" />
                                     </Grid>
-                                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto, Auto"
+                                    <Grid  RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto, Auto"
                                           HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0">
                                         <!-- Speed Text -->
                                         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal"
                                                     VerticalAlignment="Center" Margin="0,10,10,10">
                                             <TextBlock Text="Speed - Actual:" FontSize="24" VerticalAlignment="Center" />
-                                            <TextBlock Text="20 km/h" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,0,10,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding SpeedActual, StringFormat='0 km/h'}" FontSize="24" Padding="20,0" Background="White"
+                                                       Margin="10,0,10,0" VerticalAlignment="Center" Width="120" 
+                                                       Name="SpeedTextActual"/>
                                         </StackPanel>
                                         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal"
                                                     VerticalAlignment="Center" Margin="0,90,10,10">
                                             <TextBlock Text="Speed - Target:" FontSize="24" VerticalAlignment="Center" />
-                                            <TextBlock Text="24 km/h" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,0,10,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding SpeedTarget, StringFormat='0 km/h'}" FontSize="24" Padding="20,0" Background="White"
+                                                       Margin="10,0,10,0" VerticalAlignment="Center" Width="120" Name="SpeedTextTarget"/>
                                         </StackPanel>
 
                                         <!-- Speedometer Canvas -->
@@ -139,7 +155,8 @@
                                                 <Path Data="M 50,250 L 80,250" Stroke="Black" StrokeThickness="3" />
                                                 <Path Data="M 320,250 L 350,250" Stroke="Black" StrokeThickness="3" />
                                                 <!-- Needle pointing to 60 km/h -->
-                                                <Path Data="M 200,250 L 180,180" Stroke="Red" StrokeThickness="4" />
+                                                <Path Data="{Binding SpeedActual, Converter={StaticResource GaugeConverter}, ConverterParameter='Speedometer'}" Stroke="Red" StrokeThickness="4"/>
+
                                                 <!-- Text Labels for speed -->
                                                 <TextBlock Canvas.Left="190" Canvas.Top="130" Text="60" FontSize="16"
                                                            Foreground="Black" />
@@ -158,36 +175,31 @@
                                         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal"
                                                     VerticalAlignment="Center">
                                             <TextBlock Text="Brake - Actual:" FontSize="24" />
-                                            <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,0,10,0" />
+                                            <TextBlock Text="{Binding BrakePressureActual, StringFormat='{}{0:0.0}%'}" FontSize="24" Padding="20,0" Background="White"
+                                                       Margin="10,0,10,0" Width="100" />
                                         </StackPanel>
                                         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal"
                                                     Margin="0,90,10,10" VerticalAlignment="Center">
                                             <TextBlock Text="Brake - Target:" FontSize="24" />
-                                            <TextBlock Text="50%" FontSize="24" Padding="20,0" Background="White"
-                                                       Margin="10,0,10,0" />
+                                            <TextBlock Text="{Binding BrakePressureTarget, StringFormat='{}{0:0.0}%'}" FontSize="24" Padding="20,0" Background="White"
+                                                       Margin="10,0,10,0" Width="100"/>
                                         </StackPanel>
 
                                         <!-- Brake Canvas -->
                                         <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,200,0,0">
                                             <Canvas>
-                                                <!-- Outer semi-circle (Speedometer border) -->
+                                                <!-- Outer semi-circle (Brake Percentage meter border) -->
                                                 <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="Black"
                                                       StrokeThickness="5" Fill="Transparent" />
-                                                <!-- Major ticks (0, 40, 60, 80, 110 km/h positions) -->
-                                                <!-- Center Tick (60 km/h) -->
+                                                <!-- Major ticks (0, 25, 50, 75, 100 % positions) -->
                                                 <Path Data="M 200,100 L 200,130" Stroke="Black" StrokeThickness="3" />
-                                                <!-- 30 km/h -->
                                                 <Path Data="M 100,140 L 120,160" Stroke="Black" StrokeThickness="3" />
-                                                <!-- 90 km/h -->
                                                 <Path Data="M 280,160 L 300,140" Stroke="Black" StrokeThickness="3" />
-                                                <!-- 0 km/h -->
                                                 <Path Data="M 50,250 L 80,250" Stroke="Black" StrokeThickness="3" />
-                                                <!-- 120 km/h -->
                                                 <Path Data="M 320,250 L 350,250" Stroke="Black" StrokeThickness="3" />
-                                                <!-- Needle pointing to 60 km/h -->
-                                                <Path Data="M 200,250 L 200,180" Stroke="Green" StrokeThickness="4" />
-                                                <!-- Text Labels for speed -->
+                                                <!-- <Path Data="M 200,250 L 200,180" Stroke="Green" StrokeThickness="4" /> -->
+                                                <Path Data="{Binding BrakePressureActual, Converter={StaticResource GaugeConverter}, ConverterParameter='Brake'}" Stroke="Green" StrokeThickness="4"/>
+                                                <!-- Text Labels for brake percentage -->
                                                 <TextBlock Canvas.Left="190" Canvas.Top="130" Text="50" FontSize="16"
                                                            Foreground="Black" /> <!-- 60 km/h -->
                                                 <TextBlock Canvas.Left="117.5" Canvas.Top="162.5" Text="25"
@@ -203,15 +215,16 @@
                                         <!-- Remote Emergency Stop Status -->
                                         <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                                                     VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2"
-                                                    Margin="80,0,0,0">
+                                                    Margin="20,0,0,0">
                                             <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
-                                                       Margin="30,0,0,0" />
+                                                       Margin="35,0,0,0" />
                                             <Image Name="ResIcon" Source="../Assets/emergency-stop.png" Width="200"
-                                                   Height="200" Margin="0,0,0,0" />
-                                            <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22"
+                                                   Height="200" Margin="0,0,0,0" Opacity="1" />
+                                            <TextBlock Name="RemoteEmergancyStopindicator" FontWeight="Bold" Text="{Binding RemoteEmergency}" FontSize="22"
                                                        Background="Green" Foreground="White" Padding="10,0"
                                                        Margin="0,0,0,0" TextAlignment="Center"
-                                                       HorizontalAlignment="Center" />
+                                                       HorizontalAlignment="Center"
+                                                       Width="200"/>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
@@ -238,4 +251,5 @@
             </Border>
         </Grid>
     </ScrollViewer>
+        </Panel>
 </UserControl>
