@@ -5,7 +5,7 @@ namespace Dashboard.Utils;
 
 public class GaugeConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
     {
         double inputValue = (double)value;
         string type = parameter as string;
@@ -33,7 +33,7 @@ public class GaugeConverter : IValueConverter
         return $"M {centerX},{centerY} L {endX},{endY}";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
     {
         throw new NotImplementedException();
     }
