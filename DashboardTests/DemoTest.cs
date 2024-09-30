@@ -124,7 +124,7 @@ public class DemoTest
 
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
-        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection");
 
         Assert.Multiple(() =>
         {

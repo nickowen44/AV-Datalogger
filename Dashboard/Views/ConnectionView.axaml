@@ -1,8 +1,67 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Dashboard.Views.ConnectionView">
-    Connection Page Test
+﻿<UserControl  xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:vm="using:Dashboard.ViewModels"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              x:DataType="vm:ConnectionViewModel"
+              x:Class="Dashboard.Views.ConnectionView"
+              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+              Foreground="Black"
+              Background="#c4c4c4">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:ConnectionViewModel />
+    </Design.DataContext>
+    <Panel>
+        <ThemeVariantScope RequestedThemeVariant="Light">
+        <!-- Main Content Grid -->
+        <Grid RowDefinitions="Auto,Auto">
+            <Grid>
+            <StackPanel Grid.Row="0" Margin="20">
+                <!-- Connection Type -->
+                <TextBlock Text="Connection Type" Margin="0, 10, 0, 5" />
+                <ComboBox 
+                    x:Name="ConnectionTypeCombo"
+                    Width="200"
+                    SelectedItem="{Binding CurrentConnectionType}"
+                    ItemsSource="{Binding ConnectionTypes}"
+                    Foreground="Black"/>
+
+                <!-- Serial Port Section -->
+                <StackPanel Name="SerialPortSection" IsVisible="False" Margin="0, 10, 0, 5">
+                    <TextBlock Text="Serial Port"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox 
+                            Name="SerialPortCombo"
+                            Width="200" 
+                            SelectedItem="{Binding SelectedSerialPort}"
+                            ItemsSource="{Binding SerialPorts, Mode=TwoWay}"/>
+                        <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}" Margin="5,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- TCP Section -->
+                <StackPanel Name="TCPSection" IsVisible="False" Margin="0, 10, 0, 5">
+                    <TextBlock Text="IP Address" />
+                    <TextBox Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+                
+                <!-- File Section -->
+                <StackPanel Name="FileSection" IsVisible="True" Margin="0, 10, 0, 5">
+                    <TextBlock Text="Log File" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="200" Name="LogFileSelected"/>
+                        <Button Click="FileSelectionClicked" Content="..." Width="30" Margin="5,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+                <!-- Connect Button -->
+            </StackPanel>
+            </Grid>
+        <Grid Grid.Row="1">
+            <Button  Content="Connect" Margin="20,0,0,50" FontWeight="Bold" HorizontalAlignment="Left"/>
+        </Grid>
+        </Grid>
+        </ThemeVariantScope>
+    </Panel>
 </UserControl>
