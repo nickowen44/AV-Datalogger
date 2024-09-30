@@ -45,7 +45,8 @@
         </Style>
     </UserControl.Styles>
     <Panel>
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Viewbox>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto, *" >
             <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="870" Margin="0,20,0,0" >
                 <!-- TabControl for AV Data, GPS, and RES -->
@@ -251,5 +252,6 @@
             </Border>
         </Grid>
     </ScrollViewer>
+        </Viewbox>
         </Panel>
 </UserControl>

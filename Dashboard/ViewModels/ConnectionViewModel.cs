@@ -26,7 +26,6 @@ public partial class ConnectionViewModel : ViewModelBase
         SelectedSerialPort = SerialPorts.FirstOrDefault();
     }
 
-
     private static string[] GetSerialPorts()
     {
         return SerialPort.GetPortNames();

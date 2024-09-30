@@ -143,7 +143,6 @@ public class DemoTest
         // Click on Setup button.
         window.MouseDown(new Point(135, 70), MouseButton.Left);
         window.MouseUp(new Point(135, 70), MouseButton.Left);
-
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));

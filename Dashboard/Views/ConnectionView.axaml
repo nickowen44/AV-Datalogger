@@ -18,7 +18,7 @@
         <!-- Main Content Grid -->
         <Grid RowDefinitions="Auto,Auto">
             <Grid>
-            <StackPanel Grid.Row="0" Margin="20">
+            <StackPanel Grid.Row="0" Margin="20" >
                 <!-- Connection Type -->
                 <TextBlock Text="Connection Type" Margin="0, 10, 0, 5" />
                 <ComboBox 
@@ -27,7 +27,6 @@
                     SelectedItem="{Binding CurrentConnectionType}"
                     ItemsSource="{Binding ConnectionTypes}"
                     Foreground="Black"/>
-
                 <!-- Serial Port Section -->
                 <StackPanel Name="SerialPortSection" IsVisible="False" Margin="0, 10, 0, 5">
                     <TextBlock Text="Serial Port"/>
@@ -40,13 +39,11 @@
                         <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}" Margin="5,0,0,0" />
                     </StackPanel>
                 </StackPanel>
-                
                 <!-- TCP Section -->
                 <StackPanel Name="TCPSection" IsVisible="False" Margin="0, 10, 0, 5">
                     <TextBlock Text="IP Address" />
                     <TextBox Width="200" HorizontalAlignment="Left" />
                 </StackPanel>
-                
                 <!-- File Section -->
                 <StackPanel Name="FileSection" IsVisible="True" Margin="0, 10, 0, 5">
                     <TextBlock Text="Log File" />

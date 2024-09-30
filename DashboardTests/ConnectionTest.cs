@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
@@ -27,20 +28,20 @@ public class ConnectionTest
     }
 
     [AvaloniaTest]
-    public void TestConnectionPage()
+    public void TestConnectionPageStartup()
     {
-
+        // Arrange  
         var window = new ConnectionView()
         {
             DataContext = new ConnectionViewModel()
         };
 
-        // Assert
         var connectionType = window.FindControl<ComboBox>("ConnectionTypeCombo");
         var serialPortSection = window.FindControl<StackPanel>("SerialPortSection");
         var tcpPortSection = window.FindControl<StackPanel>("TCPSection");
         var filePortSection = window.FindControl<StackPanel>("FileSection");
 
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(connectionType, Is.Not.Null);
@@ -52,6 +53,60 @@ public class ConnectionTest
         Assert.Multiple(() =>
         {
             Assert.That(connectionType.SelectedItem, Is.EqualTo("Serial Port"));
+            Assert.That(serialPortSection.IsVisible, Is.EqualTo(true));
+            Assert.That(tcpPortSection.IsVisible, Is.EqualTo(false));
+            Assert.That(filePortSection.IsVisible, Is.EqualTo(false));
+        });
+    }
+
+    [AvaloniaTest]
+    public void TestConnectionPageChangeConnectionType()
+    {
+        // Arrange
+        var window = new Window()
+        {
+            Content = new ConnectionView()
+            {
+                DataContext = new ConnectionViewModel()
+            }
+        };
+
+        window.Show();
+
+        var connectionType = window.GetVisualDescendants()
+            .OfType<ComboBox>()
+            .FirstOrDefault(tb => tb.Name == "ConnectionTypeCombo");
+        var serialPortSection = window.GetVisualDescendants()
+            .OfType<StackPanel>()
+            .FirstOrDefault(tb => tb.Name == "SerialPortSection");
+        var tcpPortSection = window.GetVisualDescendants()
+            .OfType<StackPanel>()
+            .FirstOrDefault(tb => tb.Name == "TCPSection");
+        var filePortSection = window.GetVisualDescendants()
+            .OfType<StackPanel>()
+            .FirstOrDefault(tb => tb.Name == "FileSection");
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(connectionType, Is.Not.Null);
+            Assert.That(serialPortSection, Is.Not.Null);
+            Assert.That(tcpPortSection, Is.Not.Null);
+            Assert.That(filePortSection, Is.Not.Null);
+        });
+
+        // Change Connection Type to IP Address
+        window.MouseDown(new Point(60, 48), MouseButton.Left);
+        window.MouseUp(new Point(60, 48), MouseButton.Left);
+        window.MouseDown(new Point(51, 108), MouseButton.Left);
+        window.MouseUp(new Point(51, 108), MouseButton.Left);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(connectionType.SelectedItem, Is.EqualTo("IP Address"));
+            Assert.That(serialPortSection.IsVisible, Is.EqualTo(false));
+            Assert.That(tcpPortSection.IsVisible, Is.EqualTo(true));
+            Assert.That(filePortSection.IsVisible, Is.EqualTo(false));
         });
     }
 }

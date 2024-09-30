@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -17,7 +18,7 @@ public partial class ConnectionView : UserControl
     }
     private async void FileSelectionClicked(object sender, RoutedEventArgs args)
     {
-        // Get top level from the current control. Alternatively, you can use Window reference instead.
+        // Get top level from the current control.
         var topLevel = TopLevel.GetTopLevel(this);
 
         // Start async operation to open the dialog.
@@ -32,7 +33,6 @@ public partial class ConnectionView : UserControl
             var filePath = files[0].Path.LocalPath;
             LogFileSelected.Text = filePath;
         }
-
     }
 
     private void ConnectionTypeUpdated(object sender, RoutedEventArgs args)
