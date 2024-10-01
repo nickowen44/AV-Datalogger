@@ -15,7 +15,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private readonly FileSystemWatcher? _fileWatcher;
     private readonly ILogger<ScrutineeringViewModel> _logger;
 
-    [ObservableProperty] private YamlData _yamlData = new()
+    [ObservableProperty]
+    private YamlData _yamlData = new()
     {
         Steps = [new StepData { Step = "Loading...", Measurements = [], Id = "0", Inspection = "" }],
         Top = string.Empty,

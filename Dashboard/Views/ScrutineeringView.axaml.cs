@@ -40,7 +40,7 @@ public partial class ScrutineeringView : UserControl
     private void InitializeSteps(int count)
     {
         _steps.Clear();
-        
+
         for (var i = 1; i <= count; i++)
             // The "o" ensures the time is formatted as an ISO string
             _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false, Date = DateTime.UtcNow.ToString("o") });
