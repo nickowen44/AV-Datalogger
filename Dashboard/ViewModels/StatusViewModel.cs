@@ -1,4 +1,5 @@
 using System;
+using Dashboard.Connectors;
 using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
@@ -6,11 +7,18 @@ namespace Dashboard.ViewModels;
 public partial class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-
+    public event Action<bool>? RESDataUpdated;
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
-        _dataStore.AvDataUpdated += OnDataChanged;
+        _dataStore.AvDataUpdated += OnAvDataChanged;
+        _dataStore.ResDataUpdated += OnResDataChanged;
+    }
+
+    public StatusViewModel()
+    {
+        // This constructor is used for design-time data, so we don't need to start the connector
+        _dataStore = new DataStore(new DummyConnector());
     }
 
     public double SpeedActual => _dataStore.AvStatusData?.Speed.Actual ?? 0;
@@ -34,6 +42,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
+    public bool RemoteEmergency => _dataStore.ResData?.ResState ?? false;
 
     public int SatCount => _dataStore.GpsData?.SatCount ?? 0;
     
@@ -62,6 +71,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public double Longitude => _dataStore.GpsData?.Longitude ?? 0;
 
     private void OnDataChanged(object? sender, EventArgs e)
+    private void OnAvDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
         OnPropertyChanged(nameof(SteeringAngleActual));
@@ -86,6 +96,11 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(KilometresPerHour));
         OnPropertyChanged(nameof(Latitude));
         OnPropertyChanged(nameof(Longitude));
+    }
+    private void OnResDataChanged(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(RemoteEmergency));
+        RESDataUpdated?.Invoke(RemoteEmergency);
     }
 
     public void Dispose()
