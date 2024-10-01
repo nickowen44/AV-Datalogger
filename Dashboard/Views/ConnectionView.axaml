@@ -64,7 +64,8 @@
         </StackPanel>
     </Grid>
     <!-- Connect Button -->
-    <Button Grid.Row="2" Content="Connect" Margin="0,10,50,50" FontWeight="Bold" HorizontalAlignment="Left"/>
+    <Button Grid.Row="2" Content="Connect" Name="ConnectButton" Margin="0,10,50,50" FontWeight="Bold" Command="{Binding ConnectToSerialPortCommand}" CommandParameter="{Binding SelectedSerialPort}" IsEnabled="True" HorizontalAlignment="Left"/>
+    <Button Grid.Row="2" Content="Disconnect" Name="DisconnectButton" Margin="0,10,50,50" FontWeight="Bold" Command="{Binding DisconnectFromSerialPortCommand}" IsEnabled="False" HorizontalAlignment="Right"/>
         </Grid>
         </ThemeVariantScope>
     </Panel>

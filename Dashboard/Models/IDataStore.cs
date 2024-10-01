@@ -14,7 +14,8 @@ public interface IDataStore
     ResData? ResData { get; }
     RawData? RawData { get; }
     bool? HeartBeat { get; }
-
+    bool startConnection(string portName);
+    void disconnect();
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.
     ///     Such as removing event handlers and stopping the store's connector.

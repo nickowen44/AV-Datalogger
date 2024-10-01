@@ -23,6 +23,47 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     private bool _heartBeatShouldRun = true;
     private Thread? _heartbeatThread;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
+    /// <summary>
+    ///     Handles setting up the connector for the data source when a port name is passed.
+    /// </summary>
+    public void Start(string portName)
+    {
+            // Set up the connection to the serial port
+            comPort.Configure(portName, 115200);
+            // Set up the event handler for when data is received
+            comPort.DataReceived += OnDataReceived;
+
+            //Set up Heart Beat thread 
+            _heartbeatThread = new Thread(() =>
+            {
+                try
+                {
+                    while (_heartBeatShouldRun)
+                    {
+                        if (!comPort.IsConnected)
+                        {
+                            // If Heart beat should be sent then write and wait 1 second.
+                            SendHeartbeat();
+                            Thread.Sleep(1000);
+                        }
+
+                        _heartbeatEvent.WaitOne(1000);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            });
+            _heartbeatThread.Start();
+            _heartBeatShouldRun = true;
+            // Open our serial port
+            comPort.Open();
+    }
+    
+    /// <summary>
+    ///     Handles setting up the connector for the data source when no port name is passed, Defaults to COM22.
+    /// </summary>
     public void Start()
     {
         // Set up the connection to the serial port
@@ -53,6 +94,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void OnDataReceived(object? _, SerialPortData data)
     {
+
         // We got a new message from the serial port, parse it, removing the newline / return characters
         ParseMessage(data.Buffer.Trim());
     }
@@ -65,6 +107,13 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            RawMessage = "",
+            ConnectionStatus = false,
+        });
 
         // Close the serial port
         comPort.Close();

@@ -19,22 +19,28 @@ public class SerialPortWrapper : ISerialPort
         // Don't open the port if it's already open
         if (_serialPort.IsOpen)
             return;
-
+        
         _serialPort.Open();
-
         // Initialise a read thread so our main (UI) thread doesn't block
         var thread = new Thread(() =>
         {
-            while (_shouldRun)
+            try
             {
-                var data = ReadLine();
-                DataReceived?.Invoke(this, new SerialPortData
+                while (_shouldRun)
                 {
-                    Buffer = data
-                });
+                    var data = ReadLine();
+                    DataReceived?.Invoke(this, new SerialPortData
+                    {
+                        Buffer = data
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         });
-
+        _shouldRun = true;
         thread.Start();
     }
 

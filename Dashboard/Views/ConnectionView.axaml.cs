@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using Dashboard.ViewModels;
 
 namespace Dashboard.Views;
 
@@ -15,6 +17,27 @@ public partial class ConnectionView : UserControl
     {
         InitializeComponent();
         ConnectionTypeCombo.SelectionChanged += ConnectionTypeUpdated;
+        Loaded += ConnectionViewLoaded;
+    }
+    private void ConnectionViewLoaded(object? sender, EventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.ConnectionChanged += OnConnectionStarted;
+        }
+    }
+    private void OnConnectionStarted(bool connected)
+    {
+        if (connected)
+        {
+            ConnectButton.IsEnabled = false;
+            DisconnectButton.IsEnabled = true;
+        }
+        else
+        {
+            ConnectButton.IsEnabled = true;
+            DisconnectButton.IsEnabled = false;
+        }
     }
     private async void FileSelectionClicked(object sender, RoutedEventArgs args)
     {
@@ -35,7 +58,7 @@ public partial class ConnectionView : UserControl
         }
     }
 
-    private void ConnectionTypeUpdated(object sender, RoutedEventArgs args)
+    private void ConnectionTypeUpdated(object? sender, RoutedEventArgs args)
     {
         var comboBox = sender as ComboBox;
         if (comboBox?.SelectedItem is string selectedType)

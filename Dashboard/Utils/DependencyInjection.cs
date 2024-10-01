@@ -3,7 +3,9 @@ using Dashboard.Connectors;
 using Dashboard.Connectors.Serial;
 using Dashboard.Models;
 using Dashboard.ViewModels;
+using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Tmds.DBus.Protocol;
 
 namespace Dashboard.Utils;
 
@@ -26,6 +28,7 @@ public static class DependencyInjection
         services.AddTransient<ScrutineeringViewModel>();
         services.AddTransient<FooterViewModel>();
         services.AddTransient<AboutViewModel>();
+        services.AddTransient<ConnectionViewModel>();
 
         return services.BuildServiceProvider();
     }

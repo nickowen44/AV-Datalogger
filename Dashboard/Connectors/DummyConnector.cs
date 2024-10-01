@@ -14,7 +14,9 @@ public class DummyConnector : IConnector
     public event EventHandler<bool>? HeartBeatUpdated;
 
     private bool _shouldStop;
-
+    /// <summary>
+    ///     Handles setting up the connector to the data source when no port name is passed, Defaults to COM22.
+    /// </summary>
     public void Start()
     {
         var random = new Random();
@@ -89,6 +91,10 @@ public class DummyConnector : IConnector
                 Thread.Sleep(1000);
             }
         }).Start();
+    }
+    public void Start(string portName)
+    {
+        throw new NotImplementedException();
     }
 
     public void Stop()
