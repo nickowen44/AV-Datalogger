@@ -66,7 +66,7 @@ namespace Dashboard.ViewModels
             if (!_views.ContainsKey(value.Label))
             {
                 // Create the view.
-                var viewInstance = (UserControl?)ActivatorUtilities.CreateInstance(_serviceProvider,value.View);
+                var viewInstance = (UserControl?)ActivatorUtilities.CreateInstance(_serviceProvider, value.View);
                 if (viewInstance == null)
                 {
                     _logger.LogError("Failed to load view instance {0}.", value.Label);
