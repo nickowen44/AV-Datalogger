@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Timers;
+using Avalonia.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Connectors;
 using Dashboard.Models;
 using Microsoft.Extensions.Logging;
@@ -8,18 +11,22 @@ namespace Dashboard.ViewModels;
 
 public partial class FooterViewModel : ViewModelBase
 {
-    public bool? HeartBeat => _dataStore.HeartBeat;
-    public event Action<bool>? HeartbeatStatusUpdated;
-    public event Action<string>? RawMessageUpdated;
-    public event Action<bool>? ConnectionUpdate;
-    public bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
     public string CarId => _dataStore.RawData?.CarId ?? "0";
-    public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
     public string UTCTime => _dataStore.RawData?.UTCTime.ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
     public string LocalTime => _dataStore.RawData?.UTCTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
 
+    [ObservableProperty] private string _logMessage = string.Empty;
+
+    public IBrush ConnectionColor => ConnectionStatus ? Brushes.Green : Brushes.Red;
+    public IBrush HeartBeatColor => HeartBeat && _heartBeatFlicker ? Brushes.OrangeRed : Brushes.Orange;
+
+    private bool HeartBeat => _dataStore.HeartBeat ?? false;
+    private bool _heartBeatFlicker;
+    private bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
+
     private readonly IDataStore _dataStore;
     private readonly ILogger<FooterViewModel> _logger;
+    private readonly Timer? _heartBeatTimer;
 
     public FooterViewModel(IDataStore dataStore, ILogger<FooterViewModel> logger)
     {
@@ -28,6 +35,16 @@ public partial class FooterViewModel : ViewModelBase
 
         _dataStore.RawDataUpdated += OnRawDataChanged;
         _dataStore.HeartBeatUpdated += OnHeartbeatStatusChanged;
+        _dataStore.ConsoleMessageUpdated += OnLogMessageReceived;
+
+        _logger.LogDebug("FooterViewModel created");
+
+        _heartBeatTimer = new Timer(500);
+        _heartBeatTimer.Elapsed += HeartBeatTimerElapsed;
+        _heartBeatTimer.AutoReset = false;
+
+        // Finally, flush the log buffer to ensure we display any messages that were logged before the view was created
+        _dataStore.FlushLogBuffer();
     }
 
     public FooterViewModel()
@@ -42,27 +59,44 @@ public partial class FooterViewModel : ViewModelBase
     private void OnRawDataChanged(object? sender, EventArgs e)
     {
         _logger.LogDebug("Data Updated");
-        
+
         OnPropertyChanged(nameof(CarId));
         OnPropertyChanged(nameof(UTCTime));
         OnPropertyChanged(nameof(LocalTime));
-        OnPropertyChanged(nameof(RawMessage));
-        RawMessageUpdated?.Invoke(RawMessage);
-        ConnectionUpdate?.Invoke(ConnectionStatus);
+        OnPropertyChanged(nameof(ConnectionColor));
     }
 
     private void OnHeartbeatStatusChanged(object? sender, bool isReceived)
     {
-        _logger.LogDebug("Heart Beat change triggered");
-        
-        OnPropertyChanged(nameof(HeartBeat));
-        HeartbeatStatusUpdated?.Invoke(isReceived);
+        if (HeartBeat)
+        {
+            _logger.LogDebug("Heartbeat received");
+
+            _heartBeatFlicker = true;
+            _heartBeatTimer?.Start();
+        }
+
+        OnPropertyChanged(nameof(HeartBeatColor));
+    }
+
+    private void HeartBeatTimerElapsed(object? sender, EventArgs e)
+    {
+        _heartBeatFlicker = false;
+
+        OnPropertyChanged(nameof(HeartBeatColor));
+    }
+
+
+    private void OnLogMessageReceived(object? sender, string message)
+    {
+        LogMessage += $"{message}\n";
     }
 
     public override void Dispose()
     {
         _dataStore.RawDataUpdated -= OnRawDataChanged;
         _dataStore.HeartBeatUpdated -= OnHeartbeatStatusChanged;
+        _dataStore.ConsoleMessageUpdated -= OnLogMessageReceived;
 
         GC.SuppressFinalize(this);
     }

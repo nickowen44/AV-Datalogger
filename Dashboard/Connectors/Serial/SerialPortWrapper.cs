@@ -18,7 +18,7 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
     public void Open()
     {
         logger.LogInformation("Opening serial port");
-        
+
         // Don't open the port if it's already open
         if (_serialPort.IsOpen)
         {
@@ -48,7 +48,7 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
     public void Close()
     {
         logger.LogInformation("Closing serial port");
-        
+
         _shouldRun = false;
 
         if (_serialPort.IsOpen)
@@ -57,9 +57,10 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
 
     public void Configure(string portName, int baudRate)
     {
-        logger.LogInformation("Configuring serial port with port name {portName} and baud rate {baudRate}", portName,
+        logger.LogInformation(
+            "Configuring serial port to connect on port name: {portName} with a baud rate of {baudRate}", portName,
             baudRate);
-        
+
         var wasOpen = _serialPort.IsOpen;
 
         // Close the port if it's already open

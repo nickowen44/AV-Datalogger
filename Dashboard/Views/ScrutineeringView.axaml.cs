@@ -19,7 +19,7 @@ public partial class ScrutineeringView : UserControl
     public ScrutineeringView(ILogger<ScrutineeringView> logger)
     {
         _logger = logger;
-        
+
         InitializeComponent();
         InitializeSteps(StepCount);
         PopulateAllStepsList();
@@ -72,7 +72,7 @@ public partial class ScrutineeringView : UserControl
         step.Date = DateTime.UtcNow.ToString("o");
 
         _logger.LogInformation("Step {id} {status} at {date}", id, isPassed ? "passed" : "failed", step.Date);
-        
+
         PopulateAllStepsList();
     }
 

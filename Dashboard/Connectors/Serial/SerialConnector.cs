@@ -24,11 +24,11 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private bool _heartBeatShouldRun = true;
     private Thread? _heartbeatThread;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
-    
+
     public void Start()
     {
         logger.LogInformation("Starting Serial Connector");
-        
+
         // Set up the connection to the serial port
         comPort.Configure("COM22", 115200);
 
@@ -58,7 +58,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private void OnDataReceived(object? _, SerialPortData data)
     {
         logger.LogDebug("Received data from serial port: {data}", data.Buffer);
-        
+
         // We got a new message from the serial port, parse it, removing the newline / return characters
         ParseMessage(data.Buffer.Trim());
     }
@@ -66,7 +66,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     public void Stop()
     {
         logger.LogInformation("Stopping Serial Connector");
-        
+
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
 
@@ -82,6 +82,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     {
         // First we validate that we have the correct message format
         if (!MyRegex().IsMatch(message))
+            // TODO: Handle this instead of throwing an exception, the app doesn't need to crash if the message is invalid
             throw new InvalidOperationException("Invalid message format received", new Exception(message));
 
         var split = message.Substring(1).Split('|');
@@ -96,6 +97,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
             // If we don't have a key-value pair, we throw an exception
             if (pair.Length < 2)
+                // TODO: Handle this instead of throwing an exception, the app doesn't need to crash if a key-value pairis invalid
                 throw new InvalidOperationException($"Invalid key-value pair: {s}",
                     new Exception($"Buffer str: {message}"));
 
@@ -117,17 +119,19 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         else
         {
             logger.LogError("Unknown message type received: {message}", message);
+
+            // TODO: Handle this instead of throwing an exception, the app doesn't need to crash if the message is unknown
             throw new InvalidOperationException("Unknown message type received",
                 new Exception($"Buffer str: {message}"));
         }
-        
+
         ParseRawMessage(values, message);
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
     {
         logger.LogDebug("Parsing GPS message: {values}", values);
-        
+
         GpsDataUpdated?.Invoke(this, new GpsData
         {
             Latitude = ParseDouble(values["LAT"]),
@@ -149,7 +153,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private void ParseAvStatusMessage(Dictionary<string, string> values)
     {
         logger.LogDebug("Parsing AV Status message: {values}", values);
-        
+
         AvDataUpdated?.Invoke(this, new AvData
         {
             Speed = new ValuePair<double>
@@ -185,7 +189,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private void ParseResMessage(Dictionary<string, string> values)
     {
         logger.LogDebug("Parsing RES message: {values}", values);
-        
+
         ResDataUpdated?.Invoke(this, new ResData
         {
             ResState = ParseBool(values["RES"]),
@@ -221,7 +225,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         {
             CarId = values["ID"],
             UTCTime = ParseUTCTime(values["UTC"]),
-            RawMessage = rawMessage,
             ConnectionStatus = comPort.IsConnected,
         });
     }

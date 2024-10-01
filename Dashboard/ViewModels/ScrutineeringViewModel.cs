@@ -121,7 +121,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private void OnDataChanged(object? sender, EventArgs e)
     {
         _logger.LogDebug("AV Status data changed");
-        
+
         OnPropertyChanged(nameof(AutonomousSystemState));
         OnPropertyChanged(nameof(EmergencyBrakeState));
         OnPropertyChanged(nameof(AutonomousMissionIndicator));
