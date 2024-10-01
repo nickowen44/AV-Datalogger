@@ -69,8 +69,17 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public double Latitude => _dataStore.GpsData?.Latitude ?? 0;
     
     public double Longitude => _dataStore.GpsData?.Longitude ?? 0;
-
-    private void OnDataChanged(object? sender, EventArgs e)
+    
+    public bool ResState => _dataStore.ResData?.ResState ?? false;
+    
+    public bool K2State => _dataStore.ResData?.K2State ?? false;
+    
+    public bool K3State => _dataStore.ResData?.K3State ?? false;
+    
+    public int ResRadioQuality => _dataStore.ResData?.ResRadioQuality ?? 0;
+    
+    public int ResNodeId => _dataStore.ResData?.ResNodeId ?? 0;
+    
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
@@ -96,6 +105,11 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(KilometresPerHour));
         OnPropertyChanged(nameof(Latitude));
         OnPropertyChanged(nameof(Longitude));
+        OnPropertyChanged(nameof(ResState));
+        OnPropertyChanged(nameof(K2State));
+        OnPropertyChanged(nameof(K3State));
+        OnPropertyChanged(nameof(ResRadioQuality));
+        OnPropertyChanged(nameof(ResNodeId));
     }
     private void OnResDataChanged(object? sender, EventArgs e)
     {

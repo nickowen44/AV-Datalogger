@@ -220,7 +220,7 @@
                                                        Margin="35,0,0,0" />
                                             <Image Name="ResIcon" Source="../Assets/emergency-stop.png" Width="200"
                                                    Height="200" Margin="0,0,0,0" Opacity="1" />
-                                            <TextBlock Name="RemoteEmergancyStopindicator" FontWeight="Bold" Text="{Binding RemoteEmergency}" FontSize="22"
+                                            <TextBlock Name="RemoteEmergencyStopIndicator" FontWeight="Bold" Text="{Binding RemoteEmergency}" FontSize="22"
                                                        Background="Green" Foreground="White" Padding="10,0"
                                                        Margin="0,0,0,0" TextAlignment="Center"
                                                        HorizontalAlignment="Center"
@@ -236,16 +236,16 @@
                     <TabItem Header="GPS">
                         <StackPanel Width="1200">
                             <!-- Content for GPS -->
-                            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
                                 <StackPanel Grid.Column="0" Grid.Row="0">
-                                    <Grid ColumnDefinitions="Auto, *" Margin="0, 30, 0, 0">
+                                    <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="SFA:"/>
                                         <TextBlock Text="{Binding SatFixAge}" FontSize="22"
                                                    Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                    Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                     </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,0,0">
                                     <Grid ColumnDefinitions="Auto, *">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="NOS:"/>
                                         <TextBlock Text="{Binding SatCount}" FontSize="22"
@@ -253,7 +253,7 @@
                                                    Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="2" Grid.Column="0">
+                                <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,0,0">
                                     <Grid ColumnDefinitions="Auto, *">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:"/>
                                         <TextBlock Text="{Binding Hdop}" FontSize="22"
@@ -261,7 +261,7 @@
                                                    Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="3" Grid.Column="0">
+                                <StackPanel Grid.Row="3" Grid.Column="0" Margin="10,10,0,0">
                                     <Grid ColumnDefinitions="Auto, *">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="HFA:"/>
                                         <TextBlock Text="{Binding HdopFixAge}" FontSize="22"
@@ -269,7 +269,7 @@
                                                    Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                     </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="4" Grid.Column="0">
+                                <StackPanel Grid.Row="4" Grid.Column="0" Margin="10,10,0,0">
                                     <Grid ColumnDefinitions="Auto, *">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:"/>
                                         <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
@@ -277,7 +277,7 @@
                                                    Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                     </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="5" Grid.Column="0">
+                                <StackPanel Grid.Row="5" Grid.Column="0" Margin="10,10,0,0">
                                     <Grid ColumnDefinitions="Auto, *">
                                         <TextBlock Grid.Column="0" FontSize="24" Text="MPS:"/>
                                         <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
@@ -286,54 +286,61 @@
                                         </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="0" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="KMH:"/>
-                                    <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                    <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
+                                        <TextBlock FontSize="24" Text="KMH:"/>
+                                        <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="AFA:"/>
-                                    <TextBlock Text="{Binding AltFixAge}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="AFA:"/>
+                                        <TextBlock Text="{Binding AltFixAge}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="2" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="ALM:"/>
-                                    <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="ALM:"/>
+                                        <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="AKM:"/>
-                                    <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="AKM:"/>
+                                        <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="4" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="Longitude:"/>
-                                    <TextBlock Text="{Binding Longitude}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                <StackPanel Grid.Row="4" Grid.Column="1" Margin="10,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="Longitude:"/>
+                                        <TextBlock Text="{Binding Longitude}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="5" Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="Latitude:"/>
-                                    <TextBlock Text="{Binding Latitude}" FontSize="22"
-                                               Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                               Padding="10,0" TextAlignment="Center" />
+                                <StackPanel Grid.Row="5" Grid.Column="1" Margin="10,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="Latitude:"/>
+                                        <TextBlock Text="{Binding Latitude}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
                             </Grid>
                             <!-- Remote Emergency Stop Status -->
-                            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
-                                        VerticalAlignment="Bottom" Grid.Row="0" Grid.RowSpan="2"
-                                        Margin="80,0,0,0">
-                                <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
-                                           Margin="30,0,0,0" />
-                                <Image Name="ResIconGps" Source="../Assets/emergency-stop.png" Width="200"
-                                       Height="200" Margin="0,0,0,0" />
-                                <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22"
-                                           Background="Green" Foreground="White" Padding="10,0"
-                                           Margin="0,0,0,0" TextAlignment="Center"
-                                           HorizontalAlignment="Center" />
+                            <StackPanel Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,80,70,10">
+                                <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                <Image Name="GPSTabIcon" Source="../Assets/emergency-stop.png" Width="200" Height="200" Opacity="1"/>
+                                <TextBlock Name="GPSTab" FontWeight="Bold" Text="{Binding RemoteEmergency}" 
+                                           FontSize="22" Background="Green" Foreground="White" Padding="10,0" 
+                                           Margin="0,0,0,10" TextAlignment="Center" HorizontalAlignment="Center" Width="200"/>
                             </StackPanel>
                         </StackPanel>
                     </TabItem>
@@ -343,17 +350,37 @@
                         <StackPanel Width="1200">
                             <!-- Content for RES -->
                             <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
-                                <StackPanel Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="K2T"/>
+                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="K2T:"/>
+                                        <TextBlock Text="{Binding K2State}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1" Grid.Column="0">
-                                    <TextBlock Text="K3B"/>
+                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="K3B:"/>
+                                        <TextBlock Text="{Binding K3State}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="2" Grid.Column="0">
-                                    <TextBlock Text="RRQ"/>
+                                <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="RRQ:"/>
+                                        <TextBlock Text="{Binding ResRadioQuality}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Row="3" Grid.Column="0">
-                                    <TextBlock Text="NID"/>
+                                <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,10,0,0">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock FontSize="24" Text="Node ID:"/>
+                                        <TextBlock Text="{Binding ResNodeId}" FontSize="22"
+                                                   Grid.Column="1" VerticalAlignment="Center" Background="White"
+                                                   Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                    </Grid>
                                 </StackPanel>
                             </Grid>
                             <!-- Remote Emergency Stop Status -->
@@ -362,9 +389,9 @@
                                         Margin="80,0,0,0">
                                 <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
                                            Margin="30,0,0,0" />
-                                <Image Name="ResIconRes" Source="../Assets/emergency-stop.png" Width="200"
+                                <Image Name="ResTabIcon" Source="../Assets/emergency-stop.png" Width="200"
                                        Height="200" Margin="0,0,0,0" />
-                                <TextBlock FontWeight="Bold" Text="DISENGAGED" FontSize="22"
+                                <TextBlock Name="ResTab" FontWeight="Bold" Text="DISENGAGED" FontSize="22"
                                            Background="Green" Foreground="White" Padding="10,0"
                                            Margin="0,0,0,0" TextAlignment="Center"
                                            HorizontalAlignment="Center" />
