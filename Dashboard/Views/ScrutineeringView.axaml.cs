@@ -7,22 +7,30 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Dashboard.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.Views;
 
 public partial class ScrutineeringView : UserControl
 {
     private const int StepCount = 13;
-    private List<ReceiptStep> _steps;
+    private readonly List<ReceiptStep> _steps;
     private readonly ILogger<ScrutineeringView> _logger;
 
     public ScrutineeringView(ILogger<ScrutineeringView> logger)
     {
         _logger = logger;
+        _steps = new List<ReceiptStep>();
 
         InitializeComponent();
         InitializeSteps(StepCount);
         PopulateAllStepsList();
+    }
+
+    public ScrutineeringView()
+    {
+        _logger = NullLogger<ScrutineeringView>.Instance;
+        _steps = new List<ReceiptStep>();
     }
 
     /// <summary>
@@ -31,7 +39,8 @@ public partial class ScrutineeringView : UserControl
     /// <param name="count">The number of steps in the AV_Inspection_flow yaml file.</param>
     private void InitializeSteps(int count)
     {
-        _steps = new List<ReceiptStep>();
+        _steps.Clear();
+        
         for (var i = 1; i <= count; i++)
             // The "o" ensures the time is formatted as an ISO string
             _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false, Date = DateTime.UtcNow.ToString("o") });

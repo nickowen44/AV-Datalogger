@@ -34,6 +34,7 @@ public partial class StatusView : UserControl
 
     private void OnRESUpdate(bool RESState)
     {
+        if (_RESTextBlock is null || _RESIcon is null) return;
 
         Dispatcher.UIThread.Post(() =>
         {

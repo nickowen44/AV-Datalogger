@@ -12,15 +12,18 @@ namespace Dashboard.ViewModels;
 public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
-    private readonly FileSystemWatcher _fileWatcher;
-    private readonly string _yamlFilePath;
+    private readonly FileSystemWatcher? _fileWatcher;
     private readonly ILogger<ScrutineeringViewModel> _logger;
 
-    [ObservableProperty] public YamlData _yamlData;
+    [ObservableProperty] private YamlData _yamlData = new()
+    {
+        Steps = [new StepData { Step = "Loading...", Measurements = [], Id = "0", Inspection = "" }],
+        Top = string.Empty,
+        Bottom = string.Empty
+    };
 
     public ScrutineeringViewModel(IDataStore dataStore, ILogger<ScrutineeringViewModel> logger)
     {
-        // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
         _dataStore.AvDataUpdated += OnDataChanged;
 
@@ -31,10 +34,16 @@ public partial class ScrutineeringViewModel : ViewModelBase
         // Follow this to do so for another file:
         // (https://stackoverflow.com/questions/16785369/how-to-include-other-files-to-the-output-directory-in-c-sharp-upon-build)
         var appDirectory = AppContext.BaseDirectory;
-        _yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
+        var yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
 
-        var directory = Path.GetDirectoryName(_yamlFilePath);
-        var fileName = Path.GetFileName(_yamlFilePath);
+        var directory = Path.GetDirectoryName(yamlFilePath);
+        var fileName = Path.GetFileName(yamlFilePath);
+
+        if (!Directory.Exists(directory))
+        {
+            _logger.LogError("Directory {directory} does not exist", directory);
+            return;
+        }
 
         // // Initialize file watcher
         _fileWatcher = new FileSystemWatcher(directory, fileName)
@@ -52,7 +61,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
         _fileWatcher.EnableRaisingEvents = true;
 
         // Load the initial YAML data when the ViewModel is created
-        LoadYamlData(_yamlFilePath);
+        LoadYamlData(yamlFilePath);
     }
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;

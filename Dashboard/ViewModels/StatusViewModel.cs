@@ -65,8 +65,11 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         RESDataUpdated?.Invoke(RemoteEmergency);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
-        _dataStore.Dispose();
+        _dataStore.AvDataUpdated -= OnAvDataChanged;
+        _dataStore.ResDataUpdated -= OnResDataChanged;
+
+        GC.SuppressFinalize(this);
     }
 }
