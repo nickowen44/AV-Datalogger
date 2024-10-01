@@ -33,11 +33,20 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
         {
             while (_shouldRun)
             {
-                var data = ReadLine();
-                DataReceived?.Invoke(this, new SerialPortData
+                try
                 {
-                    Buffer = data
-                });
+                    var data = ReadLine();
+                    DataReceived?.Invoke(this, new SerialPortData
+                    {
+                        Buffer = data
+                    });
+                }
+                catch (OperationCanceledException)
+                {
+                    // This exception is thrown when the thread is cancelled, this happens when the application is closed
+                    // and the thread is stopped, we can safely ignore this exception.
+                    logger.LogDebug("Serial port read thread cancelled");
+                }
             }
         });
 
