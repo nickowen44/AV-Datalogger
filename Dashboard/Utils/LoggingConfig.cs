@@ -39,6 +39,9 @@ public static class LoggingConfig
                 logLevel,
                 "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"
             )
+            // TODO: When on debug, the log frequency is too high causing the app to lag.
+            // TODO: This is due to the TextBox in the footer updating too frequently. Possibly due to the scroll logic,
+            // TODO: or just the raw volume of logs. So, we set the log level to Information to reduce the frequency.
             .WriteTo.Sink(LogEventSink, LogEventLevel.Information)
             .CreateLogger();
     }
