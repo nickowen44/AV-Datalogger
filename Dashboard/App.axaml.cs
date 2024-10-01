@@ -63,6 +63,6 @@ public class App : Application
         {
             Log.CloseAndFlush();
         }
-            
+
     }
 }
