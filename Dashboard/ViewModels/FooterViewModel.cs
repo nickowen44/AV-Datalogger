@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Globalization;
-using System.Timers;
 using Dashboard.Connectors;
 using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
-public partial class FooterViewModel : ViewModelBase
+public class FooterViewModel : ViewModelBase
 {
-    public bool? HeartBeat => _dataStore.HeartBeat;
-    public event Action<bool>? HeartbeatStatusUpdated;
-    public event Action<string>? RawMessageUpdated;
-    public event Action<bool>? ConnectionUpdate;
     private readonly IDataStore _dataStore;
-    public bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
-    public string CarId => _dataStore.RawData?.CarId ?? "0";
-    public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
-    public string UTCTime => _dataStore.RawData?.UTCTime.ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
-    public string LocalTime => _dataStore.RawData?.UTCTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
 
     public FooterViewModel(IDataStore dataStore)
     {
@@ -31,6 +20,19 @@ public partial class FooterViewModel : ViewModelBase
     {
         _dataStore = new DataStore(new DummyConnector());
     }
+
+    public bool? HeartBeat => _dataStore.HeartBeat;
+    public bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
+    public string CarId => _dataStore.RawData?.CarId ?? "0";
+    public string RawMessage => _dataStore.RawData?.RawMessage ?? "";
+    public string UTCTime => _dataStore.RawData?.UTCTime.ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
+
+    public string LocalTime =>
+        _dataStore.RawData?.UTCTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
+
+    public event Action<bool>? HeartbeatStatusUpdated;
+    public event Action<string>? RawMessageUpdated;
+    public event Action<bool>? ConnectionUpdate;
 
     /// <summary>
     ///     Notifies the view that the Footer data has changed.
@@ -60,5 +62,4 @@ public partial class FooterViewModel : ViewModelBase
 
         GC.SuppressFinalize(this);
     }
-
 }

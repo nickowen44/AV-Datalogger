@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Dashboard.ViewModels;
-using Dashboard.Views;
 
 namespace Dashboard;
 
 public class ViewLocator : IDataTemplate
 {
     private readonly Dictionary<Type, Func<Control?>> _locator = new();
+
     public Control? Build(object? data)
     {
         if (data is null)

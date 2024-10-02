@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -15,9 +12,10 @@ namespace Dashboard.Views;
 
 public partial class FooterView : UserControl
 {
+    private readonly Ellipse? _connection;
     private readonly TextBox? _consoleTextBox;
     private readonly Ellipse? _heartBeart;
-    private readonly Ellipse? _connection;
+
     public FooterView()
     {
         InitializeComponent();
@@ -36,24 +34,20 @@ public partial class FooterView : UserControl
             viewModel.HeartbeatStatusUpdated += OnHeartbeatStatusChanged;
         }
     }
+
     private void OnConnectionUpdate(bool connectionStat)
     {
         Dispatcher.UIThread.Post(() =>
         {
-
             if (connectionStat)
-            {
                 _connection.Fill = Brushes.Green;
-            }
             else
-            {
                 _connection.Fill = Brushes.Red;
-            }
         });
     }
+
     private void OnRawMessageUpdated(string newMessage)
     {
-
         Dispatcher.UIThread.Post(() =>
         {
             Console.WriteLine("Console TextBox updated");
@@ -66,29 +60,21 @@ public partial class FooterView : UserControl
 
             if (scrollViewer != null)
             {
-                bool isAtBottom = scrollViewer.Offset.Y >= scrollViewer.ScrollBarMaximum.Y;
-                if (isAtBottom)
-                {
-                    scrollViewer.ScrollToEnd();
-                }
+                var isAtBottom = scrollViewer.Offset.Y >= scrollViewer.ScrollBarMaximum.Y;
+                if (isAtBottom) scrollViewer.ScrollToEnd();
             }
         });
     }
+
     private async void OnHeartbeatStatusChanged(bool outcome)
     {
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            if (outcome)
-            {
-                _heartBeart.Fill = Brushes.OrangeRed;
-            }
+            if (outcome) _heartBeart.Fill = Brushes.OrangeRed;
         });
 
         await Task.Delay(500);
 
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            _heartBeart.Fill = Brushes.Orange;
-        });
+        await Dispatcher.UIThread.InvokeAsync(() => { _heartBeart.Fill = Brushes.Orange; });
     }
 }

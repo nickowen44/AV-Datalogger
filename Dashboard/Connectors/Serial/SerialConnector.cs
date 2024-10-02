@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Dashboard.Models;
 using Dashboard.Utils;
 
@@ -10,19 +10,21 @@ namespace Dashboard.Connectors.Serial;
 
 public partial class SerialConnector(ISerialPort comPort) : IConnector
 {
+    private const string HeartBeatMessage = "CON?";
+    private readonly ManualResetEvent _heartbeatEvent = new(false);
+
+
+    // TODO: Remove below when we have the actual values
+    private readonly Random _random = new();
+    private bool _heartBeatShouldRun = true;
+    private Thread? _heartbeatThread;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
 
-    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
-    private static partial Regex MyRegex();
-
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-    private const string HeartBeatMessage = "CON?";
-    private bool _heartBeatShouldRun = true;
-    private Thread? _heartbeatThread;
-    private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
+
     public void Start()
     {
         // Set up the connection to the serial port
@@ -42,6 +44,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
                     SendHeartbeat();
                     Thread.Sleep(1000);
                 }
+
                 _heartbeatEvent.WaitOne(1000);
             }
         });
@@ -49,12 +52,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
         // Open our serial port
         comPort.Open();
-    }
-
-    private void OnDataReceived(object? _, SerialPortData data)
-    {
-        // We got a new message from the serial port, parse it, removing the newline / return characters
-        ParseMessage(data.Buffer.Trim());
     }
 
     public void Stop()
@@ -68,6 +65,15 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
         // Close the serial port
         comPort.Close();
+    }
+
+    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    private static partial Regex MyRegex();
+
+    private void OnDataReceived(object? _, SerialPortData data)
+    {
+        // We got a new message from the serial port, parse it, removing the newline / return characters
+        ParseMessage(data.Buffer.Trim());
     }
 
     private void ParseMessage(string message)
@@ -173,19 +179,14 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private DateTime ParseUTCTime(string timeString)
     {
-
-        string datePart = "";
+        var datePart = "";
         // Check if the UTC value includes the leading zero for months, if not add.
         if (timeString.Length == 20)
-        {
             datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
-        }
         else
-        {
             datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
-        }
 
-        DateTime parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
+        var parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
 
         return parsedDate;
     }
@@ -197,13 +198,9 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             CarId = values["ID"],
             UTCTime = ParseUTCTime(values["UTC"]),
             RawMessage = rawMessage,
-            ConnectionStatus = comPort.IsConnected,
+            ConnectionStatus = comPort.IsConnected
         });
     }
-
-
-    // TODO: Remove below when we have the actual values
-    private readonly Random _random = new();
 
     private double ParseDouble(string value)
     {

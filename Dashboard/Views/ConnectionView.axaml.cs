@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 
 namespace Dashboard.Views;
 
@@ -10,6 +8,4 @@ public partial class ConnectionView : UserControl
     {
         InitializeComponent();
     }
-
-
 }

@@ -6,13 +6,13 @@ namespace Dashboard.Connectors.Serial;
 
 public class SerialPortWrapper : ISerialPort
 {
-    public event EventHandler<SerialPortData>? DataReceived;
+    private const double ConnectionTimeout = 5.0;
 
     private readonly SerialPort _serialPort = new();
+    private DateTime _lastMessageReceived = DateTime.Now;
 
     private bool _shouldRun = true;
-    private const double ConnectionTimeout = 5.0;
-    private DateTime _lastMessageReceived = DateTime.Now;
+    public event EventHandler<SerialPortData>? DataReceived;
 
     public void Open()
     {
@@ -62,12 +62,6 @@ public class SerialPortWrapper : ISerialPort
             _serialPort.Open();
     }
 
-    private string ReadLine()
-    {
-        _lastMessageReceived = DateTime.Now;
-        return _serialPort.ReadLine();
-    }
-
     public bool IsConnected
     {
         get
@@ -87,10 +81,7 @@ public class SerialPortWrapper : ISerialPort
                 _serialPort.Write(data);
 
                 // If the AV Logger doesn't respond OK then connection is dead.
-                if (_serialPort.ReadLine() != "OK")
-                {
-                    return false;
-                }
+                if (_serialPort.ReadLine() != "OK") return false;
                 Console.WriteLine("Wrote Heatbeat to SerialPort");
                 return true;
             }
@@ -100,6 +91,13 @@ public class SerialPortWrapper : ISerialPort
                 return false;
             }
         }
+
         return false;
+    }
+
+    private string ReadLine()
+    {
+        _lastMessageReceived = DateTime.Now;
+        return _serialPort.ReadLine();
     }
 }

@@ -7,13 +7,12 @@ namespace Dashboard.Connectors;
 
 public class DummyConnector : IConnector
 {
+    private bool _shouldStop;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-
-    private bool _shouldStop;
 
     public void Start()
     {
