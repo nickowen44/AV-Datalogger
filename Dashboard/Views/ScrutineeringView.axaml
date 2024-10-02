@@ -81,12 +81,13 @@
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="AV {0}: {1}">
                                             <Binding Path="Id" />
-                                            <Binding Path="Inspection" />
+                                            <Binding Path="Title" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center"
-                                           Margin="20 0" />
+                                <StackPanel Margin="100 0">
+                                    <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center" />
+                                </StackPanel>
                                 <TextBlock x:Name="DvData"
                                            Text="DV Data"
                                            Margin="10"
@@ -133,7 +134,7 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
                                     <Button Content="Pass" Background="Green" Foreground="White" Margin="5"
                                             Click="OnPass" Tag="{Binding Id}" />
                                     <Button Content="Fail" Background="Red" Foreground="White" Margin="5"

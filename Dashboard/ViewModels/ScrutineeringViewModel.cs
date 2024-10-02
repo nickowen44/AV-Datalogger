@@ -53,11 +53,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
-
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
-
     public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 0;
-
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
 
     /// <summary>
@@ -93,7 +90,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
                     new()
                     {
                         Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                        Id = "0", Inspection = ""
+                        Id = "0", Title = "Error", Caution = ""
                     }
                 },
                 Top = "",

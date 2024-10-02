@@ -11,7 +11,7 @@ namespace Dashboard.Views;
 
 public partial class ScrutineeringView : UserControl
 {
-    private const int StepCount = 13;
+    private const int StepCount = 12;
     private List<ReceiptStep> _steps;
 
     public ScrutineeringView()
@@ -30,7 +30,7 @@ public partial class ScrutineeringView : UserControl
         _steps = new List<ReceiptStep>();
         for (var i = 1; i <= count; i++)
             // The "o" ensures the time is formatted as an ISO string
-            _steps.Add(new ReceiptStep { Id = $"7.{i}", IsPassed = false, Date = DateTime.UtcNow.ToString("o") });
+            _steps.Add(new ReceiptStep { Id = $"{i}", IsPassed = false, Date = DateTime.UtcNow.ToString("o") });
     }
 
     public void Next(object source, RoutedEventArgs args)
