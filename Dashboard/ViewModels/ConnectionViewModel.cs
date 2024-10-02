@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dashboard.Connectors;
-using Dashboard.Models;
-using Dashboard.Utils;
 
 namespace Dashboard.ViewModels;
 
 public partial class ConnectionViewModel : ViewModelBase
 {
+    private readonly List<string> _connectionTemplates =
+    [
+        "Serial Port",
+        "IP Address",
+        "Log Replay"
+    ];
+
     [ObservableProperty] private string? _currentConnectionType;
     [ObservableProperty] private string? _selectedSerialPort;
-    public ObservableCollection<string> ConnectionTypes { get; }
-    public ObservableCollection<string> SerialPorts { get; }
 
     public ConnectionViewModel()
     {
@@ -25,6 +26,9 @@ public partial class ConnectionViewModel : ViewModelBase
         SerialPorts = new ObservableCollection<string>(GetSerialPorts());
         SelectedSerialPort = SerialPorts.FirstOrDefault();
     }
+
+    public ObservableCollection<string> ConnectionTypes { get; }
+    public ObservableCollection<string> SerialPorts { get; }
 
     private static string[] GetSerialPorts()
     {
@@ -35,17 +39,7 @@ public partial class ConnectionViewModel : ViewModelBase
     public void RefreshSerialPorts()
     {
         SerialPorts.Clear();
-        foreach (var port in GetSerialPorts())
-        {
-            SerialPorts.Add(port);
-        }
+        foreach (var port in GetSerialPorts()) SerialPorts.Add(port);
         SelectedSerialPort = SerialPorts.FirstOrDefault();
     }
-
-    private readonly List<string> _connectionTemplates =
-    [
-        "Serial Port",
-        "IP Address",
-        "Log Replay"
-    ];
 }
