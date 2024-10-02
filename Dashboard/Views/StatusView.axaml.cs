@@ -9,12 +9,13 @@ namespace Dashboard.Views;
 
 public partial class StatusView : UserControl
 {
-    private readonly TextBlock? _RESTextBlock;
-    private readonly Image? _RESIcon;
-    private readonly TextBlock? _RESTabTextBlock;
-    private readonly Image? _RESTabIcon;
-    private readonly TextBlock? _GPSTabTextBlock;
     private readonly Image? _GPSTabIcon;
+    private readonly TextBlock? _GPSTabTextBlock;
+    private readonly Image? _RESIcon;
+    private readonly Image? _RESTabIcon;
+    private readonly TextBlock? _RESTabTextBlock;
+    private readonly TextBlock? _RESTextBlock;
+
     public StatusView()
     {
         InitializeComponent();
@@ -29,10 +30,7 @@ public partial class StatusView : UserControl
 
     private void StatusViewLoaded(object? sender, EventArgs e)
     {
-        if (DataContext is StatusViewModel viewModel)
-        {
-            viewModel.RESDataUpdated += OnRESUpdate;
-        }
+        if (DataContext is StatusViewModel viewModel) viewModel.RESDataUpdated += OnRESUpdate;
     }
 
     private void InitializeComponent()
@@ -42,7 +40,6 @@ public partial class StatusView : UserControl
 
     private void OnRESUpdate(bool RESState)
     {
-
         Dispatcher.UIThread.Post(() =>
         {
             if (RESState)
