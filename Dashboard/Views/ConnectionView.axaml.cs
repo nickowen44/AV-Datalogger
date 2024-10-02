@@ -28,15 +28,11 @@ public partial class ConnectionView : UserControl
     }
     private void OnConnectionStarted(bool connected)
     {
+        // Disable the connect button if the serial connection started properly.
         if (connected)
         {
+            ConnectButton.Content = "Connected";
             ConnectButton.IsEnabled = false;
-            DisconnectButton.IsEnabled = true;
-        }
-        else
-        {
-            ConnectButton.IsEnabled = true;
-            DisconnectButton.IsEnabled = false;
         }
     }
     private async void FileSelectionClicked(object sender, RoutedEventArgs args)

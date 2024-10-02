@@ -62,13 +62,6 @@ public partial class ConnectionViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
-    public void DisconnectFromSerialPort()
-    {
-        _dataStore.disconnect();
-        ConnectionChanged?.Invoke(false);
-        
-    }
     private readonly List<string> _connectionTemplates =
     [
         "Serial Port",

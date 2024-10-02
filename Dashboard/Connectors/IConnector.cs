@@ -14,6 +14,8 @@ public interface IConnector
     /// <summary>
     ///     Handles setting up the connector when the DataStore is passed a port name.
     /// </summary>
+    /// <param name="portName">The name of the port to connect to.</param>
+
     void Start(string portName);
     
     /// <summary>

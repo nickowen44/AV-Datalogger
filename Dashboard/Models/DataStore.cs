@@ -40,13 +40,8 @@ public class DataStore : IDataStore, IDisposable
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            _connector.Stop();
             return false;
         }
-    }
-    public void disconnect()
-    {
-        _connector.Stop();
     }
     private void OnHeartbeatUpdated(object? sender, bool isReceived)
     {

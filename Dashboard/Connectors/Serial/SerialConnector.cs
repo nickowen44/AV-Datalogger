@@ -26,6 +26,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     /// <summary>
     ///     Handles setting up the connector for the data source when a port name is passed.
     /// </summary>
+    ///<param name="portName">The name of the port to connect to.</param>
     public void Start(string portName)
     {
             // Set up the connection to the serial port
@@ -107,13 +108,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
-        RawDataUpdated?.Invoke(this, new RawData
-        {
-            CarId = "",
-            UTCTime = DateTime.Now,
-            RawMessage = "",
-            ConnectionStatus = false,
-        });
 
         // Close the serial port
         comPort.Close();
