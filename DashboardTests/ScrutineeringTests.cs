@@ -40,7 +40,7 @@ public class ScrutineeringTests
 
 
         // Assert the carousel has the correct number of slides that is in the yaml file
-        const int scrutineeringInspectionChecks = 13;
+        const int scrutineeringInspectionChecks = 12;
         Assert.That(carousel.ItemCount, Is.EqualTo(scrutineeringInspectionChecks));
 
         // Assert that each carousel slide contains the information from the yaml file.
@@ -155,19 +155,19 @@ public class ScrutineeringTests
 
             // Test prior to button click that the step is "failed" by default
             var items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
 
             // Click pass and update UI after button was clicked. Check expander shows passed.
             passButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Dispatcher.UIThread.RunJobs();
             items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Passed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Passed"));
 
             // Click fail and update UI after button was clicked. Check expander shows failed.
             failButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Dispatcher.UIThread.RunJobs();
             items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
 
             // Change to next slide
             carousel.Next();
@@ -213,21 +213,8 @@ public class ScrutineeringTests
             var stackPanel = container?.GetVisualDescendants().OfType<StackPanel>()
                 .FirstOrDefault(panel => panel.Name == "StackPanel");
 
-            // Slides 7.2 and 7.5 and 7.8 together cover all 5 measurements that are to be checked in an Autonomous
-            // Vehicle Inspection.
-            if (i == 1)
-            {
-                var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
-                    .FirstOrDefault(control => control.Name == "ContentControl");
-                var measurements = contentControl?.GetVisualDescendants().OfType<TextBlock>()
-                    .FirstOrDefault();
-
-                // 7.2 Contains Autonomous Mission Inspection
-                Assert.That(measurements?.Text, Is.EqualTo("Autonomous Mission Indicator: 2"));
-            }
-
-
-            if (i == 4)
+            // Slide 10 covers all 5 measurements that are to be checked in the Inspection.
+            if (i == 9)
             {
                 var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
                     .FirstOrDefault(control => control.Name == "ContentControl");
@@ -236,26 +223,11 @@ public class ScrutineeringTests
                 // 7.5 Contains Autonomous System State and Steering Angle
                 var expectedTexts = new List<string>
                 {
+                    "Autonomous Mission Indicator: 2",
                     "Autonomous System State: 1",
-                    "Steering Angle: 90"
-                };
-
-                for (var j = 0; j < textBlocks?.Count; j++)
-                    Assert.That(textBlocks[j].Text, Is.EqualTo(expectedTexts[j]));
-            }
-
-
-            if (i == 7)
-            {
-                var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
-                    .FirstOrDefault(control => control.Name == "ContentControl");
-                var textBlocks = contentControl?.GetVisualDescendants().OfType<TextBlock>().ToList();
-
-                // 7.8 Contains Emergency Brake State, Service Brake State
-                var expectedTexts = new List<string>
-                {
                     "Emergency Brake State: 3",
-                    "Service Brake State: true"
+                    "Service Brake State: true",
+                    "Steering Angle: 90",
                 };
 
                 for (var j = 0; j < textBlocks?.Count; j++)
@@ -321,7 +293,7 @@ public class ScrutineeringTests
                 passButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 Dispatcher.UIThread.RunJobs();
                 var items = stepsList.Items.OfType<TextBlock>().ToList();
-                Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Passed"));
+                Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Passed"));
             }
 
             // Change to next slide
@@ -330,9 +302,9 @@ public class ScrutineeringTests
             Dispatcher.UIThread.RunJobs();
         }
 
-        // Check we are at the last slide (13 slides but 12 cause 0 indexed)
+        // Check we are at the last slide (12 slides but 11 cause 0 indexed)
         var currentIndex = carousel.SelectedIndex;
-        Assert.That(currentIndex, Is.EqualTo(12));
+        Assert.That(currentIndex, Is.EqualTo(11));
 
         // Click reset button, update UI that button was clicked
         resetButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -345,6 +317,6 @@ public class ScrutineeringTests
         // Check all steps in the expander have been set to failed.
         var expanderItems = stepsList.Items.OfType<TextBlock>().ToList();
         for (var i = 0; i < carousel.ItemCount; i++)
-            Assert.That(expanderItems[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+            Assert.That(expanderItems[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
     }
 }

@@ -12,7 +12,7 @@ namespace Dashboard.Views;
 public partial class ScrutineeringView : UserControl
 {
     private const int StepCount = 12;
-    private List<ReceiptStep> _steps;
+    private List<ReceiptStep> _steps = new();
 
     public ScrutineeringView()
     {

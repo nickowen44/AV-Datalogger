@@ -12,9 +12,20 @@ public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
-    private readonly string _yamlFilePath;
 
-    [ObservableProperty] public YamlData _yamlData;
+    [ObservableProperty] private YamlData _yamlData = new()
+    {
+        Steps = new List<StepData>
+        {
+            new()
+            {
+                Step = "", Measurements = new List<string>(),
+                Id = "", Title = "", Caution = ""
+            }
+        },
+        Top = "",
+        Bottom = ""
+    };
 
     public ScrutineeringViewModel(IDataStore dataStore)
     {
@@ -27,13 +38,14 @@ public partial class ScrutineeringViewModel : ViewModelBase
         // Follow this to do so for another file:
         // (https://stackoverflow.com/questions/16785369/how-to-include-other-files-to-the-output-directory-in-c-sharp-upon-build)
         var appDirectory = AppContext.BaseDirectory;
-        _yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
+        var yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
 
-        var directory = Path.GetDirectoryName(_yamlFilePath);
-        var fileName = Path.GetFileName(_yamlFilePath);
+        var directory = Path.GetDirectoryName(yamlFilePath);
+        var fileName = Path.GetFileName(yamlFilePath);
 
         // // Initialize file watcher
-        _fileWatcher = new FileSystemWatcher(directory, fileName)
+        _fileWatcher = new FileSystemWatcher(directory ?? throw new InvalidOperationException("Directory not found."),
+            fileName)
         {
             // Watch specifically for yaml files
             Filter = "*.yaml",
@@ -48,7 +60,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
         _fileWatcher.EnableRaisingEvents = true;
 
         // Load the initial YAML data when the ViewModel is created
-        LoadYamlData(_yamlFilePath);
+        LoadYamlData(yamlFilePath);
     }
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
