@@ -50,9 +50,10 @@ public class ScrutineeringTests
             // still have the key.
             Assert.That(carousel.SelectedItem?.ToString(), Does.Contain("Id"));
             Assert.That(((StepData)carousel.SelectedItem).Step, Is.Not.Null);
-            Assert.That(((StepData)carousel.SelectedItem).Inspection, Is.Not.Null);
-            // Measurements must be asserted this way as the current step may not have anything to measure with our tool
-            // however the slide should still have the key.
+            Assert.That(((StepData)carousel.SelectedItem).Title, Is.Not.Null);
+            // Caution and measurements must be asserted this way as the current step may not have anything to measure
+            // with our tool however the slide should still have the key.
+            Assert.That(carousel.SelectedItem.ToString(), Does.Contain("Caution"));
             Assert.That(carousel.SelectedItem.ToString(), Does.Contain("Measurements"));
             carousel.Next();
         }
