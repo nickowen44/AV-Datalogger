@@ -18,9 +18,9 @@ public partial class ConnectionViewModel : ViewModelBase
     [ObservableProperty] private string? _selectedSerialPort;
     public ObservableCollection<string> ConnectionTypes { get; }
     public ObservableCollection<string> SerialPorts { get; }
-    private IDataStore _dataStore;
+    private readonly IDataStore? _dataStore;
     public event Action<bool>? ConnectionChanged;
-    public ConnectionViewModel(IDataStore dataStore)
+    public ConnectionViewModel(IDataStore? dataStore=null)
     {
         ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
         _currentConnectionType = ConnectionTypes.First();
@@ -29,14 +29,6 @@ public partial class ConnectionViewModel : ViewModelBase
         _dataStore = dataStore;
     }
     
-    public ConnectionViewModel()
-    {
-        ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
-        _currentConnectionType = ConnectionTypes.First();
-        SerialPorts = new ObservableCollection<string>(GetSerialPorts());
-        SelectedSerialPort = SerialPorts.FirstOrDefault();
-        _dataStore = new DataStore(new DummyConnector());
-    }
     private static string[] GetSerialPorts()
     {
         return SerialPort.GetPortNames();

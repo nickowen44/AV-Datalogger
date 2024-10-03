@@ -24,6 +24,7 @@ public class SerialPortWrapper : ISerialPort
         // Initialise a read thread so our main (UI) thread doesn't block
         var thread = new Thread(() =>
         {
+            // Exception handling so we don't have unhandled exceptions on thread cancellation
             try
             {
                 while (_shouldRun)
