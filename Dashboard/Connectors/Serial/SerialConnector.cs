@@ -24,10 +24,10 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     private Thread? _heartbeatThread;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
     /// <summary>
-    ///     Handles setting up the connector for the data source when a port name is passed.
+    ///     Handles setting up the connector for the data source.
     /// </summary>
-    ///<param name="portName">The name of the port to connect to.</param>
-    public void Start(string portName)
+    ///<param name="portName">The name of the port to connect to. Defaults to COM22</param>
+    public void Start(string portName="COM22")
     {
             // Set up the connection to the serial port
             comPort.Configure(portName, 115200);
@@ -37,8 +37,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             //Set up Heart Beat thread 
             _heartbeatThread = new Thread(() =>
             {
-                try
-                {
                     while (_heartBeatShouldRun)
                     {
                         if (!comPort.IsConnected)
@@ -47,14 +45,8 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
                             SendHeartbeat();
                             Thread.Sleep(1000);
                         }
-
                         _heartbeatEvent.WaitOne(1000);
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
             });
             _heartbeatThread.Start();
             _heartBeatShouldRun = true;
@@ -62,37 +54,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             comPort.Open();
     }
     
-    /// <summary>
-    ///     Handles setting up the connector for the data source when no port name is passed, Defaults to COM22.
-    /// </summary>
-    public void Start()
-    {
-        // Set up the connection to the serial port
-        comPort.Configure("COM22", 115200);
-
-        // Set up the event handler for when data is received
-        comPort.DataReceived += OnDataReceived;
-
-        //Set up Heart Beat thread 
-        _heartbeatThread = new Thread(() =>
-        {
-            while (_heartBeatShouldRun)
-            {
-                if (!comPort.IsConnected)
-                {
-                    // If Heart beat should be sent then write and wait 1 second.
-                    SendHeartbeat();
-                    Thread.Sleep(1000);
-                }
-                _heartbeatEvent.WaitOne(1000);
-            }
-        });
-        _heartbeatThread.Start();
-
-        // Open our serial port
-        comPort.Open();
-    }
-
     private void OnDataReceived(object? _, SerialPortData data)
     {
 
@@ -117,7 +78,12 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         // First we validate that we have the correct message format
         if (!MyRegex().IsMatch(message))
-            throw new InvalidOperationException("Invalid message format received", new Exception(message));
+        {
+            // Skips message if the format is invalid so the thread doesn't kill itself.
+            Console.WriteLine("Invalid message format recevied");
+            return;
+        }
+
 
         var split = message.Substring(1).Split('|');
 

@@ -14,6 +14,9 @@ public interface IDataStore
     ResData? ResData { get; }
     RawData? RawData { get; }
     bool? HeartBeat { get; }
+    /// <summary>
+    ///     Handles actually starting the connection of portName.
+    /// </summary>
     bool startConnection(string portName);
 
     /// <summary>
