@@ -1,5 +1,10 @@
+using System.IO;
+using System.Runtime.CompilerServices;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 
 namespace Dashboard.Views;
@@ -11,14 +16,13 @@ public partial class ConnectionView : UserControl
         InitializeComponent();
         ConnectionTypeCombo.SelectionChanged += ConnectionTypeUpdated;
     }
-
     private async void FileSelectionClicked(object sender, RoutedEventArgs args)
     {
         // Get top level from the current control.
         var topLevel = TopLevel.GetTopLevel(this);
 
         // Start async operation to open the dialog.
-        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "Select Log File",
             AllowMultiple = false
@@ -41,10 +45,17 @@ public partial class ConnectionView : UserControl
             TCPSection.IsVisible = false;
             FileSection.IsVisible = false;
             if (selectedType == "IP Address")
+            {
                 TCPSection.IsVisible = true;
+            }
             else if (selectedType == "Log Replay")
+            {
                 FileSection.IsVisible = true;
-            else if (selectedType == "Serial Port") SerialPortSection.IsVisible = true;
+            }
+            else if (selectedType == "Serial Port")
+            {
+                SerialPortSection.IsVisible = true;
+            }
         }
     }
 }
