@@ -27,33 +27,33 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     ///     Handles setting up the connector for the data source.
     /// </summary>
     ///<param name="portName">The name of the port to connect to. Defaults to COM22</param>
-    public void Start(string portName="COM22")
+    public void Start(string portName = "COM22")
     {
-            // Set up the connection to the serial port
-            comPort.Configure(portName, 115200);
-            // Set up the event handler for when data is received
-            comPort.DataReceived += OnDataReceived;
+        // Set up the connection to the serial port
+        comPort.Configure(portName, 115200);
+        // Set up the event handler for when data is received
+        comPort.DataReceived += OnDataReceived;
 
-            //Set up Heart Beat thread 
-            _heartbeatThread = new Thread(() =>
+        //Set up Heart Beat thread 
+        _heartbeatThread = new Thread(() =>
+        {
+            while (_heartBeatShouldRun)
             {
-                    while (_heartBeatShouldRun)
-                    {
-                        if (!comPort.IsConnected)
-                        {
-                            // If Heart beat should be sent then write and wait 1 second.
-                            SendHeartbeat();
-                            Thread.Sleep(1000);
-                        }
-                        _heartbeatEvent.WaitOne(1000);
-                    }
-            });
-            _heartbeatThread.Start();
-            _heartBeatShouldRun = true;
-            // Open our serial port
-            comPort.Open();
+                if (!comPort.IsConnected)
+                {
+                    // If Heart beat should be sent then write and wait 1 second.
+                    SendHeartbeat();
+                    Thread.Sleep(1000);
+                }
+                _heartbeatEvent.WaitOne(1000);
+            }
+        });
+        _heartbeatThread.Start();
+        _heartBeatShouldRun = true;
+        // Open our serial port
+        comPort.Open();
     }
-    
+
     private void OnDataReceived(object? _, SerialPortData data)
     {
 

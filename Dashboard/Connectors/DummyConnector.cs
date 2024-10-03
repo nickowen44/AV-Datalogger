@@ -17,7 +17,7 @@ public class DummyConnector : IConnector
     /// <summary>
     ///     Handles setting up the connector to the data source when no port name is passed, Defaults to COM22.
     /// </summary>
-    public void Start(string portName="COM22")
+    public void Start(string portName = "COM22")
     {
         var random = new Random();
 
