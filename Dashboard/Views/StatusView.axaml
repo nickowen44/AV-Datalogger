@@ -49,7 +49,7 @@
             <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto, *">
                 <Border Grid.Row="1" Grid.Column="1" Background="#d9d9d9" Height="870" Margin="0,20,0,0">
                     <!-- TabControl for AV Data, GPS, and RES -->
-                    <TabControl>
+                    <TabControl x:Name="MainTabControl">
                         <!-- AV Data Tab -->
                         <TabItem Header="AV Data">
                             <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*,*">
@@ -278,7 +278,7 @@
                                             <TextBlock Grid.Column="0" FontSize="24" Text="SFA:" />
                                             <TextBlock Text="{Binding SatFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SatFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,0,0">
@@ -286,7 +286,7 @@
                                             <TextBlock Grid.Column="0" FontSize="24" Text="NOS:" />
                                             <TextBlock Text="{Binding SatCount}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SatCount" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,0,0">
@@ -294,7 +294,7 @@
                                             <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:" />
                                             <TextBlock Text="{Binding Hdop}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Hdop" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="10,10,0,0">
@@ -302,7 +302,7 @@
                                             <TextBlock Grid.Column="0" FontSize="24" Text="HFA:" />
                                             <TextBlock Text="{Binding HdopFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="HdopFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="4" Grid.Column="0" Margin="10,10,0,0">
@@ -310,15 +310,15 @@
                                             <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:" />
                                             <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SpeedFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="5" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
                                             <TextBlock Grid.Column="0" FontSize="24" Text="MPS:" />
-                                            <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
+                                            <TextBlock Text="{Binding MetresPerSecond}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="MetresPerSecond" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="0" Grid.Column="1">
@@ -326,7 +326,7 @@
                                             <TextBlock FontSize="24" Text="KMH:" />
                                             <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="KilometresPerHour" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,0">
@@ -334,7 +334,7 @@
                                             <TextBlock FontSize="24" Text="AFA:" />
                                             <TextBlock Text="{Binding AltFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,0,0">
@@ -342,7 +342,7 @@
                                             <TextBlock FontSize="24" Text="ALM:" />
                                             <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltitudeMetres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,10,0,0">
@@ -350,7 +350,7 @@
                                             <TextBlock FontSize="24" Text="AKM:" />
                                             <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltitudeKilometres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="4" Grid.Column="1" Margin="10,10,0,0">
@@ -358,7 +358,7 @@
                                             <TextBlock FontSize="24" Text="Longitude:" />
                                             <TextBlock Text="{Binding Longitude}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Longitude" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="5" Grid.Column="1" Margin="10,10,0,0">
@@ -366,7 +366,7 @@
                                             <TextBlock FontSize="24" Text="Latitude:" />
                                             <TextBlock Text="{Binding Latitude}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Latitude" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -394,7 +394,7 @@
                                             <TextBlock FontSize="24" Text="K2T:" />
                                             <TextBlock Text="{Binding K2State}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="K2State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
@@ -402,7 +402,7 @@
                                             <TextBlock FontSize="24" Text="K3B:" />
                                             <TextBlock Text="{Binding K3State}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="K3State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
@@ -410,7 +410,7 @@
                                             <TextBlock FontSize="24" Text="RRQ:" />
                                             <TextBlock Text="{Binding ResRadioQuality}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="ResRadioQuality" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,10,0,0">
@@ -418,7 +418,7 @@
                                             <TextBlock FontSize="24" Text="Node ID:" />
                                             <TextBlock Text="{Binding ResNodeId}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="ResNodeId" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
