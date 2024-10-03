@@ -107,32 +107,12 @@ public partial class MainWindowViewModel : ViewModelBase
         Console.WriteLine("Changed CurrentPage to View {0}", value.Label);
     }
 
-        /// <summary>
-        /// Simple list template to tie the shorten names to ViewModels and Views
-        /// ViewModel can be Null as not all Views will require one e.g. Help/About
-        /// Rendered in order left to right.
-        /// </summary>
-        private readonly List<ListItemTemplate> _templates =
-        [
-            // Currently a bunch of dummy views
-            // When adding to the list use typeof(New Item View/ViewModel).
-            new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection"),
-            new ListItemTemplate(typeof(SetupView), null, "Setup"),
-            new ListItemTemplate(typeof(StatusView), typeof(StatusViewModel), "Status"),
-            new ListItemTemplate(typeof(ConsoleView), null, "Console"),
-            new ListItemTemplate(typeof(AboutView), typeof(AboutViewModel), "About"),
-            new ListItemTemplate(typeof(HelpView), null, "Help"),
-            new ListItemTemplate(typeof(ScrutineeringView), typeof(ScrutineeringViewModel), "Scrutineering"),
-            new ListItemTemplate(typeof(DataView), typeof(DataViewModel), "Data"),
-        ];
-        public ObservableCollection<ListItemTemplate> Items { get; }
-
-        /// <summary>
-        /// Iterates through _views to dispose of the ViewModels as needed.
-        /// </summary>
-        public override void Dispose()
-        {
-            Console.WriteLine("Dispose for MainViewModel Triggered");
+    /// <summary>
+    ///     Iterates through _views to dispose of the ViewModels as needed.
+    /// </summary>
+    public override void Dispose()
+    {
+        Console.WriteLine("Dispose for MainViewModel Triggered");
 
         _serviceProvider.GetService<IDataStore>()?.Dispose();
 

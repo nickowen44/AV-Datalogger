@@ -1,71 +1,8 @@
-<UserControl  xmlns="https://github.com/avaloniaui"
-              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:vm="using:Dashboard.ViewModels"
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              x:DataType="vm:ConnectionViewModel"
-              x:Class="Dashboard.Views.ConnectionView"
-              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-              Foreground="Black"
-              Background="#c4c4c4">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:ConnectionViewModel />
-    </Design.DataContext>
-    <Panel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <ThemeVariantScope RequestedThemeVariant="Light">
-            <Grid>
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <!-- Connection Type -->
-    <StackPanel Grid.Row="0" Margin="0,0,50,0" Name="ConnectionTypeSelectionSeection">
-        <TextBlock Text="Connection Type" Margin="0, 10, 0, 5"/>
-        <ComboBox
-            x:Name="ConnectionTypeCombo"
-            Width="200"
-            SelectedItem="{Binding CurrentConnectionType}"
-            ItemsSource="{Binding ConnectionTypes}"
-            Foreground="Black"/>
-    </StackPanel>
-    <Grid Grid.Row="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> 
-            <RowDefinition Height="Auto"/> 
-            <RowDefinition Height="Auto"/> 
-        </Grid.RowDefinitions>
-        <!-- Serial Port Section -->
-        <StackPanel Grid.Row="0" Margin="0, 10, 0, 5" Name="SerialPortSection" IsVisible="True">
-            <TextBlock Text="Serial Port" Margin="0, 0, 0, 5" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Name="SerialPortCombo"
-                    Width="200"
-                    SelectedItem="{Binding SelectedSerialPort}"
-                    ItemsSource="{Binding SerialPorts, Mode=TwoWay}"/>
-                <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}" Margin="5,0,0,0"/>
-            </StackPanel>
-        </StackPanel>
-        <!-- TCP Section -->
-        <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsVisible="False">
-            <TextBlock Text="IP Address" Margin="0, 0, 0, 5" />
-            <TextBox Width="200" HorizontalAlignment="Left"/>
-        </StackPanel>
-        <!-- File Section -->
-        <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsVisible="False">
-            <TextBlock Text="Log File" Margin="0, 0, 0, 5" />
-            <StackPanel Orientation="Horizontal">
-                <TextBox Width="200" Name="LogFileSelected"/>
-                <Button Click="FileSelectionClicked" Content="..." Width="30" Margin="5,0,0,0"/>
-            </StackPanel>
-        </StackPanel>
-    </Grid>
-    <!-- Connect Button -->
-    <Button Grid.Row="2" Content="Connect" Margin="0,10,50,50" FontWeight="Bold" HorizontalAlignment="Left"/>
-        </Grid>
-        </ThemeVariantScope>
-    </Panel>
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dashboard.Views.ConnectionView">
+    Connection Page Test
 </UserControl>
