@@ -12,13 +12,13 @@ namespace DashboardTests;
 [TestFixture]
 public class OverviewPageTest
 {
-    private Mock<IDataStore> _dataStore;
-
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
+
+    private Mock<IDataStore> _dataStore;
 
 
     [AvaloniaTest]
@@ -121,7 +121,7 @@ public class OverviewPageTest
         };
         Dispatcher.UIThread.RunJobs();
         Assert.IsNotNull(window);
-        
+
         // Find the TabControl in the UserControl
         var tabControl = window.FindControl<TabControl>("MainTabControl");
 
@@ -196,7 +196,7 @@ public class OverviewPageTest
         };
         Dispatcher.UIThread.RunJobs();
         Assert.IsNotNull(window);
-        
+
         // Find the TabControl in the UserControl
         var tabControl = window.FindControl<TabControl>("MainTabControl");
 
@@ -211,7 +211,7 @@ public class OverviewPageTest
         var ResNodeId = window.FindControl<TextBlock>("ResNodeId");
         var ResRadioQuality = window.FindControl<TextBlock>("ResRadioQuality");
         var ResState = window.FindControl<TextBlock>("ResTab");
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(K2State, Is.Not.Null);
