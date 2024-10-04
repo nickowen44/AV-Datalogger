@@ -63,7 +63,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         {
             CarId = "",
             UTCTime = DateTime.Now,
-            RawMessage = "",
             ConnectionStatus = true,
         });
     }
@@ -105,7 +104,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         if (!MyRegex().IsMatch(message))
         {
             // Skips message if the format is invalid so the thread doesn't kill itself.
-            Console.WriteLine("Invalid message format received");
+            logger.LogWarning("Invalid message format received: {message}", message);
             return;
         }
 
@@ -121,9 +120,10 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
             // If we don't have a key-value pair, we throw an exception
             if (pair.Length < 2)
-                // TODO: Handle this instead of throwing an exception, the app doesn't need to crash if a key-value pairis invalid
-                throw new InvalidOperationException($"Invalid key-value pair: {s}",
-                    new Exception($"Buffer str: {message}"));
+            {
+                logger.LogError("Invalid key-value pair: {s}, Skipping message: {message}", s, message);
+                return;
+            }
 
             values[pair[0]] = pair[1];
         }
@@ -143,10 +143,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         else
         {
             logger.LogError("Unknown message type received: {message}", message);
-
-            // TODO: Handle this instead of throwing an exception, the app doesn't need to crash if the message is unknown
-            throw new InvalidOperationException("Unknown message type received",
-                new Exception($"Buffer str: {message}"));
         }
 
         ParseRawMessage(values, message);
@@ -276,12 +272,12 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     {
         try
         {
-            Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
+            logger.LogDebug("Sending heartbeat: {HeartBeatMessage}", HeartBeatMessage);
             HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError("Error sending heartbeat: {message}", ex.Message);
         }
     }
 }

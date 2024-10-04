@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dashboard.Connectors;
+using Dashboard.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Models;
 
@@ -46,7 +49,8 @@ public class DataStore : IDataStore, IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError(ex, "Failed to start connection");
+            
             _connector.Stop();
             return false;
         }
