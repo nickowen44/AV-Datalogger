@@ -50,7 +50,7 @@ public class DataStore : IDataStore, IDisposable
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to start connection");
-            
+
             _connector.Stop();
             return false;
         }

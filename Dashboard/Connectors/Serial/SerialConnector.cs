@@ -35,7 +35,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
         // Set up the connection to the serial port
         comPort.Configure(portName, 115200);
-        
+
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
 
