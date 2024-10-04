@@ -22,7 +22,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
                 Step = "", Measurements = new List<string>(),
                 Id = "", Title = "", Caution = ""
             }
-        },
+        }, 
         Top = "",
         Bottom = ""
     };
