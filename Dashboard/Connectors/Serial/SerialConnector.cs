@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Dashboard.Models;
 using Dashboard.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Connectors.Serial;
 
-public partial class SerialConnector(ISerialPort comPort) : IConnector
+public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnector> logger) : IConnector
 {
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
@@ -23,10 +24,17 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     private bool _heartBeatShouldRun = true;
     private Thread? _heartbeatThread;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
-    public void Start()
+
+    /// <summary>
+    ///     Handles setting up the connector for the data source.
+    /// </summary>
+    ///<param name="portName">The name of the port to connect to. Defaults to COM22</param>
+    public void Start(string portName = "COM22")
     {
+        logger.LogInformation("Starting Serial Connector");
+
         // Set up the connection to the serial port
-        comPort.Configure("COM22", 115200);
+        comPort.Configure(portName, 115200);
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
@@ -46,25 +54,45 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             }
         });
         _heartbeatThread.Start();
+        _heartBeatShouldRun = true;
 
         // Open our serial port
         comPort.Open();
+
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            ConnectionStatus = true,
+        });
     }
 
     private void OnDataReceived(object? _, SerialPortData data)
     {
+        logger.LogDebug("Received data from serial port: {data}", data.Buffer);
+
         // We got a new message from the serial port, parse it, removing the newline / return characters
         ParseMessage(data.Buffer.Trim());
     }
 
     public void Stop()
     {
+        logger.LogInformation("Stopping Serial Connector");
+
         // Remove the event handler
         comPort.DataReceived -= OnDataReceived;
 
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
+
+        // Update the Connection status.
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            ConnectionStatus = false,
+        });
 
         // Close the serial port
         comPort.Close();
@@ -74,7 +102,11 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         // First we validate that we have the correct message format
         if (!MyRegex().IsMatch(message))
-            throw new InvalidOperationException("Invalid message format received", new Exception(message));
+        {
+            // Skips message if the format is invalid so the thread doesn't kill itself.
+            logger.LogWarning("Invalid message format received: {message}", message);
+            return;
+        }
 
         var split = message.Substring(1).Split('|');
 
@@ -88,25 +120,38 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
             // If we don't have a key-value pair, we throw an exception
             if (pair.Length < 2)
-                throw new InvalidOperationException($"Invalid key-value pair: {s}",
-                    new Exception($"Buffer str: {message}"));
+            {
+                logger.LogError("Invalid key-value pair: {s}, Skipping message: {message}", s, message);
+                return;
+            }
 
             values[pair[0]] = pair[1];
         }
 
         if (values.ContainsKey("LAT"))
+        {
             ParseGpsMessage(values);
+        }
         else if (values.ContainsKey("SA"))
+        {
             ParseAvStatusMessage(values);
-        else if (values.ContainsKey("RES")) ParseResMessage(values);
+        }
+        else if (values.ContainsKey("RES"))
+        {
+            ParseResMessage(values);
+        }
         else
-            throw new InvalidOperationException("Unknown message type received",
-                new Exception($"Buffer str: {message}"));
+        {
+            logger.LogError("Unknown message type received: {message}", message);
+        }
+
         ParseRawMessage(values, message);
     }
 
     private void ParseGpsMessage(Dictionary<string, string> values)
     {
+        logger.LogDebug("Parsing GPS message: {values}", values);
+
         GpsDataUpdated?.Invoke(this, new GpsData
         {
             Latitude = ParseDouble(values["LAT"]),
@@ -127,6 +172,8 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void ParseAvStatusMessage(Dictionary<string, string> values)
     {
+        logger.LogDebug("Parsing AV Status message: {values}", values);
+
         AvDataUpdated?.Invoke(this, new AvData
         {
             Speed = new ValuePair<double>
@@ -161,6 +208,8 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void ParseResMessage(Dictionary<string, string> values)
     {
+        logger.LogDebug("Parsing RES message: {values}", values);
+
         ResDataUpdated?.Invoke(this, new ResData
         {
             ResState = ParseBool(values["RES"]),
@@ -173,7 +222,6 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private DateTime ParseUTCTime(string timeString)
     {
-
         string datePart = "";
         // Check if the UTC value includes the leading zero for months, if not add.
         if (timeString.Length == 20)
@@ -192,11 +240,11 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
+        logger.LogDebug("Parsing Raw message: {values}", values);
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = values["ID"],
             UTCTime = ParseUTCTime(values["UTC"]),
-            RawMessage = rawMessage,
             ConnectionStatus = comPort.IsConnected,
         });
     }
@@ -222,7 +270,14 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void SendHeartbeat()
     {
-        Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
-        HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        try
+        {
+            logger.LogDebug("Sending heartbeat: {HeartBeatMessage}", HeartBeatMessage);
+            HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("Error sending heartbeat: {message}", ex.Message);
+        }
     }
 }

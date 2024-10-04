@@ -33,7 +33,7 @@ public class ConnectionTest
         // Arrange  
         var window = new ConnectionView()
         {
-            DataContext = new ConnectionViewModel()
+            DataContext = new ConnectionViewModel(_dataStore.Object)
         };
 
         var connectionType = window.FindControl<ComboBox>("ConnectionTypeCombo");
@@ -70,7 +70,7 @@ public class ConnectionTest
             Content = new ConnectionView()
             {
 
-                DataContext = new ConnectionViewModel()
+                DataContext = new ConnectionViewModel(_dataStore.Object)
             }
         };
 

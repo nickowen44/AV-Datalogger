@@ -7,6 +7,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
 using Dashboard.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels
 {
@@ -31,6 +33,8 @@ namespace Dashboard.ViewModels
         /// </summary>
         private readonly IServiceProvider _serviceProvider;
 
+        private readonly ILogger<MainWindowViewModel> _logger;
+
         /// <summary>
         ///  Main constructor, creates a Dict with the ViewModels and their names,
         ///  and sets up the first page
@@ -38,6 +42,8 @@ namespace Dashboard.ViewModels
         public MainWindowViewModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            _logger = serviceProvider.GetService<ILogger<MainWindowViewModel>>() ??
+                      NullLogger<MainWindowViewModel>.Instance;
 
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
@@ -56,35 +62,34 @@ namespace Dashboard.ViewModels
         partial void OnSelectedListItemChanged(ListItemTemplate value)
         {
             // Check if the view already exist in the dict, if it does not then create it and the appropriate ViewModel as needed.
-            Console.WriteLine("Navigation Bar Item Selection Changed to {0}.", value.Label);
+            _logger.LogDebug("Navigation Bar Item Selection Changed to {0}.", value.Label);
             if (!_views.ContainsKey(value.Label))
             {
                 // Create the view.
-                var viewInstance = (UserControl?)Activator.CreateInstance(value.View);
+                var viewInstance = (UserControl?)ActivatorUtilities.CreateInstance(_serviceProvider, value.View);
                 if (viewInstance == null)
                 {
-                    Console.WriteLine("Failed to load view instance {0}.", value.Label);
+                    _logger.LogError("Failed to load view instance {0}.", value.Label);
                 }
                 else
                 {
                     ViewModelBase? viewModelInstance = null;
                     if (value.ViewModel != null)
                     {
-
                         // Create the ViewModel with their required services and set the DataContext.
                         viewModelInstance =
                             (ViewModelBase)ActivatorUtilities.CreateInstance(_serviceProvider, value.ViewModel);
                         viewInstance.DataContext = viewModelInstance;
-                        Console.WriteLine("Created ViewModel instance: {0}.", value.ViewModel);
 
-
+                        _logger.LogDebug("Created ViewModel instance: {0}.", value.ViewModel);
                     }
-                    Console.WriteLine("Added View {0} to _views dict.", value.Label);
+
+                    _logger.LogDebug("Added View {0} to _views dict.", value.Label);
                     _views[value.Label] = (viewInstance, viewModelInstance);
                 }
             }
             CurrentPage = _views[value.Label].View;
-            Console.WriteLine("Changed CurrentPage to View {0}", value.Label);
+            _logger.LogDebug("Changed CurrentPage to View {0}", value.Label);
         }
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace Dashboard.ViewModels
         /// </summary>
         public override void Dispose()
         {
-            Console.WriteLine("Dispose for MainViewModel Triggered");
+            _logger.LogDebug("Disposing of MainViewModel");
 
             _serviceProvider.GetService<IDataStore>()?.Dispose();
 

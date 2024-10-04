@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 using Dashboard.Utils;
 
 namespace Dashboard.ViewModels;
@@ -12,7 +15,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
     private readonly IYamlLoader _yamlLoader;
-
+    private readonly ILogger<ScrutineeringViewModel> _logger;
+    
     [ObservableProperty]
     private YamlData _yamlData = new()
     {
@@ -20,7 +24,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
         {
             new()
             {
-                Step = "", Measurements = new List<string>(),
+                Step = "Loading...", Measurements = new List<string>(),
                 Id = "", Title = "", Caution = ""
             }
         },
@@ -28,12 +32,13 @@ public partial class ScrutineeringViewModel : ViewModelBase
         Bottom = ""
     };
 
-    public ScrutineeringViewModel(IDataStore dataStore, IYamlLoader yamlLoader)
+    public ScrutineeringViewModel(IDataStore dataStore, IYamlLoader yamlLoader, ILogger<ScrutineeringViewModel> logger)
     {
-        // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
         _yamlLoader = yamlLoader;
         _dataStore.AvDataUpdated += OnDataChanged;
+
+        _logger = logger;
 
         // Dynamically locate the folder where the app is running and read the YAML file.
         // This works as the yaml file has been included in the output directory
@@ -45,9 +50,14 @@ public partial class ScrutineeringViewModel : ViewModelBase
         var directory = Path.GetDirectoryName(yamlFilePath);
         var fileName = Path.GetFileName(yamlFilePath);
 
+        if (!Directory.Exists(directory))
+        {
+            _logger.LogError("Directory {directory} does not exist", directory);
+            return;
+        }
+
         // // Initialize file watcher
-        _fileWatcher = new FileSystemWatcher(directory ?? throw new InvalidOperationException("Directory not found."),
-            fileName)
+        _fileWatcher = new FileSystemWatcher(directory, fileName)
         {
             // Watch specifically for yaml files
             Filter = "*.yaml",
@@ -77,9 +87,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// <param name="filePath">The yaml's filepath</param>
     public void LoadYamlData(string filePath)
     {
-        YamlData = _yamlLoader.LoadYamlData(filePath);
-        Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
-    }
+        YamlData = _yamlLoader.LoadYamlData(filePath, _logger);
+        _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);    }
 
     /// <summary>
     ///     Reload the file when change is detected.
@@ -94,7 +103,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
-        Console.WriteLine("AV Data Updated in ScrutineeringViewModel");
+        _logger.LogDebug("AV Status data changed");
 
         OnPropertyChanged(nameof(AutonomousSystemState));
         OnPropertyChanged(nameof(EmergencyBrakeState));

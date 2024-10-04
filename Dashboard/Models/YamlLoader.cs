@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Dashboard.Models;
+using Dashboard.ViewModels;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -9,7 +11,7 @@ namespace Dashboard.Utils;
 
 public class YamlLoader : IYamlLoader
 {
-    public YamlData LoadYamlData(string filePath)
+    public YamlData LoadYamlData(string filePath, ILogger<ScrutineeringViewModel> logger)
     {
         try
         {
@@ -23,7 +25,7 @@ public class YamlLoader : IYamlLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: " + ex.Message);
+            logger.LogError("Error loading the yaml file: {message}", ex.Message);
 
             return new YamlData
             {

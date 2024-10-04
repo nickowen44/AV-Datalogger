@@ -1,14 +1,17 @@
-﻿using Avalonia.Data.Converters;
-using System;
+﻿using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
 
 namespace Dashboard.Utils;
 
 public class GaugeConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        double inputValue = (double)value;
-        string type = parameter as string;
+        var inputValue = value is double d ? d : 0;
+
+        // If this cast fails, it doesnt matter as we will be setting the needle to 0
+        var type = parameter as string ?? "BrakeMeter";
 
         // Check if the convertee is the Speedometer or Brake meter, Defaults to Brake meter.
         double maxValue = 100;
@@ -33,7 +36,7 @@ public class GaugeConverter : IValueConverter
         return $"M {centerX},{centerY} L {endX},{endY}";
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }
