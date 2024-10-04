@@ -1,5 +1,6 @@
 ﻿using Dashboard.Connectors.Serial;
-using Microsoft.Extensions.Logging.Abstractions;
+using DashboardTests.Utils;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace DashboardTests.Connectors;
@@ -9,6 +10,7 @@ public class SerialConnectorTests
 {
     private SerialConnector _serialConnector;
     private Mock<ISerialPort> _serialPortMock;
+    private ShimLogger<SerialConnector> _logger;
 
     private void RaiseDataReceivedEvent(string input)
     {
@@ -19,7 +21,8 @@ public class SerialConnectorTests
     public void Setup()
     {
         _serialPortMock = new Mock<ISerialPort>();
-        _serialConnector = new SerialConnector(_serialPortMock.Object, NullLogger<SerialConnector>.Instance);
+        _logger = new ShimLogger<SerialConnector>();
+        _serialConnector = new SerialConnector(_serialPortMock.Object, _logger);
     }
 
     [Test]
@@ -114,15 +117,16 @@ public class SerialConnectorTests
     {
         // Arrange
         const string input = "#ID=A46|UTC=P2024820T06:56:04.00|BADINPUT\r\n";
-        const string expectedExceptionMessage = "Invalid key-value pair: BADINPUT";
+        const string expectedExceptionMessage =
+            "Invalid key-value pair: BADINPUT, Skipping message: #ID=A46|UTC=P2024820T06:56:04.00|BADINPUT";
 
         // Act
         _serialConnector.Start();
-        var ex = Assert.Throws<InvalidOperationException>(() => RaiseDataReceivedEvent(input));
+        RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
         // Assert
-        Assert.That(ex.Message, Is.EqualTo(expectedExceptionMessage));
+        _logger.AssertLog(LogLevel.Error, expectedExceptionMessage);
     }
 
     [Test]
@@ -130,14 +134,15 @@ public class SerialConnectorTests
     {
         // Arrange
         const string input = "#ID=A46|UTC=P2024820T06:56:04.00|BADKEY=123\r\n";
-        const string expectedExceptionMessage = "Unknown message type received";
+        const string expectedExceptionMessage =
+            "Unknown message type received: #ID=A46|UTC=P2024820T06:56:04.00|BADKEY=123";
 
         // Act
         _serialConnector.Start();
-        var ex = Assert.Throws<InvalidOperationException>(() => RaiseDataReceivedEvent(input));
+        RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
         // Assert
-        Assert.That(ex.Message, Is.EqualTo(expectedExceptionMessage));
+        _logger.AssertLog(LogLevel.Error, expectedExceptionMessage);
     }
 }
