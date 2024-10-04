@@ -18,7 +18,7 @@ public interface IDataStore
     ///     Handles actually starting the connection of portName.
     /// </summary>
     bool startConnection(string portName);
-    
+
     void disconnect();
 
     /// <summary>

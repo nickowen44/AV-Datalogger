@@ -50,10 +50,10 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         });
         _heartbeatThread.Start();
         _heartBeatShouldRun = true;
-        
+
         // Open our serial port
         comPort.Open();
-        
+
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = "",
@@ -78,7 +78,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
-        
+
         // Update the Connection status.
         RawDataUpdated?.Invoke(this, new RawData
         {
@@ -87,7 +87,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             RawMessage = "",
             ConnectionStatus = false,
         });
-        
+
         // Close the serial port
         comPort.Close();
     }

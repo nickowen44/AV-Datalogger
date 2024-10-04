@@ -51,7 +51,7 @@ public partial class ConnectionViewModel : ViewModelBase
             ConnectionChanged?.Invoke(true);
         }
     }
-    
+
     [RelayCommand]
     public void DisconnectFromSerialPort()
     {

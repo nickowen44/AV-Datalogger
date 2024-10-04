@@ -56,7 +56,7 @@ public partial class ConnectionView : UserControl
         {
             Title = "Select Log File",
             AllowMultiple = false,
-            FileTypeFilter = new[] {CSV, }
+            FileTypeFilter = new[] { CSV, }
         });
 
         if (files.Count >= 1)
