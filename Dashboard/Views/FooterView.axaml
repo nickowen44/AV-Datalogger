@@ -29,41 +29,45 @@
             </Style>
         </Style>
     </UserControl.Styles>
+    
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:FooterViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="0.3*,0.3*, 0.6*" >
-        <Grid Grid.Column="0" Margin="10,0,0,0">
+
+    <Grid ColumnDefinitions="0.3*,0.3*, 0.6*" Margin="10, 0">
+        <Grid Grid.Column="0">
             <StackPanel VerticalAlignment="Center">
             <TextBlock Name="CarId" Text="{Binding CarId, StringFormat='Car ID: {0}'}"/>
             <TextBlock Name="UTCTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}"/>
             <TextBlock Name="LocalTime" Text="{Binding LocalTime, StringFormat='Local Time: {0}'}"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Column="1" Grid.RowDefinitions="0.5*,0.5*" Grid.ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Ellipse Name="ConnectionIndicator" Grid.Column="0" Grid.Row="0" Stroke="Black" StrokeThickness="3"
-                         Fill="Red" Width="20" Height="20"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,0,2"/>
-                <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="0" Name="Test" Text="Connection" HorizontalAlignment="Left"/>
-                <Ellipse Name="HeartBeat" Grid.Column="0" Grid.Row="1"  Stroke="Black" StrokeThickness="3"
-                         Fill="Orange" Width="20" Height="20"
-                         HorizontalAlignment="Right"/>
-                <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat" HorizontalAlignment="Left"/>
+        <Grid Grid.Column="1" RowDefinitions="0.5*,0.5*" ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Ellipse Name="ConnectionIndicator" Grid.Column="0" Grid.Row="0" Stroke="Black" StrokeThickness="3"
+                     Fill="{Binding ConnectionColor}" Width="20" Height="20" HorizontalAlignment="Right"
+                     Margin="0,0,0,2" />
+            <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="0" Name="Test" Text="Connection"
+                       HorizontalAlignment="Left" />
+            <Ellipse Name="HeartBeat" Grid.Column="0" Grid.Row="1" Stroke="Black" StrokeThickness="3"
+                     Fill="{Binding HeartBeatColor}" Width="20" Height="20" HorizontalAlignment="Right" />
+            <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat"
+                       HorizontalAlignment="Left" />
         </Grid>
-        <Grid Grid.Column="2"  VerticalAlignment="Center">
+        <Grid Grid.Column="2" VerticalAlignment="Center">
             <TextBox Name="ConsoleTextBox"
-                     Height="80" 
-                     Margin="10,40,10,40" 
-                     AcceptsReturn="True" 
+                     Text="{Binding LogMessage, Mode=OneWay}"
+                     Height="80"
+                     AcceptsReturn="True"
                      Background="White"
                      Foreground="Black"
                      FontSize="10"
                      TextWrapping="Wrap"
-                     IsReadOnly="True">
-            </TextBox>
+                     IsReadOnly="True"
+                     TextChanged="ConsoleTextBox_OnTextChanged"
+                     Loaded="ConsoleTextBox_OnLoaded" />
         </Grid>
     </Grid>
     

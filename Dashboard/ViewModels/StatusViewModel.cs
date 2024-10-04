@@ -1,6 +1,7 @@
 using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
 
@@ -18,7 +19,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public StatusViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector());
+        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
     }
 
     public double SpeedActual => _dataStore.AvStatusData?.Speed.Actual ?? 0;
@@ -64,8 +65,11 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         RESDataUpdated?.Invoke(RemoteEmergency);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
-        _dataStore.Dispose();
+        _dataStore.AvDataUpdated -= OnAvDataChanged;
+        _dataStore.ResDataUpdated -= OnResDataChanged;
+
+        GC.SuppressFinalize(this);
     }
 }

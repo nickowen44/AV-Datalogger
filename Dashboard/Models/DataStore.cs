@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dashboard.Connectors;
+using Dashboard.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Models;
 
@@ -10,6 +13,7 @@ public class DataStore : IDataStore, IDisposable
     public event EventHandler? ResDataUpdated;
     public event EventHandler? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
+    public event EventHandler<string>? ConsoleMessageUpdated;
 
     public bool? HeartBeat { get; private set; }
     public GpsData? GpsData { get; private set; }
@@ -18,10 +22,16 @@ public class DataStore : IDataStore, IDisposable
     public RawData? RawData { get; private set; }
 
     private readonly IConnector _connector;
+    private readonly ILogger<DataStore> _logger;
 
-    public DataStore(IConnector connector)
+    public DataStore(IConnector connector, ILogger<DataStore> logger)
     {
         _connector = connector;
+        _logger = logger;
+
+        LoggingConfig.LogEventSink.LogMessageReceived += OnLogMessageReceived;
+
+        _logger.LogDebug("DataStore created");
 
         _connector.GpsDataUpdated += OnGpsDataUpdated;
         _connector.AvDataUpdated += OnAvDataUpdated;
@@ -39,7 +49,8 @@ public class DataStore : IDataStore, IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError(ex, "Failed to start connection");
+
             _connector.Stop();
             return false;
         }
@@ -50,14 +61,38 @@ public class DataStore : IDataStore, IDisposable
         _connector.Stop();
     }
 
+    // Keep a buffer until the UI is ready to display the message
+    private readonly List<string> _logBuffer = [];
+
+    private void OnLogMessageReceived(object? sender, string e)
+    {
+        // Ensure we have at least one subscriber, otherwise fill the buffer
+        if (ConsoleMessageUpdated == null)
+        {
+            _logBuffer.Add(e);
+            return;
+        }
+
+        ConsoleMessageUpdated?.Invoke(this, e);
+    }
+
+    public void FlushLogBuffer()
+    {
+        foreach (var message in _logBuffer) ConsoleMessageUpdated?.Invoke(this, message);
+
+        _logBuffer.Clear();
+    }
+
     private void OnHeartbeatUpdated(object? sender, bool isReceived)
     {
+        _logger.LogDebug("Heartbeat received: {isReceived}", isReceived);
         HeartBeat = isReceived;
         HeartBeatUpdated?.Invoke(this, isReceived);
     }
 
     private void OnGpsDataUpdated(object? sender, GpsData e)
     {
+        _logger.LogDebug("GPS data received: {e}", e);
         GpsData = e;
 
         GpsDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -65,6 +100,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnAvDataUpdated(object? sender, AvData e)
     {
+        _logger.LogDebug("AV data received: {e}", e);
         AvStatusData = e;
 
         AvDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -72,6 +108,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnResDataUpdated(object? sender, ResData e)
     {
+        _logger.LogDebug("RES data received: {e}", e);
         ResData = e;
 
         ResDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -79,6 +116,7 @@ public class DataStore : IDataStore, IDisposable
 
     private void OnRawDataUpdated(object? sender, RawData e)
     {
+        _logger.LogDebug("Raw data received: {e}", e);
         RawData = e;
 
         RawDataUpdated?.Invoke(this, EventArgs.Empty);
@@ -86,6 +124,8 @@ public class DataStore : IDataStore, IDisposable
 
     public void Dispose()
     {
+        _logger.LogDebug("DataStore disposed");
+
         // Stop the connector
         _connector.GpsDataUpdated -= OnGpsDataUpdated;
         _connector.AvDataUpdated -= OnAvDataUpdated;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -11,26 +12,39 @@ namespace Dashboard.ViewModels;
 public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
-    private readonly FileSystemWatcher _fileWatcher;
-    private readonly string _yamlFilePath;
+    private readonly FileSystemWatcher? _fileWatcher;
+    private readonly ILogger<ScrutineeringViewModel> _logger;
 
-    [ObservableProperty] public YamlData _yamlData;
-
-    public ScrutineeringViewModel(IDataStore dataStore)
+    [ObservableProperty]
+    private YamlData _yamlData = new()
     {
-        // This constructor is used for design-time data, so we don't need to start the connector
+        Steps = [new StepData { Step = "Loading...", Measurements = [], Id = "0", Inspection = "" }],
+        Top = string.Empty,
+        Bottom = string.Empty
+    };
+
+    public ScrutineeringViewModel(IDataStore dataStore, ILogger<ScrutineeringViewModel> logger)
+    {
         _dataStore = dataStore;
         _dataStore.AvDataUpdated += OnDataChanged;
+
+        _logger = logger;
 
         // Dynamically locate the folder where the app is running and read the YAML file.
         // This works as the yaml file has been included in the output directory
         // Follow this to do so for another file:
         // (https://stackoverflow.com/questions/16785369/how-to-include-other-files-to-the-output-directory-in-c-sharp-upon-build)
         var appDirectory = AppContext.BaseDirectory;
-        _yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
+        var yamlFilePath = Path.Combine(appDirectory, "Resources", "AV_Inspection_Flow.yaml");
 
-        var directory = Path.GetDirectoryName(_yamlFilePath);
-        var fileName = Path.GetFileName(_yamlFilePath);
+        var directory = Path.GetDirectoryName(yamlFilePath);
+        var fileName = Path.GetFileName(yamlFilePath);
+
+        if (!Directory.Exists(directory))
+        {
+            _logger.LogError("Directory {directory} does not exist", directory);
+            return;
+        }
 
         // // Initialize file watcher
         _fileWatcher = new FileSystemWatcher(directory, fileName)
@@ -48,7 +62,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
         _fileWatcher.EnableRaisingEvents = true;
 
         // Load the initial YAML data when the ViewModel is created
-        LoadYamlData(_yamlFilePath);
+        LoadYamlData(yamlFilePath);
     }
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
@@ -80,11 +94,12 @@ public partial class ScrutineeringViewModel : ViewModelBase
 
             // Update the Steps collection with parsed steps
             YamlData = yamlData;
-            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
+
+            _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: " + ex.Message);
+            _logger.LogError("Error loading the yaml file: {message}", ex.Message);
 
             YamlData = new YamlData
             {
@@ -115,7 +130,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// </summary>
     private void OnDataChanged(object? sender, EventArgs e)
     {
-        Console.WriteLine("AV Data Updated in ScrutineeringViewModel");
+        _logger.LogDebug("AV Status data changed");
 
         OnPropertyChanged(nameof(AutonomousSystemState));
         OnPropertyChanged(nameof(EmergencyBrakeState));

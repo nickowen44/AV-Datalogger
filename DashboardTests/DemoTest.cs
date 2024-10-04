@@ -7,7 +7,7 @@ using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests;
@@ -23,7 +23,7 @@ public class DemoTest
     {
         _dataStore = new Mock<IDataStore>();
         _serviceProvider = new Mock<IServiceProvider>();
-        var footerViewModel = new FooterViewModel(_dataStore.Object);
+        var footerViewModel = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance);
         _serviceProvider.Setup(sp => sp.GetService(typeof(FooterViewModel)))
             .Returns(footerViewModel);
         _serviceProvider.Setup(sp => sp.GetService(typeof(IDataStore)))
@@ -54,7 +54,7 @@ public class DemoTest
 
         var window = new DataView()
         {
-            DataContext = new DataViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object, NullLogger<DataViewModel>.Instance)
         };
 
         // Assert
@@ -83,7 +83,7 @@ public class DemoTest
         // Arrange
         var window = new DataView
         {
-            DataContext = new DataViewModel(_dataStore.Object)
+            DataContext = new DataViewModel(_dataStore.Object, NullLogger<DataViewModel>.Instance)
         };
 
         // Assert

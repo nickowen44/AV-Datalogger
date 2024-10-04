@@ -8,6 +8,7 @@ using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests;
@@ -27,9 +28,9 @@ public class ScrutineeringTests
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var window = new ScrutineeringView
+        var window = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance)
         {
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         // Act
@@ -65,8 +66,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -74,7 +75,7 @@ public class ScrutineeringTests
 
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel.ItemCount; i++)
+        for (var i = 0; i < carousel?.ItemCount; i++)
         {
             var container = carousel.ContainerFromIndex(i);
 
@@ -87,8 +88,8 @@ public class ScrutineeringTests
                 .FirstOrDefault(textBlock => textBlock.Name == "DvData");
 
             // DV Data should only be displayed if the specific slide has measurements to be displayed.
-            var slide = (StepData)carousel.Items[i]!;
-            if (slide.Measurements != null)
+            var slide = (StepData?)carousel.Items[i];
+            if (slide?.Measurements != null)
             {
                 // Assert the text block is visible.
                 Assert.IsTrue(textBlock?.IsVisible);
@@ -114,8 +115,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -135,7 +136,7 @@ public class ScrutineeringTests
 
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel.ItemCount; i++)
+        for (var i = 0; i < carousel?.ItemCount; i++)
         {
             var container = carousel.ContainerFromIndex(i);
 
@@ -194,8 +195,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -203,7 +204,7 @@ public class ScrutineeringTests
         var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel.ItemCount; i++)
+        for (var i = 0; i < carousel?.ItemCount; i++)
         {
             // First we need to traverse the visual tree and find the stack panel which has the text block inside of it.
             // We need to do this because items inside a DataTemplate is not directly accessible using FindControl
@@ -275,8 +276,8 @@ public class ScrutineeringTests
         // Create a window with the ScrutineeringView as its content for rendering purposes.
         var window = new Window
         {
-            Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
         };
 
         window.Show();
@@ -296,10 +297,10 @@ public class ScrutineeringTests
             .FirstOrDefault(button => button.Content?.ToString() == "Reset");
         Assert.That(resetButton, Is.Not.Null);
 
-        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
+        var carousel = window?.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel.ItemCount; i++)
+        for (var i = 0; i < carousel?.ItemCount; i++)
         {
             // Pass a couple of steps.
             if (i is 1 or 2 or 5)
@@ -330,7 +331,7 @@ public class ScrutineeringTests
         }
 
         // Check we are at the last slide (13 slides but 12 cause 0 indexed)
-        var currentIndex = carousel.SelectedIndex;
+        var currentIndex = carousel?.SelectedIndex;
         Assert.That(currentIndex, Is.EqualTo(12));
 
         // Click reset button, update UI that button was clicked
@@ -338,12 +339,12 @@ public class ScrutineeringTests
         Dispatcher.UIThread.RunJobs();
 
         // Check the current slide is now the first slide
-        currentIndex = carousel.SelectedIndex;
+        currentIndex = carousel?.SelectedIndex;
         Assert.That(currentIndex, Is.EqualTo(0));
 
         // Check all steps in the expander have been set to failed.
         var expanderItems = stepsList.Items.OfType<TextBlock>().ToList();
-        for (var i = 0; i < carousel.ItemCount; i++)
+        for (var i = 0; i < carousel?.ItemCount; i++)
             Assert.That(expanderItems[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
     }
 }
