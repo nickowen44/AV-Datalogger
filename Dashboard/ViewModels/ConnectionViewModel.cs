@@ -5,9 +5,7 @@ using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dashboard.Connectors;
 using Dashboard.Models;
-using Dashboard.Utils;
 
 namespace Dashboard.ViewModels;
 
@@ -52,6 +50,13 @@ public partial class ConnectionViewModel : ViewModelBase
         {
             ConnectionChanged?.Invoke(true);
         }
+    }
+    
+    [RelayCommand]
+    public void DisconnectFromSerialPort()
+    {
+        _dataStore.disconnect();
+        ConnectionChanged?.Invoke(false);
     }
 
     private readonly List<string> _connectionTemplates =

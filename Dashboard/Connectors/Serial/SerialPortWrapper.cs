@@ -41,7 +41,7 @@ public class SerialPortWrapper : ISerialPort
                 Console.WriteLine(ex.Message);
             }
         });
-
+        _shouldRun = true;
         thread.Start();
     }
 

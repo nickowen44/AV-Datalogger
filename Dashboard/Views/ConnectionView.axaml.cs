@@ -13,6 +13,10 @@ namespace Dashboard.Views;
 
 public partial class ConnectionView : UserControl
 {
+    private static FilePickerFileType CSV { get; } = new("CSV Files")
+    {
+        Patterns = new[] { "*.csv", },
+    };
     public ConnectionView()
     {
         InitializeComponent();
@@ -33,6 +37,13 @@ public partial class ConnectionView : UserControl
         {
             ConnectButton.Content = "Connected";
             ConnectButton.IsEnabled = false;
+            DisconnectButton.IsEnabled = true;
+        }
+        else
+        {
+            ConnectButton.Content = "Connect";
+            ConnectButton.IsEnabled = true;
+            DisconnectButton.IsEnabled = false;
         }
     }
     private async void FileSelectionClicked(object sender, RoutedEventArgs args)
@@ -44,7 +55,8 @@ public partial class ConnectionView : UserControl
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "Select Log File",
-            AllowMultiple = false
+            AllowMultiple = false,
+            FileTypeFilter = new[] {CSV, }
         });
 
         if (files.Count >= 1)
@@ -63,6 +75,8 @@ public partial class ConnectionView : UserControl
             SerialPortSection.IsVisible = false;
             TCPSection.IsVisible = false;
             FileSection.IsVisible = false;
+            ConnectButton.IsEnabled = false;
+            DisconnectButton.IsEnabled = false;
             if (selectedType == "IP Address")
             {
                 TCPSection.IsVisible = true;
@@ -74,6 +88,16 @@ public partial class ConnectionView : UserControl
             else if (selectedType == "Serial Port")
             {
                 SerialPortSection.IsVisible = true;
+                if (ConnectButton.Content != "Connected")
+                {
+                    DisconnectButton.IsEnabled = false;
+                    ConnectButton.IsEnabled = true;
+                }
+                else
+                {
+                    DisconnectButton.IsEnabled = true;
+                    ConnectButton.IsEnabled = false;
+                }
             }
         }
     }

@@ -50,13 +50,13 @@
             </StackPanel>
         </StackPanel>
         <!-- TCP Section -->
-        <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsVisible="False">
-            <TextBlock Text="IP Address" Margin="0, 0, 0, 5" />
+        <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsEnabled="False" IsVisible="False">
+            <TextBlock Text="IP Address - Not Implemented" Margin="0, 0, 0, 5" />
             <TextBox Width="200" HorizontalAlignment="Left"/>
         </StackPanel>
         <!-- File Section -->
-        <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsVisible="False">
-            <TextBlock Text="Log File" Margin="0, 0, 0, 5" />
+        <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsEnabled="False" IsVisible="False">
+            <TextBlock Text="Log File - Not Implemented" Margin="0, 0, 0, 5" />
             <StackPanel Orientation="Horizontal">
                 <TextBox Width="200" Name="LogFileSelected"/>
                 <Button Click="FileSelectionClicked" Content="..." Width="30" Margin="5,0,0,0"/>
@@ -65,7 +65,8 @@
     </Grid>
     <!-- Connect Button -->
     <Button Grid.Row="2" Content="Connect" Name="ConnectButton" Margin="0,10,50,50" FontWeight="Bold" Command="{Binding ConnectToSerialPortCommand}" CommandParameter="{Binding SelectedSerialPort}" IsEnabled="True" HorizontalAlignment="Left"/>
-        </Grid>
+    <Button Grid.Row="2" Content="Disconnect" Name="DisconnectButton" Margin="0,10,50,50" FontWeight="Bold" Command="{Binding DisconnectFromSerialPortCommand}" IsEnabled="False" HorizontalAlignment="Right"/>
+            </Grid>
         </ThemeVariantScope>
     </Panel>
 </UserControl>

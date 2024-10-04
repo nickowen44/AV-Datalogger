@@ -50,8 +50,17 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         });
         _heartbeatThread.Start();
         _heartBeatShouldRun = true;
+        
         // Open our serial port
         comPort.Open();
+        
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            RawMessage = "",
+            ConnectionStatus = true,
+        });
     }
 
     private void OnDataReceived(object? _, SerialPortData data)
@@ -69,7 +78,16 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         // Stop the Heart Beat thread
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
-
+        
+        // Update the Connection status.
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            RawMessage = "",
+            ConnectionStatus = false,
+        });
+        
         // Close the serial port
         comPort.Close();
     }
@@ -80,10 +98,9 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         if (!MyRegex().IsMatch(message))
         {
             // Skips message if the format is invalid so the thread doesn't kill itself.
-            Console.WriteLine("Invalid message format recevied");
+            Console.WriteLine("Invalid message format receved");
             return;
         }
-
 
         var split = message.Substring(1).Split('|');
 
@@ -231,7 +248,14 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void SendHeartbeat()
     {
-        Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
-        HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        try
+        {
+            Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
+            HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

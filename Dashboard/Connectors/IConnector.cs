@@ -12,7 +12,7 @@ public interface IConnector
     event EventHandler<bool> HeartBeatUpdated;
 
     /// <summary>
-    ///     Handles setting up the connector when the DataStore.
+    ///     Handles setting up the connector form the DataStore.
     /// </summary>
     /// <param name="portName">The name of the port to connect to. Defaults to COM22</param>
 

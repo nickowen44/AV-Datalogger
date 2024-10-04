@@ -18,6 +18,8 @@ public interface IDataStore
     ///     Handles actually starting the connection of portName.
     /// </summary>
     bool startConnection(string portName);
+    
+    void disconnect();
 
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.
