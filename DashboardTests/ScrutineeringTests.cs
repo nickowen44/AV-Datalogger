@@ -35,7 +35,7 @@ public class ScrutineeringTests
         var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
 
@@ -75,7 +75,7 @@ public class ScrutineeringTests
         var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
         window.Show();
@@ -124,7 +124,7 @@ public class ScrutineeringTests
         var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
 
@@ -206,7 +206,7 @@ public class ScrutineeringTests
         var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
         window.Show();
@@ -259,7 +259,7 @@ public class ScrutineeringTests
         var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
         window.Show();
@@ -339,7 +339,7 @@ public class ScrutineeringTests
 
         var window = new Window
         {
-            Content = new ScrutineeringView(),
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
             DataContext = viewModel
         };
 
