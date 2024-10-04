@@ -8,6 +8,7 @@ using Dashboard.Models;
 using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace DashboardTests;
@@ -31,7 +32,7 @@ public class ScrutineeringTests
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(),
@@ -71,7 +72,7 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(),
@@ -120,7 +121,7 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(),
@@ -202,7 +203,7 @@ public class ScrutineeringTests
         });
 
         // Create a window with the ScrutineeringView as its content for rendering purposes.
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(),
@@ -255,7 +256,7 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(),
@@ -334,7 +335,7 @@ public class ScrutineeringTests
     {
         // Arrange
         var yamlFilePath = Path.Combine(AppContext.BaseDirectory, "TestResources", "Bad_Yaml.yaml");
-        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
 
         var window = new Window
         {
