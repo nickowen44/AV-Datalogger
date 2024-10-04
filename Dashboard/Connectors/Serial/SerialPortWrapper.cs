@@ -49,7 +49,8 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
                 }
             }
         });
-
+        
+        _shouldRun = true;
         thread.Start();
         logger.LogInformation("Serial port read thread started");
     }

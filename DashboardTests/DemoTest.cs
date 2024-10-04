@@ -26,6 +26,8 @@ public class DemoTest
         var footerViewModel = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance);
         _serviceProvider.Setup(sp => sp.GetService(typeof(FooterViewModel)))
             .Returns(footerViewModel);
+        _serviceProvider.Setup(sp => sp.GetService(typeof(IDataStore)))
+            .Returns(_dataStore.Object);
     }
 
 
@@ -108,7 +110,6 @@ public class DemoTest
     [AvaloniaTest]
     public void TestNavigation()
     {
-
         // Arrange
         var window = new MainWindowView()
         {
@@ -124,7 +125,7 @@ public class DemoTest
 
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
-        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection");
 
         Assert.Multiple(() =>
         {
@@ -143,7 +144,6 @@ public class DemoTest
         // Click on Setup button.
         window.MouseDown(new Point(135, 70), MouseButton.Left);
         window.MouseUp(new Point(135, 70), MouseButton.Left);
-
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));

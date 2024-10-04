@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Dashboard.Connectors;
-using Dashboard.Utils;
-using Microsoft.Extensions.Logging;
 
 namespace Dashboard.Models;
 
@@ -38,8 +35,26 @@ public class DataStore : IDataStore, IDisposable
         _connector.ResDataUpdated += OnResDataUpdated;
         _connector.RawDataUpdated += OnRawDataUpdated;
         _connector.HeartBeatUpdated += OnHeartbeatUpdated;
+    }
 
-        _connector.Start();
+    public bool startConnection(string portName)
+    {
+        try
+        {
+            _connector.Start(portName);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            _connector.Stop();
+            return false;
+        }
+    }
+
+    public void disconnect()
+    {
+        _connector.Stop();
     }
 
     // Keep a buffer until the UI is ready to display the message
