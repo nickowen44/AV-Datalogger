@@ -19,6 +19,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IConnector, SerialConnector>();
+        services.AddSingleton<IYamlLoader, YamlLoader>();
+
 
         services.AddTransient<DataViewModel>();
         services.AddTransient<MainWindowViewModel>();

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using Dashboard.Utils;
 
 namespace Dashboard.ViewModels;
 
@@ -12,6 +11,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher _fileWatcher;
+    private readonly IYamlLoader _yamlLoader;
 
     [ObservableProperty] private YamlData _yamlData = new()
     {
@@ -27,10 +27,11 @@ public partial class ScrutineeringViewModel : ViewModelBase
         Bottom = ""
     };
 
-    public ScrutineeringViewModel(IDataStore dataStore)
+    public ScrutineeringViewModel(IDataStore dataStore, IYamlLoader yamlLoader)
     {
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = dataStore;
+        _yamlLoader = yamlLoader;
         _dataStore.AvDataUpdated += OnDataChanged;
 
         // Dynamically locate the folder where the app is running and read the YAML file.
@@ -75,40 +76,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     /// <param name="filePath">The yaml's filepath</param>
     private void LoadYamlData(string filePath)
     {
-        try
-        {
-            // Read file as a raw string
-            var yamlContent = File.ReadAllText(filePath);
-
-            // Parse into a list of steps
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build();
-
-            var yamlData = deserializer.Deserialize<YamlData>(yamlContent);
-
-            // Update the Steps collection with parsed steps
-            YamlData = yamlData;
-            Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error: " + ex.Message);
-
-            YamlData = new YamlData
-            {
-                Steps = new List<StepData>
-                {
-                    new()
-                    {
-                        Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                        Id = "0", Title = "Error", Caution = ""
-                    }
-                },
-                Top = "",
-                Bottom = ""
-            };
-        }
+        YamlData = _yamlLoader.LoadYamlData(filePath);
+        Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
     }
 
     /// <summary>
