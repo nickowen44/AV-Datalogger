@@ -4,21 +4,17 @@ using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
 using Microsoft.Extensions.Logging;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-using Dashboard.Utils;
 
 namespace Dashboard.ViewModels;
 
 public partial class ScrutineeringViewModel : ViewModelBase
 {
     private readonly IDataStore _dataStore;
-    private readonly FileSystemWatcher _fileWatcher;
-    private readonly IYamlLoader _yamlLoader;
+    private readonly FileSystemWatcher? _fileWatcher;
     private readonly ILogger<ScrutineeringViewModel> _logger;
-    
-    [ObservableProperty]
-    private YamlData _yamlData = new()
+    private readonly IYamlLoader _yamlLoader;
+
+    [ObservableProperty] private YamlData _yamlData = new()
     {
         Steps = new List<StepData>
         {
@@ -88,7 +84,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     public void LoadYamlData(string filePath)
     {
         YamlData = _yamlLoader.LoadYamlData(filePath, _logger);
-        _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);    }
+        _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);
+    }
 
     /// <summary>
     ///     Reload the file when change is detected.

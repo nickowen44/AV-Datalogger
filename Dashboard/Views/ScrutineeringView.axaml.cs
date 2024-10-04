@@ -7,30 +7,23 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Dashboard.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.Views;
 
 public partial class ScrutineeringView : UserControl
 {
     private const int StepCount = 12;
-    private List<ReceiptStep> _steps = new();
     private readonly ILogger<ScrutineeringView> _logger;
+    private readonly List<ReceiptStep> _steps;
 
     public ScrutineeringView(ILogger<ScrutineeringView> logger)
     {
         _logger = logger;
         _steps = new List<ReceiptStep>();
-        
+
         InitializeComponent();
         InitializeSteps(StepCount);
         PopulateAllStepsList();
-    }
-
-    public ScrutineeringView()
-    {
-        _logger = NullLogger<ScrutineeringView>.Instance;
-        _steps = new List<ReceiptStep>();
     }
 
     /// <summary>

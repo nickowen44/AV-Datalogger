@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Dashboard.Models;
 using Dashboard.ViewModels;
 using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace Dashboard.Utils;
+namespace Dashboard.Models;
 
 public class YamlLoader : IYamlLoader
 {

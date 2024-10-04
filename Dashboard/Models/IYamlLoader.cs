@@ -1,8 +1,7 @@
-﻿using Dashboard.Models;
-using Dashboard.ViewModels;
+﻿using Dashboard.ViewModels;
 using Microsoft.Extensions.Logging;
 
-namespace Dashboard.Utils;
+namespace Dashboard.Models;
 
 public interface IYamlLoader
 {
