@@ -98,7 +98,7 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         if (!MyRegex().IsMatch(message))
         {
             // Skips message if the format is invalid so the thread doesn't kill itself.
-            Console.WriteLine("Invalid message format receved");
+            Console.WriteLine("Invalid message format received");
             return;
         }
 
