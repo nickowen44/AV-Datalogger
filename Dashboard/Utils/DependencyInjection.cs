@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddTransient<ScrutineeringViewModel>();
         services.AddTransient<FooterViewModel>();
         services.AddTransient<AboutViewModel>();
+        services.AddTransient<ConnectionViewModel>();
 
         return services.BuildServiceProvider();
     }

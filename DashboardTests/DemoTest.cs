@@ -26,6 +26,8 @@ public class DemoTest
         var footerViewModel = new FooterViewModel(_dataStore.Object);
         _serviceProvider.Setup(sp => sp.GetService(typeof(FooterViewModel)))
             .Returns(footerViewModel);
+        _serviceProvider.Setup(sp => sp.GetService(typeof(IDataStore)))
+            .Returns(_dataStore.Object);
     }
 
 
@@ -108,7 +110,6 @@ public class DemoTest
     [AvaloniaTest]
     public void TestNavigation()
     {
-
         // Arrange
         var window = new MainWindowView()
         {

@@ -21,20 +21,27 @@ public class SerialPortWrapper : ISerialPort
             return;
 
         _serialPort.Open();
-
         // Initialise a read thread so our main (UI) thread doesn't block
         var thread = new Thread(() =>
         {
-            while (_shouldRun)
+            // Exception handling so we don't have unhandled exceptions on thread cancellation
+            try
             {
-                var data = ReadLine();
-                DataReceived?.Invoke(this, new SerialPortData
+                while (_shouldRun)
                 {
-                    Buffer = data
-                });
+                    var data = ReadLine();
+                    DataReceived?.Invoke(this, new SerialPortData
+                    {
+                        Buffer = data
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         });
-
+        _shouldRun = true;
         thread.Start();
     }
 

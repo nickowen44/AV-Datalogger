@@ -23,11 +23,14 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     private bool _heartBeatShouldRun = true;
     private Thread? _heartbeatThread;
     private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
-    public void Start()
+    /// <summary>
+    ///     Handles setting up the connector for the data source.
+    /// </summary>
+    ///<param name="portName">The name of the port to connect to. Defaults to COM22</param>
+    public void Start(string portName = "COM22")
     {
         // Set up the connection to the serial port
-        comPort.Configure("COM22", 115200);
-
+        comPort.Configure(portName, 115200);
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
 
@@ -46,13 +49,23 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
             }
         });
         _heartbeatThread.Start();
+        _heartBeatShouldRun = true;
 
         // Open our serial port
         comPort.Open();
+
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            RawMessage = "",
+            ConnectionStatus = true,
+        });
     }
 
     private void OnDataReceived(object? _, SerialPortData data)
     {
+
         // We got a new message from the serial port, parse it, removing the newline / return characters
         ParseMessage(data.Buffer.Trim());
     }
@@ -66,6 +79,15 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
         _heartBeatShouldRun = false;
         _heartbeatEvent.Set();
 
+        // Update the Connection status.
+        RawDataUpdated?.Invoke(this, new RawData
+        {
+            CarId = "",
+            UTCTime = DateTime.Now,
+            RawMessage = "",
+            ConnectionStatus = false,
+        });
+
         // Close the serial port
         comPort.Close();
     }
@@ -74,7 +96,11 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
     {
         // First we validate that we have the correct message format
         if (!MyRegex().IsMatch(message))
-            throw new InvalidOperationException("Invalid message format received", new Exception(message));
+        {
+            // Skips message if the format is invalid so the thread doesn't kill itself.
+            Console.WriteLine("Invalid message format received");
+            return;
+        }
 
         var split = message.Substring(1).Split('|');
 
@@ -222,7 +248,14 @@ public partial class SerialConnector(ISerialPort comPort) : IConnector
 
     private void SendHeartbeat()
     {
-        Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
-        HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        try
+        {
+            Console.WriteLine($"Sending heartbeat: {HeartBeatMessage}");
+            HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
