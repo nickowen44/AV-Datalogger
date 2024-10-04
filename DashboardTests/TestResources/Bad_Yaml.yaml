@@ -1,0 +1,7 @@
+    Steps
+        - Step: "Step 1"
+    Id: "1"
+    Title: "Inspection Step 1"
+    Caution: "Be cautious!"
+                 Top "Incorrectly formatted top"
+    Bottom: "Inspection complete"

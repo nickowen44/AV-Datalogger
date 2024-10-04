@@ -19,21 +19,28 @@ public class ScrutineeringTests
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
+        _yamlLoader = new YamlLoader();
     }
 
     private Mock<IDataStore> _dataStore;
+
+    // The real loader for testing
+    private IYamlLoader _yamlLoader;
 
     [AvaloniaTest]
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var window = new ScrutineeringView
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+        var window = new Window
         {
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            Content = new ScrutineeringView(),
+            DataContext = viewModel
         };
 
         // Act
-        var carousel = window.FindControl<Carousel>("Slides");
+        window.Show();
+        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
 
         // Assert the scrutineering view renders correctly
         Assert.Multiple(() => { Assert.That(carousel, Is.Not.Null); });
@@ -64,12 +71,12 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
         var window = new Window
         {
             Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = viewModel
         };
-
         window.Show();
         var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
 
@@ -113,12 +120,14 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
         var window = new Window
         {
             Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = viewModel
         };
 
+        // Act
         window.Show();
 
         // Get the expander and the items inside it prior to checking each step
@@ -193,12 +202,12 @@ public class ScrutineeringTests
         });
 
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
         var window = new Window
         {
             Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = viewModel
         };
-
         window.Show();
 
         var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
@@ -227,7 +236,7 @@ public class ScrutineeringTests
                     "Autonomous System State: 1",
                     "Emergency Brake State: 3",
                     "Service Brake State: true",
-                    "Steering Angle: 90",
+                    "Steering Angle: 90"
                 };
 
                 for (var j = 0; j < textBlocks?.Count; j++)
@@ -246,12 +255,12 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
         var window = new Window
         {
             Content = new ScrutineeringView(),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object)
+            DataContext = viewModel
         };
-
         window.Show();
 
         // Get the expander and the items inside it prior to checking each step
@@ -318,5 +327,46 @@ public class ScrutineeringTests
         var expanderItems = stepsList.Items.OfType<TextBlock>().ToList();
         for (var i = 0; i < carousel.ItemCount; i++)
             Assert.That(expanderItems[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
+    }
+
+    [AvaloniaTest]
+    public void TestScrutineeringViewDisplaysWithYamlFileErrors()
+    {
+        // Arrange
+        var yamlFilePath = Path.Combine(AppContext.BaseDirectory, "TestResources", "Bad_Yaml.yaml");
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader);
+
+        var window = new Window
+        {
+            Content = new ScrutineeringView(),
+            DataContext = viewModel
+        };
+
+        // Load in the bad yaml instead.
+        viewModel.LoadYamlData(yamlFilePath);
+        window.Show();
+
+        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
+
+        // First we need to traverse the visual tree and find the stack panel which has the text block inside of it.
+        // We need to do this because items inside a DataTemplate is not directly accessible using FindControl
+        // on the Carousel itself. It is overly complicated for no reason.
+        // Index 0 because there will only be one slide with bad yaml data.
+        var container = carousel.ContainerFromIndex(0);
+        var stackPanel = container?.GetVisualDescendants().OfType<StackPanel>()
+            .FirstOrDefault(panel => panel.Name == "StackPanel");
+        var textBlocks = stackPanel?.GetVisualDescendants().OfType<TextBlock>().ToList();
+
+        var expectedTexts = new List<string>
+        {
+            "AV 0: Error",
+            "",
+            "Error loading the yaml file please check logs.",
+            "DV Data"
+        };
+
+        // Note: Minus 2 for the count otherwise textBlocks includes Pass/Fail buttons.
+        for (var j = 0; j < textBlocks?.Count - 2; j++)
+            Assert.That(textBlocks[j].Text, Is.EqualTo(expectedTexts[j]));
     }
 }

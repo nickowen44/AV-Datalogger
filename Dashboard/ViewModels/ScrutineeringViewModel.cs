@@ -74,7 +74,7 @@ public partial class ScrutineeringViewModel : ViewModelBase
     ///     Load in yaml data from specified file.
     /// </summary>
     /// <param name="filePath">The yaml's filepath</param>
-    private void LoadYamlData(string filePath)
+    public void LoadYamlData(string filePath)
     {
         YamlData = _yamlLoader.LoadYamlData(filePath);
         Console.WriteLine("The number of autonomous inspection steps loaded from YAML: " + YamlData.Steps.Count);
