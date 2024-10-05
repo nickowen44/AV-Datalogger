@@ -9,6 +9,7 @@ public record StepData
 {
     public required string Step { get; set; }
     public required string Id { get; set; }
-    public required string Inspection { get; set; }
+    public required string Title { get; set; }
+    public required string Caution { get; set; }
     public required List<string> Measurements { get; set; }
 }

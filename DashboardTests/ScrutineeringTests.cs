@@ -20,28 +20,35 @@ public class ScrutineeringTests
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
+        _yamlLoader = new YamlLoader();
     }
 
     private Mock<IDataStore> _dataStore;
+
+    // The real loader for testing
+    private IYamlLoader _yamlLoader;
 
     [AvaloniaTest]
     public void TestScrutineeringViewCorrectlyPopulatesCarouselWithYamlData()
     {
         // Arrange
-        var window = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance)
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
+        var window = new Window
         {
-            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = viewModel
         };
 
         // Act
-        var carousel = window.FindControl<Carousel>("Slides");
+        window.Show();
+        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
 
         // Assert the scrutineering view renders correctly
         Assert.Multiple(() => { Assert.That(carousel, Is.Not.Null); });
 
 
         // Assert the carousel has the correct number of slides that is in the yaml file
-        const int scrutineeringInspectionChecks = 13;
+        const int scrutineeringInspectionChecks = 12;
         Assert.That(carousel.ItemCount, Is.EqualTo(scrutineeringInspectionChecks));
 
         // Assert that each carousel slide contains the information from the yaml file.
@@ -51,9 +58,10 @@ public class ScrutineeringTests
             // still have the key.
             Assert.That(carousel.SelectedItem?.ToString(), Does.Contain("Id"));
             Assert.That(((StepData)carousel.SelectedItem).Step, Is.Not.Null);
-            Assert.That(((StepData)carousel.SelectedItem).Inspection, Is.Not.Null);
-            // Measurements must be asserted this way as the current step may not have anything to measure with our tool
-            // however the slide should still have the key.
+            Assert.That(((StepData)carousel.SelectedItem).Title, Is.Not.Null);
+            // Caution and measurements must be asserted this way as the current step may not have anything to measure
+            // with our tool however the slide should still have the key.
+            Assert.That(carousel.SelectedItem.ToString(), Does.Contain("Caution"));
             Assert.That(carousel.SelectedItem.ToString(), Does.Contain("Measurements"));
             carousel.Next();
         }
@@ -64,18 +72,18 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
+            DataContext = viewModel
         };
-
         window.Show();
         var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
 
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel?.ItemCount; i++)
+        for (var i = 0; i < carousel.ItemCount; i++)
         {
             var container = carousel.ContainerFromIndex(i);
 
@@ -88,8 +96,8 @@ public class ScrutineeringTests
                 .FirstOrDefault(textBlock => textBlock.Name == "DvData");
 
             // DV Data should only be displayed if the specific slide has measurements to be displayed.
-            var slide = (StepData?)carousel.Items[i];
-            if (slide?.Measurements != null)
+            var slide = (StepData)carousel.Items[i]!;
+            if (slide.Measurements != null)
             {
                 // Assert the text block is visible.
                 Assert.IsTrue(textBlock?.IsVisible);
@@ -113,12 +121,14 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
+            DataContext = viewModel
         };
 
+        // Act
         window.Show();
 
         // Get the expander and the items inside it prior to checking each step
@@ -136,7 +146,7 @@ public class ScrutineeringTests
 
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel?.ItemCount; i++)
+        for (var i = 0; i < carousel.ItemCount; i++)
         {
             var container = carousel.ContainerFromIndex(i);
 
@@ -155,19 +165,19 @@ public class ScrutineeringTests
 
             // Test prior to button click that the step is "failed" by default
             var items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
 
             // Click pass and update UI after button was clicked. Check expander shows passed.
             passButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Dispatcher.UIThread.RunJobs();
             items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Passed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Passed"));
 
             // Click fail and update UI after button was clicked. Check expander shows failed.
             failButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Dispatcher.UIThread.RunJobs();
             items = stepsList.Items.OfType<TextBlock>().ToList();
-            Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+            Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
 
             // Change to next slide
             carousel.Next();
@@ -193,18 +203,18 @@ public class ScrutineeringTests
         });
 
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
+            DataContext = viewModel
         };
-
         window.Show();
 
         var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel?.ItemCount; i++)
+        for (var i = 0; i < carousel.ItemCount; i++)
         {
             // First we need to traverse the visual tree and find the stack panel which has the text block inside of it.
             // We need to do this because items inside a DataTemplate is not directly accessible using FindControl
@@ -213,21 +223,8 @@ public class ScrutineeringTests
             var stackPanel = container?.GetVisualDescendants().OfType<StackPanel>()
                 .FirstOrDefault(panel => panel.Name == "StackPanel");
 
-            // Slides 7.2 and 7.5 and 7.8 together cover all 5 measurements that are to be checked in an Autonomous
-            // Vehicle Inspection.
-            if (i == 1)
-            {
-                var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
-                    .FirstOrDefault(control => control.Name == "ContentControl");
-                var measurements = contentControl?.GetVisualDescendants().OfType<TextBlock>()
-                    .FirstOrDefault();
-
-                // 7.2 Contains Autonomous Mission Inspection
-                Assert.That(measurements?.Text, Is.EqualTo("Autonomous Mission Indicator: 2"));
-            }
-
-
-            if (i == 4)
+            // Slide 10 covers all 5 measurements that are to be checked in the Inspection.
+            if (i == 9)
             {
                 var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
                     .FirstOrDefault(control => control.Name == "ContentControl");
@@ -236,26 +233,11 @@ public class ScrutineeringTests
                 // 7.5 Contains Autonomous System State and Steering Angle
                 var expectedTexts = new List<string>
                 {
+                    "Autonomous Mission Indicator: 2",
                     "Autonomous System State: 1",
-                    "Steering Angle: 90"
-                };
-
-                for (var j = 0; j < textBlocks?.Count; j++)
-                    Assert.That(textBlocks[j].Text, Is.EqualTo(expectedTexts[j]));
-            }
-
-
-            if (i == 7)
-            {
-                var contentControl = stackPanel?.GetVisualDescendants().OfType<ContentControl>()
-                    .FirstOrDefault(control => control.Name == "ContentControl");
-                var textBlocks = contentControl?.GetVisualDescendants().OfType<TextBlock>().ToList();
-
-                // 7.8 Contains Emergency Brake State, Service Brake State
-                var expectedTexts = new List<string>
-                {
                     "Emergency Brake State: 3",
-                    "Service Brake State: true"
+                    "Service Brake State: true",
+                    "Steering Angle: 90"
                 };
 
                 for (var j = 0; j < textBlocks?.Count; j++)
@@ -274,12 +256,12 @@ public class ScrutineeringTests
     {
         // Arrange
         // Create a window with the ScrutineeringView as its content for rendering purposes.
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
         var window = new Window
         {
             Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
-            DataContext = new ScrutineeringViewModel(_dataStore.Object, NullLogger<ScrutineeringViewModel>.Instance)
+            DataContext = viewModel
         };
-
         window.Show();
 
         // Get the expander and the items inside it prior to checking each step
@@ -297,10 +279,10 @@ public class ScrutineeringTests
             .FirstOrDefault(button => button.Content?.ToString() == "Reset");
         Assert.That(resetButton, Is.Not.Null);
 
-        var carousel = window?.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
+        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
         // We need to loop through each Item to get each container for the slide
         // to find the text block.
-        for (var i = 0; i < carousel?.ItemCount; i++)
+        for (var i = 0; i < carousel.ItemCount; i++)
         {
             // Pass a couple of steps.
             if (i is 1 or 2 or 5)
@@ -321,7 +303,7 @@ public class ScrutineeringTests
                 passButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 Dispatcher.UIThread.RunJobs();
                 var items = stepsList.Items.OfType<TextBlock>().ToList();
-                Assert.That(items[i].Text, Is.EqualTo($"Step 7.{i + 1} Passed"));
+                Assert.That(items[i].Text, Is.EqualTo($"Step {i + 1} Passed"));
             }
 
             // Change to next slide
@@ -330,21 +312,62 @@ public class ScrutineeringTests
             Dispatcher.UIThread.RunJobs();
         }
 
-        // Check we are at the last slide (13 slides but 12 cause 0 indexed)
-        var currentIndex = carousel?.SelectedIndex;
-        Assert.That(currentIndex, Is.EqualTo(12));
+        // Check we are at the last slide (12 slides but 11 cause 0 indexed)
+        var currentIndex = carousel.SelectedIndex;
+        Assert.That(currentIndex, Is.EqualTo(11));
 
         // Click reset button, update UI that button was clicked
         resetButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         Dispatcher.UIThread.RunJobs();
 
         // Check the current slide is now the first slide
-        currentIndex = carousel?.SelectedIndex;
+        currentIndex = carousel.SelectedIndex;
         Assert.That(currentIndex, Is.EqualTo(0));
 
         // Check all steps in the expander have been set to failed.
         var expanderItems = stepsList.Items.OfType<TextBlock>().ToList();
-        for (var i = 0; i < carousel?.ItemCount; i++)
-            Assert.That(expanderItems[i].Text, Is.EqualTo($"Step 7.{i + 1} Failed"));
+        for (var i = 0; i < carousel.ItemCount; i++)
+            Assert.That(expanderItems[i].Text, Is.EqualTo($"Step {i + 1} Failed"));
+    }
+
+    [AvaloniaTest]
+    public void TestScrutineeringViewDisplaysWithYamlFileErrors()
+    {
+        // Arrange
+        var yamlFilePath = Path.Combine(AppContext.BaseDirectory, "TestResources", "Bad_Yaml.yaml");
+        var viewModel = new ScrutineeringViewModel(_dataStore.Object, _yamlLoader, NullLogger<ScrutineeringViewModel>.Instance);
+
+        var window = new Window
+        {
+            Content = new ScrutineeringView(NullLogger<ScrutineeringView>.Instance),
+            DataContext = viewModel
+        };
+
+        // Load in the bad yaml instead.
+        viewModel.LoadYamlData(yamlFilePath);
+        window.Show();
+
+        var carousel = window.GetVisualDescendants().OfType<Carousel>().FirstOrDefault();
+
+        // First we need to traverse the visual tree and find the stack panel which has the text block inside of it.
+        // We need to do this because items inside a DataTemplate is not directly accessible using FindControl
+        // on the Carousel itself. It is overly complicated for no reason.
+        // Index 0 because there will only be one slide with bad yaml data.
+        var container = carousel.ContainerFromIndex(0);
+        var stackPanel = container?.GetVisualDescendants().OfType<StackPanel>()
+            .FirstOrDefault(panel => panel.Name == "StackPanel");
+        var textBlocks = stackPanel?.GetVisualDescendants().OfType<TextBlock>().ToList();
+
+        var expectedTexts = new List<string>
+        {
+            "AV 0: Error",
+            "",
+            "Error loading the yaml file please check logs.",
+            "DV Data"
+        };
+
+        // Note: Minus 2 for the count otherwise textBlocks includes Pass/Fail buttons.
+        for (var j = 0; j < textBlocks?.Count - 2; j++)
+            Assert.That(textBlocks[j].Text, Is.EqualTo(expectedTexts[j]));
     }
 }

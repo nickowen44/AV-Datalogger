@@ -1,75 +1,83 @@
 steps:
-    -   step: "Connect FSAE-A Data logger to test laptop and observe CAN message data stream."
-        id: 7.1
-        inspection: "Visual Check"
+    -   step: "Visually Inspect the RES Handled transmitter, Inspect for any signs of visible damage.\n Visually inspect the RES receiver is securely mounted. Confirm that the RES bypass is implemented correctly as per the ASF."
+        id: 1
+        title: "RES Inspection"
+        caution:
         measurements:
-    -   step: "Switch on LVMS and select inspection mission AMI. ASSI Should remain off. Verify function by monitoring EBS CAN mesages from data logger."
-        id: 7.2
-        inspection: "Team Demonstration"
+    -   step: "Compare the implementation of in the vehicle to the ASF, the implementation MUST be identical. The ASB must be within the rollover protection envelop.\n \n ASB deactivation points MUST:\n - Work without the aid of electrical power\n - Be in proximity to each other\n - Either be mounted in proximity to the ASMS or on the top side of the vehicle between front bulkhead and front hoop close to the vehicles center line\n - Be operable by maximum two simple push/pull and/or turning actions, the order and direction of these actions must be shown next to the deactivation points\n - Be marked with “Brake release”\n - Have a red handle"
+        id: 2
+        title: "ASB Inspection"
+        caution:
+        measurements:
+    -   step: "Visually Inspect that there are three Autonomous System Status Indicators (ASSI):\n One ASSI must be located on each side of the vehicle behind the driver’s compartment, in a region 160mm below the top of the main hoop and 600mm above the ground.\n The third ASSI must be located at the rear of the vehicle, on the vehicle centerline, in a region 160mm below the top of the main hoop and 100mm above the brake light.\n \n Visually inspect that there are two shutdown switches one on either side of the vehicle located on the main roll hoop."
+        id: 3
+        title: "ASSI and Shutdown Switches Inspection"
+        caution:
+        measurements:
+    -   step: "Connect FSAE-A Data logger to test laptop and observe the AV Data Logger Equipment is connected.\n AV Datalogger must be powered when ever the GLVMS is 'ON'."
+        id: 4
+        title: "AVDL Connection"
+        caution:
+        measurements:
+    -   step: "Switch GLVMS 'ON' and select 'Inspection Mission' AMI. Ensure that ASMS and TSMS are 'OFF'. ASSI Should remain off.\n Use the AVIT to ensure that the AV has the Inspection Mission selected."
+        id: 5
+        title: "Test AMI Selection"
+        caution:
         measurements:
             - "Autonomous Mission Indicator"
-    -   step: "Switch on ASMS. Activing TS from cockpit button should not be possible. Test that TS does not activate."
-        id: 7.3
-        inspection: "Team Demonstration"
-        measurements:
-    -   step: "Activate TS, and press RES Go button. Vehicle enters AS Ready. ASSI are yellow and continuous. Vehicle is not ready to drive, that is the state is not in AS Ready. All ASSI are bright and at least one ASSI is visible from any angle view of the vehicle."
-        id: 7.4
-        inspection: "Team Demonstration"
+    -   step: "Turn 'ON' the ASMS and TSMS.\n Attempt to activate the tractive system using the cockpit activation button. This MUST not activate traction system.\n Activate the tractive system using the external button, tractive system shall activate.\n The ASSIs shall light up in yellow continuously (NOT FLASHING) after a self check indicating the AV has entered the 'AS Ready' state.\n Attempt to press the 'GO' button on the RES remote within 5seconds after 'AS READY' state and ensure that activating the mission is not possible and vehicle remains in 'AS READY' state."
+        id: 6
+        title: "AS Ready Test"
+        caution:
         measurements:
             - "Autonomous System State"
-    -   step: "Press RES Go button. Vehicle transitions to AS Driving state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
-        id: 7.5
-        inspection: "Team Demonstration"
+            - "Autonomous Mission Indicator"
+    -   step: "Vehicle shall be in 'AS READY' state and the ASSIs shall be YELLOW continuously (NOT FLASHING). All ASSI's shall be clearly visible in very bright sunlight.\n • If LED lights are used without a diffuser, they must not be more than 20mm apart.\n • If a single line of LED lights is used, the minimum length is 150 mm.\n • At least one ASSI must be visible from any angle of the vehicle from a point 1.60m vertically from ground level, within 3m horizontal radius from the top of the main hoop. \n\n ASSIs are clearly visible in very bright sunlight."
+        id: 7
+        title: "AS Ready ASSI Inspection"
+        caution:
         measurements:
             - "Autonomous System State"
-            - "Steering Angle"
-    -   step: "Wait for transition to AS Finished. Vehicle transitions to AS Finished within 30 seconds after step 4. ASSI are blue and continuous. Brakes are engaged. EBS is not triggered (not activated) and ASSI are not flashing."
-        id: 7.6
-        inspection: "Team Demonstration"
+    -   step: "Press the 'GO' button on the RES remote.\n Observe the vehicle enters 'AS DRIVING' state which can be observed by the ASSIs flashing yellow.\n The vehicle shall be performing the 'Inspection Mission'\n The inspection mission is defined by slowly spinning the drivetrain and actuating the steering system with a sine wave while the vehicle is jacked up and all wheels are removed.\n  Use the AVIT and visually confirm operation of the inspection mission.\n After 25 s to 30 s when the 'Inspection Mission' finishes vehicle must transition to “AS Finished”.\n ASSIs shall be continuously blue illuminated (NOT FLASHING) and Tractive system shall be deactivated."
+        id: 8
+        title: "AS Mission Test"
+        caution: "CAUTION WHEELS AND STEERING SYSTEM ARE MOVING ENSURE AREA IS CLEAR BEFORE PROCEEDING"
         measurements:
             - "Autonomous System State"
-            - "Service Brake State"
-            - "Emergency Brake State"
-    -   step: "Blue ASSI is clearly visible in sunlight."
-        id: 7.7
-        inspection: "Visual Check"
-        measurements:
-    -   step: "Deactivate TS and turn off ASMS. Reset EBS if needed. TS turns off, ASSI turns off. Allow teams to reset EBS with manual action if needed. Brakes are disengaged."
-        id: 7.8
-        inspection: "Team Demonstration"
-        measurements:
-            - "Emergency Brake State"
-            - "Service Brake State"
-    -   step: "Whilst observing the CAN messages from the data logger power cycle LV system and enter 'AS Ready' state. Vehicle enters 'AS Ready' state, ASSI are yellow and continuous. Vehicle is not in Ready to Drive, that is the state is not in AS Ready."
-        id: 7.9
-        inspection: "Team Demonstration"
-        measurements:
-            - "Autonomous System State"
-    -   step: "Press on-board shutdown button while vehicle is in 'AS Ready' state. Vehicle transitions to 'AS Emergency' state, ASSI is blue and flashing, EBS is activated and brakes are engaged."
-        id: 7.10
-        inspection: "Team Demonstration"
-        measurements:
-            - "Autonomous System State"
-            - "Emergency Brake State"
-            - "Service Brake State"
-    -   step: "Turn off ASMS and reset EBS. Power cycle LV system and enter 'AS Driving' state again with inspection mission still selected. Vehicle transitions to 'AS Driving' state, ASSI are yellow and flashing. Drivetrain is slowly spinning and steering system is actuating in sine wave (visual inspection as well as checking steering angles)."
-        id: 7.11
-        inspection: "Team Demonstration"
-        measurements:
-            - "Autonomous System State"
-            - "Emergency Brake State"
             - "Autonomous Mission Indicator"
             - "Steering Angle"
-    -   step: "Press RES Shutdown button. TS deactivates without significant delay. Vehicle transitions to  'AS Emergency' state. ASSI are blue and flashing. EBS is activated and brakes are engaged. The reaction time betweem oppening the SDC must not exceed 200ms."
-        id: 7.12
-        inspection: "Team Demonstration"
+    -   step: "Vehicle shall be in 'AS FINISHED' state and the ASSIs shall be BLUE continuously (NOT FLASHING). All ASSI's shall be clearly visible in very bright sunlight.\n • If LED lights are used without a diffuser, they must not be more than 20mm apart.\n • If a single line of LED lights is used, the minimum length is 150 mm.\n • At least one ASSI must be visible from any angle of the vehicle from a point 1.60m vertically from ground level, within 3m horizontal radius from the top of the main hoop.\n\n ASSIs are clearly visible in very bright sunlight."
+        id: 9
+        title: "AS Finished ASSI Inspection"
+        caution:
+        measurements:
+            - "Autonomous System State"
+    -   step: "It MUST not be possible to re-activate the Autonomous mission from the 'AS Finished' state.\n Press the 'GO' button on the RES remote and ensure that it is not possible and the vehicle remains in the 'AS finished' state.\n Turn 'OFF' the ASMS and release the Brakes via the ASB deactivation points. Ensure that the brakes have been released, manual steering is possible and ASSI is completely off."
+        id: 10
+        title: "Autonomous System Reset"
+        caution:
+        measurements:
+            - "Autonomous Mission Indicator"
+            - "Autonomous System State"
+            - "Emergency Brake State"
+            - "Service Brake State"
+            - "Steering Angle"
+    -   step: "Re-enter 'AS Ready' state.\n Ensure that the ASSIs are yellow continuously (NOT FLASHING).\n Press one shutdown button on the vehicle.\n Observe that the ASSIs are flashing blue indicating that the vehicle has entered 'AS Emergency' state.\n Brakes shall be engaged and vehicle shall be emitting a sound for 8-10seconds, s(1 Hz to 5 Hz, 50 % duty cycle) the sound level shall be a minimum of 80 dBA (2 m around the vehicle).\n Observe that the vehicles tractive system has deactivated. \n\n It should not be possible to re-activate or enter into 'AS Driving' state."
+        id: 11
+        title: "Shutdown Button Test"
+        caution:
         measurements:
             - "Autonomous System State"
             - "Emergency Brake State"
             - "Service Brake State"
-    -   step: "Ensure that once any autonomous mission has been selected and activated no other method of control is possible, i.e. remote control. Receiving information from the vehicle via one-way-telemetry is allowed. The only device that is allowed to send commands by wireless communication at all times is the RES described."
-        id: 7.13
-        inspection: "Inspect & Provide Doccumented Evidence If Required"
+    -   step: "Re-enter 'AS Ready' state.\n Ensure that the ASSIs are yellow continuously (NOT FLASHING).\n Press the 'GO' button on the RES transmitter entering into the 'inspection Mission' and 'AS Driving' state.\n Observe the ASSis are flashing yellow.\n Press the 'Emergency STOP' button on the RES transmitter.\n Observe that the ASSIs are flashing blue indicating that the vehicle has entered 'AS Emergency' state.\n Brakes shall be engaged and vehicle shall be emitting a sound for 8-10seconds, s(1 Hz to 5 Hz, 50 % duty cycle) the sound level shall be a minimum of 80 dBA (2 m around the vehicle).\n Observe that the vehicles tractive system has deactivated. \n\n It should not be possible to re-activate or enter into 'AS Driving' state."
+        id: 12
+        title: "Remote Emergency Stop Activation Test"
+        caution:
         measurements:
+            - "Autonomous System State"
+            - "Autonomous Mission Indicator"
+            - "Emergency Brake State"
+            - "Service Brake State"
 top: "THE VEHICLE SHOULD BE ASSUMED TO BE LIVE AT ALL TIMES. VEHICLE MAY MOVE AT ANY TIME."
 bottom: "AFTER ALL STEPS ABOVE, TURN OFF THE VEHICLE, REMOVE THE HVD AND LOCK THE ASMS AND TSMS LOCKOUT."

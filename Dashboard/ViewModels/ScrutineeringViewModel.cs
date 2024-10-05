@@ -4,8 +4,6 @@ using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Models;
 using Microsoft.Extensions.Logging;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Dashboard.ViewModels;
 
@@ -14,18 +12,27 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private readonly IDataStore _dataStore;
     private readonly FileSystemWatcher? _fileWatcher;
     private readonly ILogger<ScrutineeringViewModel> _logger;
+    private readonly IYamlLoader _yamlLoader;
 
     [ObservableProperty]
     private YamlData _yamlData = new()
     {
-        Steps = [new StepData { Step = "Loading...", Measurements = [], Id = "0", Inspection = "" }],
-        Top = string.Empty,
-        Bottom = string.Empty
+        Steps = new List<StepData>
+        {
+            new()
+            {
+                Step = "Loading...", Measurements = new List<string>(),
+                Id = "", Title = "", Caution = ""
+            }
+        },
+        Top = "",
+        Bottom = ""
     };
 
-    public ScrutineeringViewModel(IDataStore dataStore, ILogger<ScrutineeringViewModel> logger)
+    public ScrutineeringViewModel(IDataStore dataStore, IYamlLoader yamlLoader, ILogger<ScrutineeringViewModel> logger)
     {
         _dataStore = dataStore;
+        _yamlLoader = yamlLoader;
         _dataStore.AvDataUpdated += OnDataChanged;
 
         _logger = logger;
@@ -67,54 +74,18 @@ public partial class ScrutineeringViewModel : ViewModelBase
 
     public int AutonomousSystemState => _dataStore.AvStatusData?.AutonomousSystemState ?? 0;
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
-
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
-
     public int AutonomousMissionIndicator => _dataStore.AvStatusData?.MissionIndicator ?? 0;
-
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
 
     /// <summary>
     ///     Load in yaml data from specified file.
     /// </summary>
     /// <param name="filePath">The yaml's filepath</param>
-    private void LoadYamlData(string filePath)
+    public void LoadYamlData(string filePath)
     {
-        try
-        {
-            // Read file as a raw string
-            var yamlContent = File.ReadAllText(filePath);
-
-            // Parse into a list of steps
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build();
-
-            var yamlData = deserializer.Deserialize<YamlData>(yamlContent);
-
-            // Update the Steps collection with parsed steps
-            YamlData = yamlData;
-
-            _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Error loading the yaml file: {message}", ex.Message);
-
-            YamlData = new YamlData
-            {
-                Steps = new List<StepData>
-                {
-                    new()
-                    {
-                        Step = "Error loading the yaml file please check logs.", Measurements = new List<string>(),
-                        Id = "0", Inspection = ""
-                    }
-                },
-                Top = "",
-                Bottom = ""
-            };
-        }
+        YamlData = _yamlLoader.LoadYamlData(filePath, _logger);
+        _logger.LogInformation("Loaded {count} autonomous inspection steps from YAML", YamlData.Steps.Count);
     }
 
     /// <summary>
