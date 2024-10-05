@@ -11,24 +11,25 @@ namespace Dashboard.Connectors.Serial;
 
 public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnector> logger) : IConnector
 {
+    private const string HeartBeatMessage = "CON?";
+    private readonly ManualResetEvent _heartbeatEvent = new(false);
+
+
+    // TODO: Remove below when we have the actual values
+    private readonly Random _random = new();
+    private bool _heartBeatShouldRun = true;
+    private Thread? _heartbeatThread;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
 
-    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
-    private static partial Regex MyRegex();
-
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-    private const string HeartBeatMessage = "CON?";
-    private bool _heartBeatShouldRun = true;
-    private Thread? _heartbeatThread;
-    private readonly ManualResetEvent _heartbeatEvent = new ManualResetEvent(false);
 
     /// <summary>
     ///     Handles setting up the connector for the data source.
     /// </summary>
-    ///<param name="portName">The name of the port to connect to. Defaults to COM22</param>
+    /// <param name="portName">The name of the port to connect to. Defaults to COM22</param>
     public void Start(string portName = "COM22")
     {
         logger.LogInformation("Starting Serial Connector");
@@ -50,6 +51,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
                     SendHeartbeat();
                     Thread.Sleep(1000);
                 }
+
                 _heartbeatEvent.WaitOne(1000);
             }
         });
@@ -63,16 +65,8 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         {
             CarId = "",
             UTCTime = DateTime.Now,
-            ConnectionStatus = true,
+            ConnectionStatus = true
         });
-    }
-
-    private void OnDataReceived(object? _, SerialPortData data)
-    {
-        logger.LogDebug("Received data from serial port: {data}", data.Buffer);
-
-        // We got a new message from the serial port, parse it, removing the newline / return characters
-        ParseMessage(data.Buffer.Trim());
     }
 
     public void Stop()
@@ -91,11 +85,22 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         {
             CarId = "",
             UTCTime = DateTime.Now,
-            ConnectionStatus = false,
+            ConnectionStatus = false
         });
 
         // Close the serial port
         comPort.Close();
+    }
+
+    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    private static partial Regex MyRegex();
+
+    private void OnDataReceived(object? _, SerialPortData data)
+    {
+        logger.LogDebug("Received data from serial port: {data}", data.Buffer);
+
+        // We got a new message from the serial port, parse it, removing the newline / return characters
+        ParseMessage(data.Buffer.Trim());
     }
 
     private void ParseMessage(string message)
@@ -129,21 +134,13 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         }
 
         if (values.ContainsKey("LAT"))
-        {
             ParseGpsMessage(values);
-        }
         else if (values.ContainsKey("SA"))
-        {
             ParseAvStatusMessage(values);
-        }
         else if (values.ContainsKey("RES"))
-        {
             ParseResMessage(values);
-        }
         else
-        {
             logger.LogError("Unknown message type received: {message}", message);
-        }
 
         ParseRawMessage(values, message);
     }
@@ -222,18 +219,14 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
     private DateTime ParseUTCTime(string timeString)
     {
-        string datePart = "";
+        var datePart = "";
         // Check if the UTC value includes the leading zero for months, if not add.
         if (timeString.Length == 20)
-        {
             datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
-        }
         else
-        {
             datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
-        }
 
-        DateTime parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
+        var parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
 
         return parsedDate;
     }
@@ -245,13 +238,9 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         {
             CarId = values["ID"],
             UTCTime = ParseUTCTime(values["UTC"]),
-            ConnectionStatus = comPort.IsConnected,
+            ConnectionStatus = comPort.IsConnected
         });
     }
-
-
-    // TODO: Remove below when we have the actual values
-    private readonly Random _random = new();
 
     private double ParseDouble(string value)
     {

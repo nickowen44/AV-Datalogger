@@ -5,10 +5,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
 
-public partial class StatusViewModel : ViewModelBase, IDisposable
+public class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-    public event Action<bool>? RESDataUpdated;
+
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
@@ -44,7 +44,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
-    
+
     public bool RemoteEmergency => _dataStore.ResData?.ResState ?? false;
 
     public int SatCount => _dataStore.GpsData?.SatCount ?? 0;
@@ -82,6 +82,17 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     public int ResRadioQuality => _dataStore.ResData?.ResRadioQuality ?? 0;
 
     public int ResNodeId => _dataStore.ResData?.ResNodeId ?? 0;
+
+    public override void Dispose()
+    {
+        _dataStore.AvDataUpdated -= OnAvDataChanged;
+        _dataStore.ResDataUpdated -= OnResDataChanged;
+        _dataStore.GpsDataUpdated -= OnGpsDataChanged;
+
+        GC.SuppressFinalize(this);
+    }
+
+    public event Action<bool>? RESDataUpdated;
 
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
@@ -123,14 +134,5 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ResRadioQuality));
         OnPropertyChanged(nameof(ResNodeId));
         RESDataUpdated?.Invoke(RemoteEmergency);
-    }
-
-    public override void Dispose()
-    {
-        _dataStore.AvDataUpdated -= OnAvDataChanged;
-        _dataStore.ResDataUpdated -= OnResDataChanged;
-        _dataStore.GpsDataUpdated -= OnGpsDataChanged;
-
-        GC.SuppressFinalize(this);
     }
 }
