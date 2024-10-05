@@ -1,13 +1,14 @@
 using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
 
-public class StatusViewModel : ViewModelBase, IDisposable
+public partial class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-
+    public event Action<bool>? RESDataUpdated;
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
@@ -18,7 +19,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
     public StatusViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector());
+        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
     }
 
     public double SpeedActual => _dataStore.AvStatusData?.Speed.Actual ?? 0;
@@ -42,6 +43,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
     public int EmergencyBrakeState => _dataStore.AvStatusData?.EmergencyBrakeState ?? 0;
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
+    
     public bool RemoteEmergency => _dataStore.ResData?.ResState ?? false;
 
     public int SatCount => _dataStore.GpsData?.SatCount ?? 0;
@@ -80,13 +82,6 @@ public class StatusViewModel : ViewModelBase, IDisposable
 
     public int ResNodeId => _dataStore.ResData?.ResNodeId ?? 0;
 
-    public void Dispose()
-    {
-        _dataStore.Dispose();
-    }
-
-    public event Action<bool>? RESDataUpdated;
-
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(SpeedActual));
@@ -118,10 +113,17 @@ public class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ResRadioQuality));
         OnPropertyChanged(nameof(ResNodeId));
     }
-
     private void OnResDataChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(RemoteEmergency));
         RESDataUpdated?.Invoke(RemoteEmergency);
+    }
+
+    public override void Dispose()
+    {
+        _dataStore.AvDataUpdated -= OnAvDataChanged;
+        _dataStore.ResDataUpdated -= OnResDataChanged;
+
+        GC.SuppressFinalize(this);
     }
 }
