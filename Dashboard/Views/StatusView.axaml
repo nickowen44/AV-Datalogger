@@ -274,107 +274,127 @@
                                 <!-- Content for GPS -->
                                 <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
                                     <StackPanel Grid.Column="0" Grid.Row="0">
-                                        <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="SFA:" ToolTip.Tip="Satellite Fix Age"/>
+                                        <Grid ColumnDefinitions="*, 460" Margin="10, 30, 0, 0">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="SFA:"
+                                                       ToolTip.Tip="Satellite Fix Age" />
                                             <TextBlock Text="{Binding SatFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="SatFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SatFixAge" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="NOS:" ToolTip.Tip="Number of Visible Satellites" />
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="NOS:"
+                                                       ToolTip.Tip="Number of Visible Satellites" />
                                             <TextBlock Text="{Binding SatCount}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="SatCount" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SatCount" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:" ToolTip.Tip="Horizontal Dilution of Precision" />
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:"
+                                                       ToolTip.Tip="Horizontal Dilution of Precision" />
                                             <TextBlock Text="{Binding Hdop}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="Hdop" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Hdop" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HFA:" ToolTip.Tip="HDOP Fix Age"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HFA:"
+                                                       ToolTip.Tip="HDOP Fix Age" />
                                             <TextBlock Text="{Binding HdopFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="HdopFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="HdopFixAge" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="4" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:" ToolTip.Tip="Speed Fix Age"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:"
+                                                       ToolTip.Tip="Speed Fix Age" />
                                             <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="SpeedFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="SpeedFixAge" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="5" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="MPS:" ToolTip.Tip="Speed (m/s)"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="MPS:"
+                                                       ToolTip.Tip="Speed (m/s)" />
                                             <TextBlock Text="{Binding MetresPerSecond}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="MetresPerSecond" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="MetresPerSecond" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="6" Grid.Column="0" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HVAL:" ToolTip.Tip="Raw Value of HDOP"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HVAL:"
+                                                       ToolTip.Tip="Raw Value of HDOP" />
                                             <TextBlock Text="{Binding HVal}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="HVal" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="HVal" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="0" Grid.Column="1">
-                                        <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
-                                            <TextBlock FontSize="24" Text="KMH:" ToolTip.Tip="Speed (km/h)"/>
+                                        <Grid ColumnDefinitions="*, 460" Margin="10, 30, 0, 0">
+                                            <TextBlock FontSize="24" Text="KMH:" ToolTip.Tip="Speed (km/h)" />
                                             <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="KilometresPerHour" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="KilometresPerHour" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="AFA:" ToolTip.Tip="Altitude Fix Age"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock FontSize="24" Text="AFA:" ToolTip.Tip="Altitude Fix Age" />
                                             <TextBlock Text="{Binding AltFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="AltFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltFixAge" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="ALM:" ToolTip.Tip="Altitude (m)"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock FontSize="24" Text="ALM:" ToolTip.Tip="Altitude (m)" />
                                             <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="AltitudeMetres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltitudeMetres" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="AKM:" ToolTip.Tip="Altitude (km)"/>
+                                        <Grid ColumnDefinitions="*, 460">
+                                            <TextBlock FontSize="24" Text="AKM:" ToolTip.Tip="Altitude (km)" />
                                             <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="AltitudeKilometres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="AltitudeKilometres" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="4" Grid.Column="1" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
+                                        <Grid ColumnDefinitions="*, 460">
                                             <TextBlock FontSize="24" Text="Longitude:" />
                                             <TextBlock Text="{Binding Longitude}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="Longitude" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Longitude" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Row="5" Grid.Column="1" Margin="10,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
+                                        <Grid ColumnDefinitions="*, 460">
                                             <TextBlock FontSize="24" Text="Latitude:" />
                                             <TextBlock Text="{Binding Latitude}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="Latitude" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
+                                                       Name="Latitude" Margin="10, 0, 10, 0" Padding="10,0"
+                                                       TextAlignment="Center" />
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -395,52 +415,65 @@
                         <!-- RES Tab -->
                         <TabItem Header="RES">
                             <StackPanel Width="1200">
-                                <!-- Content for RES -->
-                                <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
-                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="K2T:" ToolTip.Tip="K2 Output State"/>
-                                            <TextBlock Text="{Binding K2State}" FontSize="22"
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="K2State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
-                                        </Grid>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="K3B:" ToolTip.Tip="K3 Output State"/>
-                                            <TextBlock Text="{Binding K3State}" FontSize="22"
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="K3State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
-                                        </Grid>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="RRQ:" ToolTip.Tip="Res Radio Quality"/>
-                                            <TextBlock Text="{Binding ResRadioQuality}" FontSize="22"
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="ResRadioQuality" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
-                                        </Grid>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,10,0,0">
-                                        <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="Node ID:" />
-                                            <TextBlock Text="{Binding ResNodeId}" FontSize="22"
-                                                       Grid.Column="1" VerticalAlignment="Center" Background="White"
-                                                       Name="ResNodeId" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
-                                        </Grid>
+                                <Grid RowDefinitions="*, Auto" ColumnDefinitions="*, Auto">
+                                    <!-- Content for RES -->
+                                    <Grid ColumnDefinitions="*, *"
+                                          RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
+                                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,10,0,0">
+                                            <Grid ColumnDefinitions="*, 460">
+                                                <TextBlock FontSize="24" Text="K2T:" ToolTip.Tip="K2 Output State" />
+                                                <TextBlock Text="{Binding K2State}" FontSize="22"
+                                                           Grid.Column="1" VerticalAlignment="Center"
+                                                           Background="White"
+                                                           Name="K2State" Margin="10, 0, 10, 0" Padding="10,0"
+                                                           TextAlignment="Center" />
+                                            </Grid>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
+                                            <Grid ColumnDefinitions="*, 460">
+                                                <TextBlock FontSize="24" Text="K3B:" ToolTip.Tip="K3 Output State" />
+                                                <TextBlock Text="{Binding K3State}" FontSize="22"
+                                                           Grid.Column="1" VerticalAlignment="Center"
+                                                           Background="White"
+                                                           Name="K3State" Margin="10, 0, 10, 0" Padding="10,0"
+                                                           TextAlignment="Center" />
+                                            </Grid>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+                                            <Grid ColumnDefinitions="*, 460">
+                                                <TextBlock FontSize="24" Text="RRQ:" ToolTip.Tip="Res Radio Quality" />
+                                                <TextBlock Text="{Binding ResRadioQuality}" FontSize="22"
+                                                           Grid.Column="1" VerticalAlignment="Center"
+                                                           Background="White"
+                                                           Name="ResRadioQuality" Margin="10, 0, 10, 0" Padding="10,0"
+                                                           TextAlignment="Center" />
+                                            </Grid>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,10,0,0">
+                                            <Grid ColumnDefinitions="*, 460">
+                                                <TextBlock FontSize="24" Text="Node ID:" />
+                                                <TextBlock Text="{Binding ResNodeId}" FontSize="22"
+                                                           Grid.Column="1" VerticalAlignment="Center"
+                                                           Background="White"
+                                                           Name="ResNodeId" Margin="10, 0, 10, 0" Padding="10,0"
+                                                           TextAlignment="Center" />
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                    <!-- Remote Emergency Stop Status -->
+                                    <StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                Margin="0,220,70,10">
+                                        <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
+                                                   HorizontalAlignment="Center" />
+                                        <Image Name="ResTabIcon" Source="../Assets/emergency-stop.png" Width="200"
+                                               Height="200" Opacity="1" />
+                                        <TextBlock Name="ResTab" FontWeight="Bold" Text="{Binding RemoteEmergency}"
+                                                   FontSize="22" Background="Green" Foreground="White" Padding="10,0"
+                                                   Margin="0,0,0,10" TextAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Width="200" />
                                     </StackPanel>
                                 </Grid>
-                                <!-- Remote Emergency Stop Status -->
-                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,80,70,10">
-                                    <TextBlock Text="RES Status" FontSize="24" VerticalAlignment="Bottom"
-                                               HorizontalAlignment="Center" />
-                                    <Image Name="ResTabIcon" Source="../Assets/emergency-stop.png" Width="200"
-                                           Height="200" Opacity="1" />
-                                    <TextBlock Name="ResTab" FontWeight="Bold" Text="{Binding RemoteEmergency}"
-                                               FontSize="22" Background="Green" Foreground="White" Padding="10,0"
-                                               Margin="0,0,0,10" TextAlignment="Center" HorizontalAlignment="Center"
-                                               Width="200" />
-                                </StackPanel>
                             </StackPanel>
                         </TabItem>
                     </TabControl>
