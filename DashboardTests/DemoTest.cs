@@ -125,7 +125,7 @@ public class DemoTest
 
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
-        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), null, "Connection");
+        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection");
 
         Assert.Multiple(() =>
         {
@@ -144,7 +144,6 @@ public class DemoTest
         // Click on Setup button.
         window.MouseDown(new Point(135, 70), MouseButton.Left);
         window.MouseUp(new Point(135, 70), MouseButton.Left);
-
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));

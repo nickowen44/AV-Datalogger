@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Dashboard.Views"
         xmlns:vm="clr-namespace:Dashboard.ViewModels"
         xmlns:models="clr-namespace:Dashboard.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -45,11 +46,11 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Grid Grid.Row="2">
-            <ContentControl Name="MainContent" Content="{Binding CurrentPage}" />
-        </Grid>
+    <Grid Grid.Row="2">
+        <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
+    </Grid>
         <Grid Grid.Row="3">
-            <ContentControl Name="FooterContent" Content="{Binding Footer}" />
+            <ContentControl Name="FooterContent" Content="{Binding Footer}"/> 
         </Grid>
     </Grid>
 </Window>
