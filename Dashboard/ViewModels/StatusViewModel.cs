@@ -14,6 +14,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         _dataStore = dataStore;
         _dataStore.AvDataUpdated += OnAvDataChanged;
         _dataStore.ResDataUpdated += OnResDataChanged;
+        _dataStore.GpsDataUpdated += OnGpsDataChanged;
     }
 
     public StatusViewModel()
@@ -95,6 +96,10 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(MissionIndicator));
         OnPropertyChanged(nameof(EmergencyBrakeState));
         OnPropertyChanged(nameof(ServiceBrakeState));
+    }
+
+    private void OnGpsDataChanged(object? sender, EventArgs e)
+    {
         OnPropertyChanged(nameof(SatCount));
         OnPropertyChanged(nameof(Hdop));
         OnPropertyChanged(nameof(HdopFixAge));
@@ -107,15 +112,16 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(KilometresPerHour));
         OnPropertyChanged(nameof(Latitude));
         OnPropertyChanged(nameof(Longitude));
+    }
+
+    private void OnResDataChanged(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(RemoteEmergency));
         OnPropertyChanged(nameof(ResState));
         OnPropertyChanged(nameof(K2State));
         OnPropertyChanged(nameof(K3State));
         OnPropertyChanged(nameof(ResRadioQuality));
         OnPropertyChanged(nameof(ResNodeId));
-    }
-    private void OnResDataChanged(object? sender, EventArgs e)
-    {
-        OnPropertyChanged(nameof(RemoteEmergency));
         RESDataUpdated?.Invoke(RemoteEmergency);
     }
 
@@ -123,6 +129,7 @@ public partial class StatusViewModel : ViewModelBase, IDisposable
     {
         _dataStore.AvDataUpdated -= OnAvDataChanged;
         _dataStore.ResDataUpdated -= OnResDataChanged;
+        _dataStore.GpsDataUpdated -= OnGpsDataChanged;
 
         GC.SuppressFinalize(this);
     }
