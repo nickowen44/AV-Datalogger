@@ -109,6 +109,7 @@ public class OverviewPageTest
             KilometresPerHour = 10.23,
             HdopFixAge = 6,
             Hdop = 12.32,
+            HVal = 234,
             SatFixAge = 6,
             SatCount = 3,
             SpeedFixAge = 3,
@@ -139,6 +140,7 @@ public class OverviewPageTest
         var KilometresPerHour = window.FindControl<TextBlock>("KilometresPerHour");
         var HdopFixAge = window.FindControl<TextBlock>("HdopFixAge");
         var Hdop = window.FindControl<TextBlock>("Hdop");
+        var HVal = window.FindControl<TextBlock>("HVal");
         var SatFixAge = window.FindControl<TextBlock>("SatFixAge");
         var SatCount = window.FindControl<TextBlock>("SatCount");
         var SpeedFixAge = window.FindControl<TextBlock>("SpeedFixAge");
@@ -154,6 +156,7 @@ public class OverviewPageTest
             Assert.That(KilometresPerHour, Is.Not.Null);
             Assert.That(HdopFixAge, Is.Not.Null);
             Assert.That(Hdop, Is.Not.Null);
+            Assert.That(HVal, Is.Not.Null);
             Assert.That(SatFixAge, Is.Not.Null);
             Assert.That(SatCount, Is.Not.Null);
             Assert.That(SpeedFixAge, Is.Not.Null);
@@ -170,6 +173,7 @@ public class OverviewPageTest
             Assert.That(KilometresPerHour.Text, Is.EqualTo("10.23"));
             Assert.That(HdopFixAge.Text, Is.EqualTo("6"));
             Assert.That(Hdop.Text, Is.EqualTo("12.32"));
+            Assert.That(HVal.Text, Is.EqualTo("234"));
             Assert.That(SatFixAge.Text, Is.EqualTo("6"));
             Assert.That(SatCount.Text, Is.EqualTo("3"));
             Assert.That(SpeedFixAge.Text, Is.EqualTo("3"));
