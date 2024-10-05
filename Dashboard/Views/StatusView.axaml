@@ -275,7 +275,7 @@
                                 <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
                                     <StackPanel Grid.Column="0" Grid.Row="0">
                                         <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="SFA:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="SFA:" ToolTip.Tip="Satellite Fix Age"/>
                                             <TextBlock Text="{Binding SatFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="SatFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -283,7 +283,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="NOS:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="NOS:" ToolTip.Tip="Number of Visible Satellites" />
                                             <TextBlock Text="{Binding SatCount}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="SatCount" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -291,7 +291,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HDOP:" ToolTip.Tip="Horizontal Dilution of Precision" />
                                             <TextBlock Text="{Binding Hdop}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="Hdop" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -299,7 +299,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HFA:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HFA:" ToolTip.Tip="HDOP Fix Age"/>
                                             <TextBlock Text="{Binding HdopFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="HdopFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -307,7 +307,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="4" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="SPFA:" ToolTip.Tip="Speed Fix Age"/>
                                             <TextBlock Text="{Binding SpeedFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="SpeedFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -315,7 +315,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="5" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="MPS:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="MPS:" ToolTip.Tip="Speed (m/s)"/>
                                             <TextBlock Text="{Binding MetresPerSecond}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="MetresPerSecond" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -323,7 +323,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="6" Grid.Column="0" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Column="0" FontSize="24" Text="HVAL:" />
+                                            <TextBlock Grid.Column="0" FontSize="24" Text="HVAL:" ToolTip.Tip="Raw Value of HDOP"/>
                                             <TextBlock Text="{Binding HVal}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="HVal" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -331,7 +331,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="0" Grid.Column="1">
                                         <Grid ColumnDefinitions="Auto, *" Margin="10, 30, 0, 0">
-                                            <TextBlock FontSize="24" Text="KMH:" />
+                                            <TextBlock FontSize="24" Text="KMH:" ToolTip.Tip="Speed (km/h)"/>
                                             <TextBlock Text="{Binding KilometresPerHour}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="KilometresPerHour" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -339,7 +339,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="AFA:" />
+                                            <TextBlock FontSize="24" Text="AFA:" ToolTip.Tip="Altitude Fix Age"/>
                                             <TextBlock Text="{Binding AltFixAge}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="AltFixAge" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -347,7 +347,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="ALM:" />
+                                            <TextBlock FontSize="24" Text="ALM:" ToolTip.Tip="Altitude (m)"/>
                                             <TextBlock Text="{Binding AltitudeMetres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="AltitudeMetres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -355,7 +355,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="AKM:" />
+                                            <TextBlock FontSize="24" Text="AKM:" ToolTip.Tip="Altitude (km)"/>
                                             <TextBlock Text="{Binding AltitudeKilometres}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="AltitudeKilometres" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -399,7 +399,7 @@
                                 <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
                                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="K2T:" />
+                                            <TextBlock FontSize="24" Text="K2T:" ToolTip.Tip="K2 Output State"/>
                                             <TextBlock Text="{Binding K2State}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="K2State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -407,7 +407,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="K3B:" />
+                                            <TextBlock FontSize="24" Text="K3B:" ToolTip.Tip="K3 Output State"/>
                                             <TextBlock Text="{Binding K3State}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="K3State" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
@@ -415,7 +415,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
                                         <Grid ColumnDefinitions="Auto, *">
-                                            <TextBlock FontSize="24" Text="RRQ:" />
+                                            <TextBlock FontSize="24" Text="RRQ:" ToolTip.Tip="Res Radio Quality"/>
                                             <TextBlock Text="{Binding ResRadioQuality}" FontSize="22"
                                                        Grid.Column="1" VerticalAlignment="Center" Background="White"
                                                        Name="ResRadioQuality" Margin="10, 0, 10, 0" Padding="10,0" TextAlignment="Center" />
