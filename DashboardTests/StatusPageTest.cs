@@ -12,13 +12,13 @@ namespace DashboardTests;
 [TestFixture]
 public class OverviewPageTest
 {
-    private Mock<IDataStore> _dataStore;
-
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
+
+    private Mock<IDataStore> _dataStore;
 
 
     [AvaloniaTest]
@@ -94,6 +94,144 @@ public class OverviewPageTest
             Assert.That(SpeedTextTarget.Text, Is.EqualTo("20 km/h"));
         });
     }
-}
 
-// More tests to be implemented when Data is connected to StatusView Page
+    [AvaloniaTest]
+    public void TestGpsPageValues()
+    {
+        _dataStore.SetupGet(x => x.GpsData).Returns(new GpsData
+        {
+            // Set the values for the GPS Data
+            Latitude = 10.020930129,
+            Longitude = -128.1230802,
+            AltitudeMetres = 10.23,
+            AltitudeKilometres = 10.23,
+            MetresPerSecond = 10.203,
+            KilometresPerHour = 10.23,
+            HdopFixAge = 6,
+            Hdop = 12.32,
+            HVal = 234,
+            SatFixAge = 6,
+            SatCount = 3,
+            SpeedFixAge = 3,
+            AltFixAge = 1
+        });
+
+        var window = new StatusView
+        {
+            DataContext = new StatusViewModel(_dataStore.Object)
+        };
+        Dispatcher.UIThread.RunJobs();
+        Assert.IsNotNull(window);
+
+        // Find the TabControl in the UserControl
+        var tabControl = window.FindControl<TabControl>("MainTabControl");
+
+        // Assert that the TabControl is found
+        Assert.NotNull(tabControl);
+
+        // Select the GPS tab by index (assuming GPS is the second tab, index 1)
+        tabControl.SelectedIndex = 1;
+
+        var Latitude = window.FindControl<TextBlock>("Latitude");
+        var Longitude = window.FindControl<TextBlock>("Longitude");
+        var AltitudeMetres = window.FindControl<TextBlock>("AltitudeMetres");
+        var AltitudeKilometres = window.FindControl<TextBlock>("AltitudeKilometres");
+        var MetresPerSecond = window.FindControl<TextBlock>("MetresPerSecond");
+        var KilometresPerHour = window.FindControl<TextBlock>("KilometresPerHour");
+        var HdopFixAge = window.FindControl<TextBlock>("HdopFixAge");
+        var Hdop = window.FindControl<TextBlock>("Hdop");
+        var HVal = window.FindControl<TextBlock>("HVal");
+        var SatFixAge = window.FindControl<TextBlock>("SatFixAge");
+        var SatCount = window.FindControl<TextBlock>("SatCount");
+        var SpeedFixAge = window.FindControl<TextBlock>("SpeedFixAge");
+        var AltFixAge = window.FindControl<TextBlock>("AltFixAge");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(Latitude, Is.Not.Null);
+            Assert.That(Longitude, Is.Not.Null);
+            Assert.That(AltitudeMetres, Is.Not.Null);
+            Assert.That(AltitudeKilometres, Is.Not.Null);
+            Assert.That(MetresPerSecond, Is.Not.Null);
+            Assert.That(KilometresPerHour, Is.Not.Null);
+            Assert.That(HdopFixAge, Is.Not.Null);
+            Assert.That(Hdop, Is.Not.Null);
+            Assert.That(HVal, Is.Not.Null);
+            Assert.That(SatFixAge, Is.Not.Null);
+            Assert.That(SatCount, Is.Not.Null);
+            Assert.That(SpeedFixAge, Is.Not.Null);
+            Assert.That(AltFixAge, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(Latitude.Text, Is.EqualTo("10.020930129"));
+            Assert.That(Longitude.Text, Is.EqualTo("-128.1230802"));
+            Assert.That(AltitudeMetres.Text, Is.EqualTo("10.23"));
+            Assert.That(AltitudeKilometres.Text, Is.EqualTo("10.23"));
+            Assert.That(MetresPerSecond.Text, Is.EqualTo("10.203"));
+            Assert.That(KilometresPerHour.Text, Is.EqualTo("10.23"));
+            Assert.That(HdopFixAge.Text, Is.EqualTo("6"));
+            Assert.That(Hdop.Text, Is.EqualTo("12.32"));
+            Assert.That(HVal.Text, Is.EqualTo("234"));
+            Assert.That(SatFixAge.Text, Is.EqualTo("6"));
+            Assert.That(SatCount.Text, Is.EqualTo("3"));
+            Assert.That(SpeedFixAge.Text, Is.EqualTo("3"));
+            Assert.That(AltFixAge.Text, Is.EqualTo("1"));
+        });
+    }
+
+    [AvaloniaTest]
+    public void TestResPageValues()
+    {
+        _dataStore.SetupGet(x => x.ResData).Returns(new ResData
+        {
+            // Set the values for the RES data
+            K2State = true,
+            K3State = true,
+            ResRadioQuality = 3,
+            ResNodeId = 3,
+            ResState = true
+        });
+
+        var window = new StatusView
+        {
+            DataContext = new StatusViewModel(_dataStore.Object)
+        };
+        Dispatcher.UIThread.RunJobs();
+        Assert.IsNotNull(window);
+
+        // Find the TabControl in the UserControl
+        var tabControl = window.FindControl<TabControl>("MainTabControl");
+
+        // Assert that the TabControl is found
+        Assert.NotNull(tabControl);
+
+        // Select the GPS tab by index (assuming GPS is the second tab, index 1)
+        tabControl.SelectedIndex = 2;
+
+        var K2State = window.FindControl<TextBlock>("K2State");
+        var K3State = window.FindControl<TextBlock>("K3State");
+        var ResNodeId = window.FindControl<TextBlock>("ResNodeId");
+        var ResRadioQuality = window.FindControl<TextBlock>("ResRadioQuality");
+        var ResState = window.FindControl<TextBlock>("ResTab");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(K2State, Is.Not.Null);
+            Assert.That(K3State, Is.Not.Null);
+            Assert.That(ResNodeId, Is.Not.Null);
+            Assert.That(ResRadioQuality, Is.Not.Null);
+            Assert.That(ResState, Is.Not.Null);
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(K2State.Text, Is.EqualTo("True"));
+            Assert.That(K3State.Text, Is.EqualTo("True"));
+            Assert.That(ResNodeId.Text, Is.EqualTo("3"));
+            Assert.That(ResRadioQuality.Text, Is.EqualTo("3"));
+            Assert.That(ResState.Text, Is.EqualTo("True"));
+        });
+    }
+}

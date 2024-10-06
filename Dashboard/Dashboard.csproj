@@ -45,9 +45,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\StatusView.axaml.cs">
-        <DependentUpon>Status.axaml</DependentUpon>
-      </Compile>
+        <Compile Update="Views\StatusView.axaml.cs">
+            <DependentUpon>Status.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

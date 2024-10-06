@@ -7,13 +7,13 @@ namespace Dashboard.Connectors;
 
 public class DummyConnector : IConnector
 {
+    private bool _shouldStop;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
 
-    private bool _shouldStop;
     /// <summary>
     ///     Handles setting up the connector to the data source when no port name is passed, Defaults to COM22.
     /// </summary>
@@ -30,10 +30,10 @@ public class DummyConnector : IConnector
                 {
                     Latitude = random.NextDouble() * 180 - 90,
                     Longitude = random.NextDouble() * 360 - 180,
-                    AltitudeMeters = random.NextDouble() * 10000,
-                    AltitudeKilmeters = random.NextDouble() * 10,
-                    MeterPerSecond = random.NextDouble() * 100,
-                    KilometersPerHour = random.NextDouble() * 360,
+                    AltitudeMetres = random.NextDouble() * 10000,
+                    AltitudeKilometres = random.NextDouble() * 10,
+                    MetresPerSecond = random.NextDouble() * 100,
+                    KilometresPerHour = random.NextDouble() * 360,
                     HdopFixAge = random.Next(100),
                     Hdop = random.NextDouble() * 50,
                     HVal = random.Next(100),
