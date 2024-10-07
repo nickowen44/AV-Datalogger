@@ -54,10 +54,10 @@ namespace Dashboard.ViewModels
                 DataContext = _serviceProvider.GetRequiredService<FooterViewModel>()
             };
         }
-        
+
         public MainWindowViewModel()
         {
-            _serviceProvider =  DependencyInjection.ConfigureServices();
+            _serviceProvider = DependencyInjection.ConfigureServices();
             _logger = NullLogger<MainWindowViewModel>.Instance;
             _views = new Dictionary<string, (UserControl, ViewModelBase?)>();
             Items = new ObservableCollection<ListItemTemplate>(_templates);
@@ -77,13 +77,13 @@ namespace Dashboard.ViewModels
         {
             // Check if the view already exist in the dict, if it does not then create it and the appropriate ViewModel as needed.
             _logger.LogDebug("Navigation Bar Item Selection Changed to {0}.", value.Label);
-            
+
             if (!_views.ContainsKey(value.Label))
             {
-                
+
                 // Create the view.
                 var viewInstance = (UserControl?)ActivatorUtilities.CreateInstance(_serviceProvider, value.View);
-                
+
                 if (viewInstance == null)
                 {
                     _logger.LogError("Failed to load view instance {0}.", value.Label);
@@ -103,7 +103,7 @@ namespace Dashboard.ViewModels
                     _views[value.Label] = (viewInstance, viewModelInstance);
                 }
             }
-            
+
             CurrentPage = _views[value.Label].View;
             _logger.LogDebug("Changed CurrentPage to View {0}", value.Label);
         }

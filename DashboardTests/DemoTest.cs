@@ -31,7 +31,7 @@ public class DemoTest
             .Returns(statusViewModel);
         _serviceProvider.Setup(sp => sp.GetService(typeof(IDataStore)))
             .Returns(_dataStore.Object);
-       
+
     }
 
 
@@ -143,12 +143,11 @@ public class DemoTest
             Assert.That(mainContent.Content, Is.InstanceOf(defaultSelectedItem.View));
         });
 
-        var changedSelectedItem = new ListItemTemplate(typeof(StatusView),typeof(StatusViewModel) , "Status");
+        var changedSelectedItem = new ListItemTemplate(typeof(StatusView), typeof(StatusViewModel), "Status");
         // Click on Status button.
         window.MouseDown(new Point(200, 80), MouseButton.Left);
         window.MouseUp(new Point(200, 80), MouseButton.Left);
-        Console.WriteLine(naviBar.SelectedItem);
-        Console.WriteLine(mainContent.Content);
+
         Assert.Multiple(() =>
         {
             Assert.That(naviBar.SelectedItem, Is.EqualTo(changedSelectedItem));
