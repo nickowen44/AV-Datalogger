@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Timers;
 using Dashboard.Connectors;
+using Dashboard.Serialisation;
 using Dashboard.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -23,11 +26,15 @@ public class DataStore : IDataStore, IDisposable
 
     private readonly IConnector _connector;
     private readonly ILogger<DataStore> _logger;
+    private readonly IDataSerialisationFactory _dataSerialiserFactory;
+    private IDataSerialiser? _dataSerialiser;
+    private Timer? _serialisationTimer;
 
-    public DataStore(IConnector connector, ILogger<DataStore> logger)
+    public DataStore(IConnector connector, ILogger<DataStore> logger, IDataSerialisationFactory factory)
     {
         _connector = connector;
         _logger = logger;
+        _dataSerialiserFactory = factory;
 
         LoggingConfig.LogEventSink.LogMessageReceived += OnLogMessageReceived;
 
@@ -40,11 +47,25 @@ public class DataStore : IDataStore, IDisposable
         _connector.HeartBeatUpdated += OnHeartbeatUpdated;
     }
 
-    public bool startConnection(string portName)
+    public bool startConnection(string portName, bool saveToCsv)
     {
         try
         {
             _connector.Start(portName);
+
+            if (saveToCsv)
+                try
+                {
+                    _dataSerialiser = _dataSerialiserFactory.CreateDataSerialiser();
+
+                    _serialisationTimer = CreateSerialisationTimer();
+                    _serialisationTimer.Start();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to create data serialiser");
+                }
+
             return true;
         }
         catch (Exception ex)
@@ -59,6 +80,12 @@ public class DataStore : IDataStore, IDisposable
     public void disconnect()
     {
         _connector.Stop();
+
+        _serialisationTimer?.Stop();
+        _serialisationTimer?.Dispose();
+
+        _dataSerialiser?.Dispose();
+        _dataSerialiser = null;
     }
 
     // Keep a buffer until the UI is ready to display the message
@@ -122,6 +149,23 @@ public class DataStore : IDataStore, IDisposable
         RawDataUpdated?.Invoke(this, EventArgs.Empty);
     }
 
+    private Timer CreateSerialisationTimer()
+    {
+        // Run the serialisation every second
+        var timer = new Timer(1000);
+        timer.Elapsed += async (_, __) => await DoSerialisation();
+
+        return timer;
+    }
+
+    private async Task DoSerialisation()
+    {
+        if (_dataSerialiser is null) return;
+        if (GpsData is null || AvStatusData is null || ResData is null || RawData is null) return;
+
+        await _dataSerialiser.Write(GpsData, AvStatusData, ResData, RawData);
+    }
+
     public void Dispose()
     {
         _logger.LogDebug("DataStore disposed");
@@ -133,6 +177,14 @@ public class DataStore : IDataStore, IDisposable
         _connector.RawDataUpdated -= OnRawDataUpdated;
 
         _connector.Stop();
+
+        // Stop the serialisation timer
+        _serialisationTimer?.Stop();
+        _serialisationTimer?.Dispose();
+
+        // Dispose of the data serialiser
+        _dataSerialiser?.Dispose();
+        _dataSerialiser = null;
 
         GC.SuppressFinalize(this);
     }

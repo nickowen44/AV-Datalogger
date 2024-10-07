@@ -2,6 +2,7 @@
 using Dashboard.Connectors;
 using Dashboard.Connectors.Serial;
 using Dashboard.Models;
+using Dashboard.Serialisation;
 using Dashboard.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,6 @@ public static class DependencyInjection
         services.AddSingleton<IConnector, SerialConnector>();
         services.AddSingleton<IYamlLoader, YamlLoader>();
 
-
         services.AddTransient<DataViewModel>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<ISerialPort, SerialPortWrapper>();
@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddTransient<FooterViewModel>();
         services.AddTransient<AboutViewModel>();
         services.AddTransient<ConnectionViewModel>();
+        services.AddTransient<IDataSerialisationFactory, DataSerialisationFactory>();
 
         return services.BuildServiceProvider();
     }

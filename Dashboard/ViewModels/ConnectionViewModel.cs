@@ -46,7 +46,8 @@ public partial class ConnectionViewModel : ViewModelBase
     [RelayCommand]
     public void ConnectToSerialPort(string portName)
     {
-        if (_dataStore.startConnection(portName))
+        // TODO: Add checkbox for save to file or not
+        if (_dataStore.startConnection(portName, true))
         {
             ConnectionChanged?.Invoke(true);
         }
