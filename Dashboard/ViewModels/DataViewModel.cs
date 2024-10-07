@@ -1,6 +1,7 @@
 ﻿using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Dashboard.Serialisation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -26,7 +27,9 @@ public class DataViewModel : ViewModelBase
     public DataViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
+        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance,
+            NullDataSerialisationFactory.Instance);
+        
         _logger = NullLogger<DataViewModel>.Instance;
     }
 
