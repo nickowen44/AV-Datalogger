@@ -14,21 +14,18 @@
     </Design.DataContext>
 
     <ScrollViewer>
-        <Grid VerticalAlignment="Center">
+        <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" IsSharedSizeScope="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition SharedSizeGroup="WidthGroup" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Row="0" Grid.Column="1" Background="{DynamicResource ForegroundColour}" Padding="5" Margin="5"
-                    BorderThickness="3"
-                    BorderBrush="{DynamicResource ForegroundBorderColour}"
-                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource AccentColour}" Padding="5"
+                    BorderThickness="3" BorderBrush="{DynamicResource AccentBorderColour}"
+                    VerticalAlignment="Top">
                 <StackPanel Spacing="5">
                     <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
                     <TextBlock
@@ -37,45 +34,44 @@
                         Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
                 </StackPanel>
             </Border>
-            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5" HorizontalAlignment="Center">
-                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
-                        BorderBrush="{DynamicResource ForegroundBorderColour}">
-                    <StackPanel Spacing="5">
-                        <TextBlock Name="IntroParagraph" FontSize="18">
-                            This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
-                        </TextBlock>
-                        <TextBlock Name="TeamMembers" FontSize="18">
-                            <Run Text="Team Members:" FontWeight="Bold" />
-                            <LineBreak />
-                            <Run Text=" - Erin Lumsden" />
-                            <LineBreak />
-                            <Run Text=" - Sarmad Wani" />
-                            <LineBreak />
-                            <Run Text=" - Ariadne Ventura-Koumides" />
-                            <LineBreak />
-                            <Run Text=" - Nicholas Dagher" />
-                            <LineBreak />
-                            <Run Text=" - Richard Quach" />
-                        </TextBlock>
-                        <TextBlock Name="Supervisor" FontSize="18">
-                            <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
-                        </TextBlock>
+            <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource ForegroundColour}"
+                    Padding="5" BorderThickness="3" BorderBrush="{DynamicResource ForegroundBorderColour}"
+                    Margin="0 10">
+                <StackPanel Spacing="5">
+                    <TextBlock Name="IntroParagraph" FontSize="18">
+                        This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
+                    </TextBlock>
+                    <TextBlock Name="TeamMembers" FontSize="18">
+                        <Run Text="Team Members:" FontWeight="Bold" />
+                        <LineBreak />
+                        <Run Text=" - Erin Lumsden" />
+                        <LineBreak />
+                        <Run Text=" - Sarmad Wani" />
+                        <LineBreak />
+                        <Run Text=" - Ariadne Ventura-Koumides" />
+                        <LineBreak />
+                        <Run Text=" - Nicholas Dagher" />
+                        <LineBreak />
+                        <Run Text=" - Richard Quach" />
+                    </TextBlock>
+                    <TextBlock Name="Supervisor" FontSize="18">
+                        <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="0" Background="{DynamicResource ForegroundColour}"
+                    Padding="5" BorderThickness="3" BorderBrush="{DynamicResource ForegroundBorderColour}"
+                    VerticalAlignment="Center">
+                <StackPanel Spacing="5">
+                    <TextBlock Name="SoftwareInfo" FontWeight="Bold" FontSize="18">Software Information:</TextBlock>
+                    <StackPanel>
+                        <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}"
+                                   FontSize="18" />
+                        <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}"
+                                   FontSize="18" />
                     </StackPanel>
-                </Border>
-                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
-                        BorderBrush="{DynamicResource ForegroundBorderColour}"
-                        HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel Spacing="5">
-                        <TextBlock Name="SoftwareInfo" FontWeight="Bold" FontSize="18">Software Information:</TextBlock>
-                        <StackPanel>
-                            <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}"
-                                       FontSize="18" />
-                            <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}"
-                                       FontSize="18" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                </StackPanel>
+            </Border>
         </Grid>
     </ScrollViewer>
 </UserControl>
