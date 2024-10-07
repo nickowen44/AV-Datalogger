@@ -29,7 +29,7 @@ public class DataViewModel : ViewModelBase
         // This constructor is used for design-time data, so we don't need to start the connector
         _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance,
             NullDataSerialisationFactory.Instance);
-        
+
         _logger = NullLogger<DataViewModel>.Instance;
     }
 

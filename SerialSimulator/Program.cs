@@ -65,11 +65,11 @@ var start = new ProcessStartInfo
 while (true)
 {
     using var process = Process.Start(start);
-    
+
     if (process == null)
     {
         Console.WriteLine("Failed to start the process.");
-        
+
         // Sleep for 5 seconds before retrying
         Thread.Sleep(5000);
         return;
@@ -84,7 +84,7 @@ while (true)
 
     // Wait for the process to exit
     process.WaitForExit();
-    
+
     // Sleep for a second before retrying
     Thread.Sleep(1000);
 }
