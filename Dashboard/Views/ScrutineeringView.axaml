@@ -20,6 +20,19 @@
         <utils:MeasurementValueVisibility x:Key="MeasurementValueVisibility" />
     </UserControl.Resources>
 
+    <UserControl.Styles>
+        <!-- Default Style for the Expander Header (ToggleButton) -->
+        <Style Selector="Expander ToggleButton">
+            <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+        <!-- Style for Pointer Over (Hover) State -->
+        <Style Selector="Expander ToggleButton:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ForegroundColour}"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </UserControl.Styles>
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
@@ -171,7 +184,6 @@
                            FontSize="18"
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
-
             <StackPanel Grid.Row="2" Grid.Column="2">
                 <Expander Header="AVI Step Status" Name="AllStepsExpander"
                           HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"

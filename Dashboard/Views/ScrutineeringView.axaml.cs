@@ -96,8 +96,8 @@ public partial class ScrutineeringView : UserControl
     private void PopulateAllStepsList()
     {
         // Retrieve the brushes from the resource dictionary
-        var passBrush = (SolidColorBrush)Application.Current?.Resources["PassColour"]!;
-        var failBrush = (SolidColorBrush)Application.Current?.Resources["FailColour"]!;
+        var passBrush = (SolidColorBrush)Application.Current?.Resources["GoldColour"]!;
+        var failBrush = (SolidColorBrush)Application.Current?.Resources["PlumColour"]!;
 
         AllStepsList.ItemsSource = _steps.Select(s => new TextBlock
         {
