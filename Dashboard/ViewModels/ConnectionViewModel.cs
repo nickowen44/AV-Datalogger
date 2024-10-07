@@ -5,7 +5,10 @@ using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Dashboard.Connectors;
 using Dashboard.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
 
@@ -18,13 +21,24 @@ public partial class ConnectionViewModel : ViewModelBase
     public ObservableCollection<string> SerialPorts { get; }
     private readonly IDataStore? _dataStore;
     public event Action<bool>? ConnectionChanged;
-    public ConnectionViewModel(IDataStore? dataStore = null)
+    
+    [ActivatorUtilitiesConstructor]
+    public ConnectionViewModel(IDataStore dataStore )
     {
         ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
         _currentConnectionType = ConnectionTypes.First();
         SerialPorts = new ObservableCollection<string>(GetSerialPorts());
         SelectedSerialPort = SerialPorts.FirstOrDefault();
         _dataStore = dataStore;
+    }
+    
+    public ConnectionViewModel()
+    {
+        ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
+        _currentConnectionType = ConnectionTypes.First();
+        SerialPorts = new ObservableCollection<string>(GetSerialPorts());
+        SelectedSerialPort = SerialPorts.FirstOrDefault();
+        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
     }
 
     private static string[] GetSerialPorts()
