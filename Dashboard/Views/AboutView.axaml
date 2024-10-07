@@ -18,15 +18,33 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Panel Grid.Row="0" Margin="5" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Grid.Column="1" Background="{DynamicResource ForegroundColour}" Padding="5" Margin="5"
+                    BorderThickness="3"
+                    BorderBrush="{DynamicResource ForegroundBorderColour}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Spacing="5">
+                    <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
+                    <TextBlock
+                        Name="CurrentYear"
+                        FontSize="18"
+                        Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
+                </StackPanel>
+            </Border>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5" HorizontalAlignment="Center">
                 <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
                         BorderBrush="{DynamicResource ForegroundBorderColour}">
                     <StackPanel Spacing="5">
-                        <TextBlock Name="IntroParagraph">
+                        <TextBlock Name="IntroParagraph" FontSize="18">
                             This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
                         </TextBlock>
-                        <TextBlock Name="TeamMembers">
+                        <TextBlock Name="TeamMembers" FontSize="18">
                             <Run Text="Team Members:" FontWeight="Bold" />
                             <LineBreak />
                             <Run Text=" - Erin Lumsden" />
@@ -39,33 +57,22 @@
                             <LineBreak />
                             <Run Text=" - Richard Quach" />
                         </TextBlock>
-                        <TextBlock Name="Supervisor">
+                        <TextBlock Name="Supervisor" FontSize="18">
                             <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
                         </TextBlock>
                     </StackPanel>
                 </Border>
-            </Panel>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="5" HorizontalAlignment="Center">
                 <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
                         BorderBrush="{DynamicResource ForegroundBorderColour}"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Stretch">
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel Spacing="5">
-                        <TextBlock Name="SoftwareInfo" FontWeight="Bold">Software Information:</TextBlock>
+                        <TextBlock Name="SoftwareInfo" FontWeight="Bold" FontSize="18">Software Information:</TextBlock>
                         <StackPanel>
-                            <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}" />
-                            <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}" />
+                            <TextBlock Name="GitCommit" Text="{Binding GitCommit, StringFormat='Version: {0}'}"
+                                       FontSize="18" />
+                            <TextBlock Name="GitBranch" Text="{Binding GitBranch, StringFormat='Branch: {0}'}"
+                                       FontSize="18" />
                         </StackPanel>
-                    </StackPanel>
-                </Border>
-                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
-                        BorderBrush="{DynamicResource ForegroundBorderColour}"
-                        HorizontalAlignment="Left" VerticalAlignment="Stretch">
-                    <StackPanel Spacing="5">
-                        <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
-                        <TextBlock
-                            Name="CurrentYear"
-                            Text="{Binding CurrentYear, StringFormat='© {0} Nuvotion Pty Ltd. All rights reserved.'}" />
                     </StackPanel>
                 </Border>
             </StackPanel>
