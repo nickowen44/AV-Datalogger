@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dashboard.Views.AboutView"
-             x:DataType="vm:AboutViewModel">
+             x:DataType="vm:AboutViewModel"
+             Background="{DynamicResource BackgroundColour}">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -13,33 +14,40 @@
     </Design.DataContext>
 
     <ScrollViewer>
-        <StackPanel Margin="5" Spacing="5">
-            <Border Background="White" Padding="5" BorderThickness="1" BorderBrush="Black">
-                <StackPanel Spacing="5">
-                    <TextBlock Name="IntroParagraph">
-                        This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
-                    </TextBlock>
-                    <TextBlock Name="TeamMembers">
-                        <Run Text="Team Members:" FontWeight="Bold" />
-                        <LineBreak />
-                        <Run Text=" - Erin Lumsden" />
-                        <LineBreak />
-                        <Run Text=" - Sarmad Wani" />
-                        <LineBreak />
-                        <Run Text=" - Ariadne Ventura-Koumides" />
-                        <LineBreak />
-                        <Run Text=" - Nicholas Dagher" />
-                        <LineBreak />
-                        <Run Text=" - Richard Quach" />
-                    </TextBlock>
-                    <TextBlock Name="Supervisor">
-                        <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
-                    </TextBlock>
-                </StackPanel>
-            </Border>
-            <StackPanel Orientation="Horizontal" Spacing="5">
-                <Border Background="White" Padding="5" BorderThickness="1"
-                        BorderBrush="Black"
+        <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Panel Grid.Row="0" Margin="5" HorizontalAlignment="Center">
+                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
+                        BorderBrush="{DynamicResource ForegroundBorderColour}">
+                    <StackPanel Spacing="5">
+                        <TextBlock Name="IntroParagraph">
+                            This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
+                        </TextBlock>
+                        <TextBlock Name="TeamMembers">
+                            <Run Text="Team Members:" FontWeight="Bold" />
+                            <LineBreak />
+                            <Run Text=" - Erin Lumsden" />
+                            <LineBreak />
+                            <Run Text=" - Sarmad Wani" />
+                            <LineBreak />
+                            <Run Text=" - Ariadne Ventura-Koumides" />
+                            <LineBreak />
+                            <Run Text=" - Nicholas Dagher" />
+                            <LineBreak />
+                            <Run Text=" - Richard Quach" />
+                        </TextBlock>
+                        <TextBlock Name="Supervisor">
+                            <Span FontWeight="Bold">Project Supervisor:</Span> Dr. Prabha Rajagopal
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </Panel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="5" HorizontalAlignment="Center">
+                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
+                        BorderBrush="{DynamicResource ForegroundBorderColour}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Stretch">
                     <StackPanel Spacing="5">
@@ -50,8 +58,8 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-                <Border Background="White" Padding="5" BorderThickness="1"
-                        BorderBrush="Black"
+                <Border Background="{DynamicResource ForegroundColour}" Padding="5" BorderThickness="3"
+                        BorderBrush="{DynamicResource ForegroundBorderColour}"
                         HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <StackPanel Spacing="5">
                         <Image Name="Logo" Source="/Assets/nuvotion_logo.png" Height="35" HorizontalAlignment="Left" />
@@ -61,6 +69,6 @@
                     </StackPanel>
                 </Border>
             </StackPanel>
-        </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

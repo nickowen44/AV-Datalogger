@@ -9,7 +9,20 @@
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <!-- Global colours -->
+    <Application.Resources>
+        <Color x:Key="AccentColour">LightGray</Color>
+        <Color x:Key="AccentBorderColour">DimGray</Color>
+        <!-- This can also be used for light text -->
+        <Color x:Key="ForegroundColour">#F2D398</Color>
+        <Color x:Key="ForegroundBorderColour">#8B6220</Color>
+        <!-- This can also be used for dark text -->
+        <Color x:Key="BackgroundColour">#14080E</Color>
+        <SolidColorBrush x:Key="PassColour" Color="#8B6220" />
+        <SolidColorBrush x:Key="FailColour" Color="#14080E" />
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />  
+        <FluentTheme />
     </Application.Styles>
 </Application>

@@ -95,12 +95,15 @@ public partial class ScrutineeringView : UserControl
     /// </summary>
     private void PopulateAllStepsList()
     {
+        // Retrieve the brushes from the resource dictionary
+        var passBrush = (SolidColorBrush)Application.Current?.Resources["PassColour"]!;
+        var failBrush = (SolidColorBrush)Application.Current?.Resources["FailColour"]!;
+
         AllStepsList.ItemsSource = _steps.Select(s => new TextBlock
         {
             Text = $"Step {s.Id.ToString()} {(s.IsPassed ? "Passed" : "Failed")}",
-            Foreground = s.IsPassed ? Brushes.White : Brushes.Red,
-            Margin = new Thickness(0, 5, 0, 5),
-            FontWeight = FontWeight.Light
+            Foreground = s.IsPassed ? passBrush : failBrush,
+            Margin = new Thickness(0, 5, 0, 5)
         }).ToList();
     }
 }
