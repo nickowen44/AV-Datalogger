@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Dashboard.Models;
@@ -217,19 +216,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         });
     }
 
-    private DateTime ParseUTCTime(string timeString)
-    {
-        var datePart = "";
-        // Check if the UTC value includes the leading zero for months, if not add.
-        if (timeString.Length == 20)
-            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
-        else
-            datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
-
-        var parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
-
-        return parsedDate;
-    }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
@@ -237,7 +223,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = values["ID"],
-            UTCTime = ParseUTCTime(values["UTC"]),
+            UTCTime = Time.ParseUtcTime(values["UTC"]),
             ConnectionStatus = comPort.IsConnected
         });
     }
