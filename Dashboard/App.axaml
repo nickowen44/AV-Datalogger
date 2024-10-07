@@ -18,6 +18,7 @@
         <Color x:Key="ForegroundBorderColour">#8B6220</Color>
         <!-- This can also be used for dark text -->
         <Color x:Key="BackgroundColour">#14080E</Color>
+        <Color x:Key="NavigationColour">#ff2b2b2b</Color>
         <SolidColorBrush x:Key="PassColour" Color="#8B6220" />
         <SolidColorBrush x:Key="FailColour" Color="#14080E" />
     </Application.Resources>
