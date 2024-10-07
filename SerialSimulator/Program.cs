@@ -61,12 +61,17 @@ var start = new ProcessStartInfo
     RedirectStandardError = true
 };
 
-// Start the process
-using (var process = Process.Start(start))
+// Start the process (looped so if it fails it can be retried until stopped via IDE)
+while (true)
 {
+    using var process = Process.Start(start);
+    
     if (process == null)
     {
         Console.WriteLine("Failed to start the process.");
+        
+        // Sleep for 5 seconds before retrying
+        Thread.Sleep(5000);
         return;
     }
 
@@ -79,4 +84,7 @@ using (var process = Process.Start(start))
 
     // Wait for the process to exit
     process.WaitForExit();
+    
+    // Sleep for a second before retrying
+    Thread.Sleep(1000);
 }
