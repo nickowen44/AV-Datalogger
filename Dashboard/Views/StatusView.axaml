@@ -16,6 +16,7 @@
     </Design.DataContext>
     <UserControl.Resources>
         <utils:GaugeConverter x:Key="GaugeConverter" />
+        <utils:RESConverter x:Key="ResConverter" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TabItem">
@@ -173,27 +174,41 @@
                                             <StackPanel Grid.Row="0" Grid.Column="1">
                                                 <Canvas Width="350" Height="250">
                                                     <!-- Outer semi-circle (Speedometer border) -->
-                                                    <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="{DynamicResource BackgroundColour}"
+                                                    <Path Data="M 50,250 A 150,150 0 1,1 350,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
                                                           StrokeThickness="5" Fill="Transparent" />
                                                     <!-- Major ticks (0, 40, 60, 80, 110 km/h positions) -->
-                                                    <Path Data="M 200,100 L 200,130" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 100,140 L 120,160" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 280,160 L 300,140" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 50,250 L 80,250" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 320,250 L 350,250" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
+                                                    <Path Data="M 200,100 L 200,130"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 100,140 L 120,160"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 280,160 L 300,140"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 50,250 L 80,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 320,250 L 350,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
                                                     <!-- Needle pointing to 60 km/h -->
                                                     <Path
                                                         Data="{Binding SpeedActual, Converter={StaticResource GaugeConverter}, ConverterParameter='Speedometer'}"
-                                                        Stroke="{DynamicResource AccentBorderColour}" StrokeThickness="4" />
+                                                        Stroke="{DynamicResource AccentBorderColour}"
+                                                        StrokeThickness="4" />
 
                                                     <!-- Text Labels for speed -->
                                                     <TextBlock Canvas.Left="190" Canvas.Top="130" Text="60"
                                                                FontSize="16"
                                                                Foreground="{DynamicResource BackgroundColour}" />
                                                     <TextBlock Canvas.Left="117.5" Canvas.Top="162.5" Text="30"
-                                                               FontSize="16" Foreground="{DynamicResource BackgroundColour}" />
+                                                               FontSize="16"
+                                                               Foreground="{DynamicResource BackgroundColour}" />
                                                     <TextBlock Canvas.Left="257.5" Canvas.Top="162.5" Text="90"
-                                                               FontSize="16" Foreground="{DynamicResource BackgroundColour}" />
+                                                               FontSize="16"
+                                                               Foreground="{DynamicResource BackgroundColour}" />
                                                     <TextBlock Canvas.Left="85" Canvas.Top="235" Text="0" FontSize="16"
                                                                Foreground="{DynamicResource BackgroundColour}" />
                                                     <TextBlock Canvas.Left="285" Canvas.Top="235" Text="120"
@@ -224,31 +239,50 @@
                                             <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,200,0,0">
                                                 <Canvas>
                                                     <!-- Outer semi-circle (Brake Percentage meter border) -->
-                                                    <Path Data="M 50,250 A 150,150 0 1,1 350,250" Stroke="{DynamicResource BackgroundColour}"
+                                                    <Path Data="M 50,250 A 150,150 0 1,1 350,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
                                                           StrokeThickness="5" Fill="Transparent" />
                                                     <!-- Major ticks (0, 25, 50, 75, 100 % positions) -->
-                                                    <Path Data="M 200,100 L 200,130" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 100,140 L 120,160" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 280,160 L 300,140" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 50,250 L 80,250" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
-                                                    <Path Data="M 320,250 L 350,250" Stroke="{DynamicResource BackgroundColour}" StrokeThickness="3" />
+                                                    <Path Data="M 200,100 L 200,130"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 100,140 L 120,160"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 280,160 L 300,140"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 50,250 L 80,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
+                                                    <Path Data="M 320,250 L 350,250"
+                                                          Stroke="{DynamicResource BackgroundColour}"
+                                                          StrokeThickness="3" />
                                                     <!-- <Path Data="M 200,250 L 200,180" Stroke="Green" StrokeThickness="4" /> -->
                                                     <Path
                                                         Data="{Binding BrakePressureActual, Converter={StaticResource GaugeConverter}, ConverterParameter='Brake'}"
-                                                        Stroke="{DynamicResource ForegroundBorderColour}" StrokeThickness="4" />
+                                                        Stroke="{DynamicResource ForegroundBorderColour}"
+                                                        StrokeThickness="4" />
                                                     <!-- Text Labels for brake percentage -->
                                                     <TextBlock Canvas.Left="190" Canvas.Top="130" Text="50"
                                                                FontSize="16"
-                                                               Foreground="{DynamicResource BackgroundColour}" /> <!-- 60 km/h -->
+                                                               Foreground="{DynamicResource BackgroundColour}" />
+                                                    <!-- 60 km/h -->
                                                     <TextBlock Canvas.Left="117.5" Canvas.Top="162.5" Text="25"
-                                                               FontSize="16" Foreground="{DynamicResource BackgroundColour}" /> <!-- 40 km/h -->
+                                                               FontSize="16"
+                                                               Foreground="{DynamicResource BackgroundColour}" />
+                                                    <!-- 40 km/h -->
                                                     <TextBlock Canvas.Left="257.5" Canvas.Top="162.5" Text="75"
-                                                               FontSize="16" Foreground="{DynamicResource BackgroundColour}" /> <!-- 80 km/h -->
+                                                               FontSize="16"
+                                                               Foreground="{DynamicResource BackgroundColour}" />
+                                                    <!-- 80 km/h -->
                                                     <TextBlock Canvas.Left="85" Canvas.Top="235" Text="0" FontSize="16"
-                                                               Foreground="{DynamicResource BackgroundColour}" /> <!-- 0 km/h -->
+                                                               Foreground="{DynamicResource BackgroundColour}" />
+                                                    <!-- 0 km/h -->
                                                     <TextBlock Canvas.Left="285" Canvas.Top="235" Text="100"
                                                                FontSize="16"
-                                                               Foreground="{DynamicResource BackgroundColour}" /> <!-- 110 km/h -->
+                                                               Foreground="{DynamicResource BackgroundColour}" />
+                                                    <!-- 110 km/h -->
                                                 </Canvas>
                                             </StackPanel>
                                             <!-- Remote Emergency Stop Status -->
@@ -260,8 +294,10 @@
                                                 <Image Name="ResIcon" Source="../Assets/emergency-stop.png" Width="200"
                                                        Height="200" Margin="0,0,0,0" Opacity="1" />
                                                 <TextBlock Name="RemoteEmergencyStopIndicator" FontWeight="Bold"
-                                                           Text="{Binding RemoteEmergency}" FontSize="22"
-                                                           Background="{DynamicResource ForegroundBorderColour}" Foreground="white" Padding="10,0"
+                                                           Text="{Binding RemoteEmergency, Converter={StaticResource ResConverter}}"
+                                                           FontSize="22"
+                                                           Background="{DynamicResource ForegroundBorderColour}"
+                                                           Foreground="white" Padding="10,0"
                                                            Margin="0,0,0,0" TextAlignment="Center"
                                                            HorizontalAlignment="Center"
                                                            Width="200" />
@@ -408,8 +444,10 @@
                                                HorizontalAlignment="Center" />
                                     <Image Name="GPSTabIcon" Source="../Assets/emergency-stop.png" Width="200"
                                            Height="200" Opacity="1" />
-                                    <TextBlock Name="GPSTab" FontWeight="Bold" Text="{Binding RemoteEmergency}"
-                                               FontSize="22" Background="{DynamicResource ForegroundBorderColour}" Foreground="white" Padding="10,0"
+                                    <TextBlock Name="GPSTab" FontWeight="Bold"
+                                               Text="{Binding RemoteEmergency, Converter={StaticResource ResConverter}}"
+                                               FontSize="22" Background="{DynamicResource ForegroundBorderColour}"
+                                               Foreground="white" Padding="10,0"
                                                Margin="0,0,0,10" TextAlignment="Center" HorizontalAlignment="Center"
                                                Width="200" />
                                 </StackPanel>
@@ -471,8 +509,10 @@
                                                    HorizontalAlignment="Center" />
                                         <Image Name="ResTabIcon" Source="../Assets/emergency-stop.png" Width="200"
                                                Height="200" Opacity="1" />
-                                        <TextBlock Name="ResTab" FontWeight="Bold" Text="{Binding RemoteEmergency}"
-                                                   FontSize="22" Background="{DynamicResource ForegroundBorderColour}" Foreground="white" Padding="10,0"
+                                        <TextBlock Name="ResTab" FontWeight="Bold"
+                                                   Text="{Binding RemoteEmergency, Converter={StaticResource ResConverter}}"
+                                                   FontSize="22" Background="{DynamicResource ForegroundBorderColour}"
+                                                   Foreground="white" Padding="10,0"
                                                    Margin="0,0,0,10" TextAlignment="Center"
                                                    HorizontalAlignment="Center"
                                                    Width="200" />

@@ -39,7 +39,7 @@ public partial class StatusView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    private void OnRESUpdate(string RESState)
+    private void OnRESUpdate(bool RESState)
     {
         var passBrush = (SolidColorBrush)Application.Current?.Resources["GrayColour"]!;
         var failBrush = (SolidColorBrush)Application.Current?.Resources["GoldColour"]!;
@@ -47,7 +47,7 @@ public partial class StatusView : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            if (RESState == "Activated")
+            if (RESState)
             {
                 _RESTextBlock.Background = failBrush;
                 _RESIcon.Opacity = 1;
