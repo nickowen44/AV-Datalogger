@@ -24,13 +24,16 @@ public static class DependencyInjection
         services.AddSingleton<IDataStore, DataStore>();
         services.AddSingleton<IYamlLoader, YamlLoader>();
 
+#if DEBUG
         services.AddTransient<DataViewModel>();
+#endif
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<ISerialPort, SerialPortWrapper>();
         services.AddTransient<ScrutineeringViewModel>();
         services.AddTransient<FooterViewModel>();
         services.AddTransient<AboutViewModel>();
         services.AddTransient<ConnectionViewModel>();
+        services.AddTransient<StatusViewModel>();
         services.AddTransient<IDataSerialisationFactory, DataSerialisationFactory>();
 
         services.AddTransient<IConnectorFactory, ConnectorFactory>();

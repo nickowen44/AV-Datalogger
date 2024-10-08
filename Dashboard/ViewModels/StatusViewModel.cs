@@ -2,6 +2,7 @@ using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
 using Dashboard.Serialisation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
@@ -9,7 +10,8 @@ namespace Dashboard.ViewModels;
 public class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-
+    
+    [ActivatorUtilitiesConstructor]
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
