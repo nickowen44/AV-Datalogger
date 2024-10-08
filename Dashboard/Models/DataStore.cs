@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using Dashboard.Connectors;
+using Dashboard.Connectors.Serial;
 using Dashboard.Serialisation;
 using Dashboard.Utils;
 using Microsoft.Extensions.Logging;
@@ -24,21 +25,27 @@ public class DataStore : IDataStore, IDisposable
     public ResData? ResData { get; private set; }
     public RawData? RawData { get; private set; }
 
-    private readonly IConnector _connector;
+    private IConnector? _connector;
+    private readonly IConnectorFactory _connectorFactory;
     private readonly ILogger<DataStore> _logger;
     private readonly IDataSerialisationFactory _dataSerialiserFactory;
     private IDataSerialiser? _dataSerialiser;
     private Timer? _serialisationTimer;
 
-    public DataStore(IConnector connector, ILogger<DataStore> logger, IDataSerialisationFactory factory)
+    public DataStore(IConnectorFactory connectorFactory, ILogger<DataStore> logger, IDataSerialisationFactory factory)
     {
-        _connector = connector;
+        _connectorFactory = connectorFactory;
         _logger = logger;
         _dataSerialiserFactory = factory;
 
         LoggingConfig.LogEventSink.LogMessageReceived += OnLogMessageReceived;
 
         _logger.LogDebug("DataStore created");
+    }
+
+    private void SetupConnector(IConnectorArgs args)
+    {
+        _connector = _connectorFactory.CreateConnector(args);
 
         _connector.GpsDataUpdated += OnGpsDataUpdated;
         _connector.AvDataUpdated += OnAvDataUpdated;
@@ -47,13 +54,13 @@ public class DataStore : IDataStore, IDisposable
         _connector.HeartBeatUpdated += OnHeartbeatUpdated;
     }
 
-    public bool startConnection(string portName, bool saveToCsv)
+    public bool Connect(IConnectorArgs args)
     {
         try
         {
-            _connector.Start(portName);
+            SetupConnector(args);
 
-            if (saveToCsv)
+            if (args is SerialConnectorArgs { SaveToCsv: true })
                 try
                 {
                     _dataSerialiser = _dataSerialiserFactory.CreateDataSerialiser();
@@ -72,14 +79,14 @@ public class DataStore : IDataStore, IDisposable
         {
             _logger.LogError(ex, "Failed to start connection");
 
-            _connector.Stop();
+            _connector?.Stop();
             return false;
         }
     }
 
-    public void disconnect()
+    public void Disconnect()
     {
-        _connector.Stop();
+        _connector?.Stop();
 
         _serialisationTimer?.Stop();
         _serialisationTimer?.Dispose();
@@ -171,12 +178,15 @@ public class DataStore : IDataStore, IDisposable
         _logger.LogDebug("DataStore disposed");
 
         // Stop the connector
-        _connector.GpsDataUpdated -= OnGpsDataUpdated;
-        _connector.AvDataUpdated -= OnAvDataUpdated;
-        _connector.ResDataUpdated -= OnResDataUpdated;
-        _connector.RawDataUpdated -= OnRawDataUpdated;
+        if (_connector is not null)
+        {
+            _connector.GpsDataUpdated -= OnGpsDataUpdated;
+            _connector.AvDataUpdated -= OnAvDataUpdated;
+            _connector.ResDataUpdated -= OnResDataUpdated;
+            _connector.RawDataUpdated -= OnRawDataUpdated;
 
-        _connector.Stop();
+            _connector.Stop();
+        }
 
         // Stop the serialisation timer
         _serialisationTimer?.Stop();

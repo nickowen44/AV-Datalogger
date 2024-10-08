@@ -5,26 +5,30 @@ using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Dashboard.Connectors.Serial;
 using Dashboard.Models;
 
 namespace Dashboard.ViewModels;
 
 public partial class ConnectionViewModel : ViewModelBase
 {
-
+    
     [ObservableProperty] private string? _currentConnectionType;
     [ObservableProperty] private string? _selectedSerialPort;
     public ObservableCollection<string> ConnectionTypes { get; }
     public ObservableCollection<string> SerialPorts { get; }
-    private readonly IDataStore? _dataStore;
+    private readonly IDataStore _dataStore;
     public event Action<bool>? ConnectionChanged;
-    public ConnectionViewModel(IDataStore? dataStore = null)
+
+    public ConnectionViewModel(IDataStore dataStore)
     {
-        ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
-        _currentConnectionType = ConnectionTypes.First();
+        _dataStore = dataStore;
+
         SerialPorts = new ObservableCollection<string>(GetSerialPorts());
         SelectedSerialPort = SerialPorts.FirstOrDefault();
-        _dataStore = dataStore;
+
+        ConnectionTypes = new ObservableCollection<string>(_connectionTemplates);
+        _currentConnectionType = ConnectionTypes.First();
     }
 
     private static string[] GetSerialPorts()
@@ -47,7 +51,13 @@ public partial class ConnectionViewModel : ViewModelBase
     public void ConnectToSerialPort(string portName)
     {
         // TODO: Add checkbox for save to file or not
-        if (_dataStore.startConnection(portName, true))
+        var args = new SerialConnectorArgs
+        {
+            PortName = portName,
+            SaveToCsv = false
+        };
+
+        if (_dataStore.Connect(args))
         {
             ConnectionChanged?.Invoke(true);
         }
@@ -56,7 +66,8 @@ public partial class ConnectionViewModel : ViewModelBase
     [RelayCommand]
     public void DisconnectFromSerialPort()
     {
-        _dataStore.disconnect();
+        _dataStore.Disconnect();
+        
         ConnectionChanged?.Invoke(false);
     }
 

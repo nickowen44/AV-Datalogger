@@ -50,7 +50,7 @@ public partial class FooterViewModel : ViewModelBase
 
     public FooterViewModel()
     {
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance,
+        _dataStore = new DataStore(new NullConnectorFactory(), NullLogger<DataStore>.Instance,
             NullDataSerialisationFactory.Instance);
         _logger = NullLogger<FooterViewModel>.Instance;
     }

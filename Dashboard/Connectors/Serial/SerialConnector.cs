@@ -25,16 +25,18 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
 
-    /// <summary>
-    ///     Handles setting up the connector for the data source.
-    /// </summary>
-    /// <param name="portName">The name of the port to connect to. Defaults to COM22</param>
-    public void Start(string portName = "COM22")
+    public void Start(IConnectorArgs args)
     {
         logger.LogInformation("Starting Serial Connector");
 
+        if (args is not SerialConnectorArgs serialArgs)
+        {
+            logger.LogError("Invalid arguments passed to Serial Connector");
+            return;
+        }
+
         // Set up the connection to the serial port
-        comPort.Configure(portName, 115200);
+        comPort.Configure(serialArgs.PortName, 115200);
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;

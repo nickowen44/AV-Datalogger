@@ -21,7 +21,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
     public StatusViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance,
+        _dataStore = new DataStore(new NullConnectorFactory(), NullLogger<DataStore>.Instance,
             NullDataSerialisationFactory.Instance);
     }
 
