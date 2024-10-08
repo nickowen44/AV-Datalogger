@@ -27,7 +27,7 @@ public partial class ConnectionViewModel : ViewModelBase
     public ObservableCollection<string> SerialPorts { get; }
     private readonly IDataStore _dataStore;
     public event Action<bool>? ConnectionChanged;
-    
+
     [ActivatorUtilitiesConstructor]
     public ConnectionViewModel(IDataStore dataStore)
     {

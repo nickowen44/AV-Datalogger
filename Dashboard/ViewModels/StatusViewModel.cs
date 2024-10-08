@@ -10,7 +10,7 @@ namespace Dashboard.ViewModels;
 public class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
-    
+
     [ActivatorUtilitiesConstructor]
     public StatusViewModel(IDataStore dataStore)
     {

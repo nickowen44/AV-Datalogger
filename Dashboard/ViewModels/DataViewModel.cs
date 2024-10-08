@@ -16,7 +16,7 @@ public class DataViewModel : ViewModelBase
     public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
     public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
-    
+
     [ActivatorUtilitiesConstructor]
     public DataViewModel(IDataStore dataStore, ILogger<DataViewModel> logger)
     {
