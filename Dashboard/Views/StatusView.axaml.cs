@@ -41,12 +41,10 @@ public partial class StatusView : UserControl
 
     private void OnRESUpdate(bool RESState)
     {
-        var passBrush = (SolidColorBrush)Application.Current?.Resources["GrayColour"]!;
-        var failBrush = (SolidColorBrush)Application.Current?.Resources["GoldColour"]!;
-
-
         Dispatcher.UIThread.Post(() =>
         {
+            var passBrush = (SolidColorBrush)Application.Current?.Resources["GrayColour"]!;
+            var failBrush = (SolidColorBrush)Application.Current?.Resources["GoldColour"]!;
             if (RESState)
             {
                 _RESTextBlock.Background = failBrush;
