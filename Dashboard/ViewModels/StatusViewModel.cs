@@ -45,8 +45,8 @@ public class StatusViewModel : ViewModelBase, IDisposable
 
     public bool ServiceBrakeState => _dataStore.AvStatusData?.ServiceBrakeState ?? false;
 
-    public bool RemoteEmergency => _dataStore.ResData?.ResState ?? false;
-
+    public string RemoteEmergency => _dataStore.ResData?.ResState == true ? "Activated" : "Not Activated";
+    
     public int SatCount => _dataStore.GpsData?.SatCount ?? 0;
 
     public double Hdop => _dataStore.GpsData?.Hdop ?? 0;
@@ -92,7 +92,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public event Action<bool>? RESDataUpdated;
+    public event Action<string>? RESDataUpdated;
 
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
@@ -133,6 +133,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(K3State));
         OnPropertyChanged(nameof(ResRadioQuality));
         OnPropertyChanged(nameof(ResNodeId));
-        RESDataUpdated?.Invoke(RemoteEmergency);
+        Console.WriteLine(RemoteEmergency);
+        RESDataUpdated?.Invoke(nameof(RemoteEmergency));
     }
 }
