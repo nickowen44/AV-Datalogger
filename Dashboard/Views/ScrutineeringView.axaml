@@ -21,16 +21,13 @@
     </UserControl.Resources>
 
     <UserControl.Styles>
-        <!-- Default Style for the Expander Header (ToggleButton) -->
         <Style Selector="Expander ToggleButton">
-            <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-        
-        <!-- Style for Pointer Over (Hover) State -->
-        <Style Selector="Expander ToggleButton:pointerover">
-            <Setter Property="Background" Value="{DynamicResource ForegroundColour}"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}" />
+            <Setter Property="Foreground" Value="White" />
+            <Style Selector="^:pointerover /template/ Border#ToggleButtonBackground">
+                <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBorderColour}" />
+            </Style>
         </Style>
     </UserControl.Styles>
     <Panel>
