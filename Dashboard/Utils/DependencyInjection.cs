@@ -36,7 +36,6 @@ public static class DependencyInjection
         services.AddTransient<IConnectorFactory, ConnectorFactory>();
         services.AddTransient<CsvConnector>();
         services.AddTransient<SerialConnector>();
-        // TODO: Maybe dummy connector
 
         return services.BuildServiceProvider();
     }

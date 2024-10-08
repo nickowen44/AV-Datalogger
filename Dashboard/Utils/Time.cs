@@ -23,4 +23,14 @@ public static class Time
 
         return parsedDate;
     }
+
+    /// <summary>
+    ///     Formats a <see cref="DateTime" /> into a Nuvotion AV-Logger UTC time string.
+    /// </summary>
+    /// <param name="time">The <see cref="DateTime" /> to format</param>
+    /// <returns>A Nuvotion AV-Logger UTC time string</returns>
+    public static string FormatUtcTime(DateTime time)
+    {
+        return $"P{time:yyyyMdd}T{time:HH:mm:ss}.00";
+    }
 }

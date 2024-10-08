@@ -16,7 +16,7 @@ public interface IDataStore
     ResData? ResData { get; }
     RawData? RawData { get; }
     bool? HeartBeat { get; }
-    
+
     /// <summary>
     ///     Handles setting up the data ingress connection to the data source.
     ///     Dynamically creates the connector based on the type of the connector arguments.

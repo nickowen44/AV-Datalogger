@@ -15,7 +15,7 @@ public class ConnectorFactory(IServiceProvider serviceProvider) : IConnectorFact
             CsvConnectorArgs => serviceProvider.GetRequiredService<CsvConnector>(),
             DummyConnectorArgs => serviceProvider.GetRequiredService<DummyConnector>(),
             SerialConnectorArgs => serviceProvider.GetRequiredService<SerialConnector>(),
-            _ => throw new ArgumentException("Invalid connector type")
+            _ => throw new ArgumentException("Invalid connector type", nameof(args))
         };
     }
 }

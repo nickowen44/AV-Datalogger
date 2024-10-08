@@ -73,6 +73,8 @@ public class DataStore : IDataStore, IDisposable
                     _logger.LogError(ex, "Failed to create data serialiser");
                 }
 
+            // Now start the connection
+            _connector?.Start(args);
             return true;
         }
         catch (Exception ex)
