@@ -10,6 +10,7 @@ using Dashboard.Connectors.Csv;
 using Dashboard.Connectors.Serial;
 using Dashboard.Models;
 using Dashboard.Serialisation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
@@ -27,6 +28,7 @@ public partial class ConnectionViewModel : ViewModelBase
     private readonly IDataStore _dataStore;
     public event Action<bool>? ConnectionChanged;
 
+    [ActivatorUtilitiesConstructor]
     public ConnectionViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
