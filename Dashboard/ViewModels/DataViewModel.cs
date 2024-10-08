@@ -40,7 +40,7 @@ public class DataViewModel : ViewModelBase
     /// </summary>
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
-        _logger.LogInformation("AV Data Updated");
+        _logger.LogDebug("AV Data Updated");
 
         OnPropertyChanged(nameof(Speed));
         OnPropertyChanged(nameof(SteeringAngle));
