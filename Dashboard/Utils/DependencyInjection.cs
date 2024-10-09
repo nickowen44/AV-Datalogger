@@ -1,7 +1,9 @@
 ﻿using System;
 using Dashboard.Connectors;
+using Dashboard.Connectors.Csv;
 using Dashboard.Connectors.Serial;
 using Dashboard.Models;
+using Dashboard.Serialisation;
 using Dashboard.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +22,6 @@ public static class DependencyInjection
         services.AddLogging(builder => builder.AddLogger());
 
         services.AddSingleton<IDataStore, DataStore>();
-        services.AddSingleton<IConnector, SerialConnector>();
         services.AddSingleton<IYamlLoader, YamlLoader>();
 
 #if DEBUG
@@ -33,6 +34,11 @@ public static class DependencyInjection
         services.AddTransient<AboutViewModel>();
         services.AddTransient<ConnectionViewModel>();
         services.AddTransient<StatusViewModel>();
+        services.AddTransient<IDataSerialisationFactory, DataSerialisationFactory>();
+
+        services.AddTransient<IConnectorFactory, ConnectorFactory>();
+        services.AddTransient<CsvConnector>();
+        services.AddTransient<SerialConnector>();
 
         return services.BuildServiceProvider();
     }

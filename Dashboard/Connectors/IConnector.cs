@@ -14,9 +14,8 @@ public interface IConnector
     /// <summary>
     ///     Handles setting up the connector from the data source.
     /// </summary>
-    /// <param name="portName">The name of the port to connect to. Defaults to COM22</param>
-
-    void Start(string portName = "COM22");
+    /// <param name="args">The arguments to pass to the connector</param>
+    void Start(IConnectorArgs args);
 
 
     /// <summary>

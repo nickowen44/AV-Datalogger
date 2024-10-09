@@ -1,6 +1,7 @@
 ﻿using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Dashboard.Serialisation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,6 +16,7 @@ public class DataViewModel : ViewModelBase
     public double Speed => _dataStore.AvStatusData?.Speed.Actual ?? 0;
     public double SteeringAngle => _dataStore.AvStatusData?.SteeringAngle.Actual ?? 0;
     public double BrakeActuation => _dataStore.AvStatusData?.BrakeActuation.Actual ?? 0;
+
     [ActivatorUtilitiesConstructor]
     public DataViewModel(IDataStore dataStore, ILogger<DataViewModel> logger)
     {
@@ -27,7 +29,9 @@ public class DataViewModel : ViewModelBase
     public DataViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
+        _dataStore = new DataStore(new NullConnectorFactory(), NullLogger<DataStore>.Instance,
+            NullDataSerialisationFactory.Instance);
+
         _logger = NullLogger<DataViewModel>.Instance;
     }
 
@@ -36,7 +40,7 @@ public class DataViewModel : ViewModelBase
     /// </summary>
     private void OnAvDataChanged(object? sender, EventArgs e)
     {
-        _logger.LogInformation("AV Data Updated");
+        _logger.LogDebug("AV Data Updated");
 
         OnPropertyChanged(nameof(Speed));
         OnPropertyChanged(nameof(SteeringAngle));
