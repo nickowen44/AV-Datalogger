@@ -6,69 +6,73 @@
              xmlns:vm="clr-namespace:Dashboard.ViewModels"
              x:Class="Dashboard.Views.FooterView"
              x:DataType="vm:FooterViewModel"
-             Background="#ff2b2b2b"
              Foreground="White">
     <UserControl.Styles>
         <!-- Style to remove Avalonia's default hover and selected effects for Textboxes -->
         <Style Selector="TextBox">
             <Style Selector="^:focus">
-                <Setter Property="BorderBrush" Value="Red"/>
-                        <Style Selector="^ /template/ Border#PART_BorderElement">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="BorderBrush" Value="White"/>
-                        <Setter Property="BorderThickness" Value="1" />
-                    </Style>
-                </Style>
-            <Style Selector="^:pointerover">
-                <Setter Property="BorderBrush" Value="Red"/>
+                <Setter Property="BorderBrush" Value="Red" />
                 <Style Selector="^ /template/ Border#PART_BorderElement">
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="BorderBrush" Value="White"/>
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderBrush" Value="White" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </Style>
+            <Style Selector="^:pointerover">
+                <Setter Property="BorderBrush" Value="Red" />
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderBrush" Value="White" />
                     <Setter Property="BorderThickness" Value="1" />
                 </Style>
             </Style>
         </Style>
     </UserControl.Styles>
-    
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:FooterViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="0.3*,0.3*, 0.6*" Margin="10, 0">
-        <Grid Grid.Column="0">
-            <StackPanel VerticalAlignment="Center">
-            <TextBlock Name="CarId" Text="{Binding CarId, StringFormat='Car ID: {0}'}"/>
-            <TextBlock Name="UTCTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}"/>
-            <TextBlock Name="LocalTime" Text="{Binding LocalTime, StringFormat='Local Time: {0}'}"/>
-            </StackPanel>
+    <Border Background="{DynamicResource NavigationColour}">
+        <Grid ColumnDefinitions="0.3*,0.3*, 0.6*" Margin="10, 0">
+            <Grid Grid.Column="0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Name="CarId" Text="{Binding CarId, StringFormat='Car ID: {0}'}" />
+                    <TextBlock Name="UTCTime" Text="{Binding UTCTime, StringFormat='UTC Time: {0}'}" />
+                    <TextBlock Name="LocalTime" Text="{Binding LocalTime, StringFormat='Local Time: {0}'}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1" RowDefinitions="0.5*,0.5*" ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center"
+                  HorizontalAlignment="Center">
+                <Ellipse Name="ConnectionIndicator" Grid.Column="0" Grid.Row="0" Stroke="Black" StrokeThickness="3"
+                         Fill="{Binding ConnectionColor}" Width="20" Height="20" HorizontalAlignment="Right"
+                         Margin="0,0,0,2" />
+                <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="0" Name="Test" Text="Connection"
+                           HorizontalAlignment="Left" />
+                <Ellipse Name="HeartBeat" Grid.Column="0" Grid.Row="1" Stroke="Black" StrokeThickness="3"
+                         Fill="{Binding HeartBeatColor}" Width="20" Height="20" HorizontalAlignment="Right" />
+                <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat"
+                           HorizontalAlignment="Left" />
+            </Grid>
+            <Grid Grid.Column="2" VerticalAlignment="Center">
+                <Border BorderBrush="{DynamicResource BackgroundColour}"
+                        BorderThickness="3">
+                    <TextBox Name="ConsoleTextBox"
+                             Text="{Binding LogMessage, Mode=OneWay}"
+                             Height="80"
+                             AcceptsReturn="True"
+                             FontSize="10"
+                             TextWrapping="Wrap"
+                             IsReadOnly="True"
+                             Background="White"
+                             Foreground="Black"
+                             TextChanged="ConsoleTextBox_OnTextChanged"
+                             Loaded="ConsoleTextBox_OnLoaded" />
+                </Border>
+            </Grid>
         </Grid>
-        <Grid Grid.Column="1" RowDefinitions="0.5*,0.5*" ColumnDefinitions="0.5*,0.5*" VerticalAlignment="Center"
-              HorizontalAlignment="Center">
-            <Ellipse Name="ConnectionIndicator" Grid.Column="0" Grid.Row="0" Stroke="Black" StrokeThickness="3"
-                     Fill="{Binding ConnectionColor}" Width="20" Height="20" HorizontalAlignment="Right"
-                     Margin="0,0,0,2" />
-            <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="0" Name="Test" Text="Connection"
-                       HorizontalAlignment="Left" />
-            <Ellipse Name="HeartBeat" Grid.Column="0" Grid.Row="1" Stroke="Black" StrokeThickness="3"
-                     Fill="{Binding HeartBeatColor}" Width="20" Height="20" HorizontalAlignment="Right" />
-            <TextBlock Padding="5,0,0,0" Grid.Column="1" Grid.Row="1" Name="Test2" Text="Heart Beat"
-                       HorizontalAlignment="Left" />
-        </Grid>
-        <Grid Grid.Column="2" VerticalAlignment="Center">
-            <TextBox Name="ConsoleTextBox"
-                     Text="{Binding LogMessage, Mode=OneWay}"
-                     Height="80"
-                     AcceptsReturn="True"
-                     Background="White"
-                     Foreground="Black"
-                     FontSize="10"
-                     TextWrapping="Wrap"
-                     IsReadOnly="True"
-                     TextChanged="ConsoleTextBox_OnTextChanged"
-                     Loaded="ConsoleTextBox_OnLoaded" />
-        </Grid>
-    </Grid>
-    
+    </Border>
+
 </UserControl>

@@ -7,8 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dashboard.Views.ScrutineeringView"
              x:DataType="vm:ScrutineeringViewModel"
-             Foreground="Black"
-             Background="#565656">
+             Background="{DynamicResource BackgroundColour}">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -21,6 +20,16 @@
         <utils:MeasurementValueVisibility x:Key="MeasurementValueVisibility" />
     </UserControl.Resources>
 
+    <UserControl.Styles>
+        <Style Selector="Expander ToggleButton">
+            <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}" />
+            <Setter Property="Foreground" Value="White" />
+            <Style Selector="^:pointerover /template/ Border#ToggleButtonBackground">
+                <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBorderColour}" />
+            </Style>
+        </Style>
+    </UserControl.Styles>
     <Panel>
         <Grid>
             <Grid.RowDefinitions>
@@ -44,31 +53,31 @@
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
                            FontSize="30"
                            FontWeight="Bold"
-                           Foreground="White" />
+                           Foreground="{DynamicResource ForegroundColour}" />
                 <TextBlock TextAlignment="Left" Text="Functional Autonomous System Test (RES)"
                            FontSize="25"
                            FontWeight="Bold"
-                           Foreground="White" />
+                           Foreground="{DynamicResource ForegroundColour}" />
             </StackPanel>
-            <Border Background="#3f3f3f"
-                    BorderBrush="Black"
-                    BorderThickness="4"
+            <Border Background="{DynamicResource AccentColour}"
+                    BorderBrush="{DynamicResource AccentBorderColour}"
+                    BorderThickness="3"
                     CornerRadius="1"
                     Padding="10" Margin="10"
                     Grid.Row="1"
                     Grid.Column="1">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="White"
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="{DynamicResource BackgroundColour}"
                            Text="{Binding YamlData.Top}" FontSize="18" />
             </Border>
-            <Border Background="LightGray"
-                    BorderBrush="#2c2c2c"
-                    BorderThickness="4"
+            <Border Background="{DynamicResource ForegroundColour}"
+                    BorderBrush="{DynamicResource ForegroundBorderColour}"
+                    BorderThickness="3"
                     CornerRadius="1"
                     Padding="10" Margin="10"
                     Grid.Row="2"
                     Grid.Column="1">
                 <Carousel x:Name="Slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" Foreground="#14080e" FontSize="18">
+                          VerticalAlignment="Center" Foreground="{DynamicResource BackgroundColour}" FontSize="18">
                     <Carousel.PageTransition>
                         <CompositePageTransition>
                             <PageSlide Duration="0:00:01" Orientation="Horizontal" />
@@ -85,7 +94,8 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Text="{Binding Caution}" TextWrapping="Wrap" TextAlignment="Center" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Caution}" TextWrapping="Wrap" TextAlignment="Center"
+                                           FontWeight="Bold" />
                                 <StackPanel Margin="100 5 100 0">
                                     <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center" />
                                 </StackPanel>
@@ -136,9 +146,11 @@
                                 </ItemsControl>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                                    <Button Content="Pass" Background="Green" Foreground="White" Margin="5"
+                                    <Button Content="Pass" Background="{DynamicResource AccentBorderColour}"
+                                            Foreground="White" Margin="5"
                                             Click="OnPass" Tag="{Binding Id}" />
-                                    <Button Content="Fail" Background="Red" Foreground="White" Margin="5"
+                                    <Button Content="Fail" Background="{DynamicResource ForegroundBorderColour}"
+                                            Foreground="White" Margin="5"
                                             Click="OnFail" Tag="{Binding Id}" />
                                 </StackPanel>
                             </StackPanel>
@@ -147,33 +159,37 @@
                 </Carousel>
             </Border>
             <Panel Margin="30 90" Grid.Row="2" Grid.Column="1">
-                <Button Background="DimGray" Foreground="White" Click="Previous"
+                <Button Background="{DynamicResource ForegroundBorderColour}"
+                        Foreground="{DynamicResource ForegroundColour}" Click="Previous"
                         HorizontalAlignment="Left">
                     &lt;
                 </Button>
-                <Button Background="DimGray" Foreground="White" Click="Next"
+                <Button Background="{DynamicResource ForegroundBorderColour}"
+                        Foreground="{DynamicResource ForegroundColour}" Click="Next"
                         HorizontalAlignment="Right">
                     &gt;
                 </Button>
             </Panel>
-            <Border Background="#3f3f3f"
-                    BorderBrush="Black"
-                    BorderThickness="4"
+            <Border Background="{DynamicResource AccentColour}"
+                    BorderBrush="{DynamicResource AccentBorderColour}"
+                    BorderThickness="3"
                     CornerRadius="1"
                     Padding="10" Margin="10"
                     Grid.Row="3"
                     Grid.Column="1">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="White" FontSize="18"
+                <TextBlock FontWeight="Bold" TextAlignment="Center" Foreground="{DynamicResource BackgroundColour}"
+                           FontSize="18"
                            Text="{Binding YamlData.Bottom}" TextWrapping="Wrap" />
             </Border>
-
             <StackPanel Grid.Row="2" Grid.Column="2">
-                <Expander Header="AVI Step Status" IsExpanded="false" Name="AllStepsExpander"
+                <Expander Header="AVI Step Status" Name="AllStepsExpander"
                           HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"
-                          Padding="10" Margin="10">
-                    <ItemsControl Name="AllStepsList" Foreground="White" />
+                          Padding="10" Margin="10" Background="{DynamicResource ForegroundColour}"
+                          BorderBrush="{DynamicResource ForegroundBorderColour}" BorderThickness="3">
+                    <ItemsControl Name="AllStepsList" />
                 </Expander>
-                <Button Background="White" Foreground="Black" Click="OnReset"
+                <Button Background="{DynamicResource AccentColour}" Foreground="{DynamicResource BackgroundColour}"
+                        Click="OnReset"
                         HorizontalAlignment="Center" VerticalAlignment="Top" Content="Reset" Margin="5" FontSize="18"
                         FontWeight="Bold" />
             </StackPanel>

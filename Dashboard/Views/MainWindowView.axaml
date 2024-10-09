@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:Dashboard.Views"
         xmlns:vm="clr-namespace:Dashboard.ViewModels"
         xmlns:models="clr-namespace:Dashboard.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -11,7 +10,7 @@
         Title="Nuvotion FSAE-Scrutineering Tool"
         Icon="/Assets/nuvotion_logo.png"
         Foreground="Black"
-        Background="#c4c4c4">
+        Background="{DynamicResource AccentColour}">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -34,6 +33,10 @@
                      SelectedItem="{Binding SelectedListItem}">
                 <ListBox.Styles>
                     <Style Selector="ListBoxItem" />
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="{DynamicResource ForegroundBorderColour}" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
                 </ListBox.Styles>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -47,11 +50,11 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-    <Grid Grid.Row="2">
-        <ContentControl Name="MainContent" Content="{Binding CurrentPage}"/> 
-    </Grid>
+        <Grid Grid.Row="2">
+            <ContentControl Name="MainContent" Content="{Binding CurrentPage}" />
+        </Grid>
         <Grid Grid.Row="3">
-            <ContentControl Name="FooterContent" Content="{Binding Footer}"/> 
+            <ContentControl Name="FooterContent" Content="{Binding Footer}" />
         </Grid>
     </Grid>
 </Window>

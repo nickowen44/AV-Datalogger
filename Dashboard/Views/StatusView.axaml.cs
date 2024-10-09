@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -42,22 +43,24 @@ public partial class StatusView : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
+            var passBrush = (SolidColorBrush)Application.Current?.Resources["GrayColour"]!;
+            var failBrush = (SolidColorBrush)Application.Current?.Resources["GoldColour"]!;
             if (RESState)
             {
-                _RESTextBlock.Background = Brushes.Red;
+                _RESTextBlock.Background = failBrush;
                 _RESIcon.Opacity = 1;
-                _RESTabTextBlock.Background = Brushes.Red;
+                _RESTabTextBlock.Background = failBrush;
                 _RESTabIcon.Opacity = 1;
-                _GPSTabTextBlock.Background = Brushes.Red;
+                _GPSTabTextBlock.Background = failBrush;
                 _GPSTabIcon.Opacity = 1;
             }
             else
             {
-                _RESTextBlock.Background = Brushes.Green;
+                _RESTextBlock.Background = passBrush;
                 _RESIcon.Opacity = 90;
-                _RESTabTextBlock.Background = Brushes.Green;
+                _RESTabTextBlock.Background = passBrush;
                 _RESTabIcon.Opacity = 90;
-                _GPSTabTextBlock.Background = Brushes.Green;
+                _GPSTabTextBlock.Background = passBrush;
                 _GPSTabIcon.Opacity = 90;
             }
         });
