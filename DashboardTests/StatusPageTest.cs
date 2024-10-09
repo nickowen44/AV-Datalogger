@@ -231,7 +231,7 @@ public class OverviewPageTest
             Assert.That(K3State.Text, Is.EqualTo("True"));
             Assert.That(ResNodeId.Text, Is.EqualTo("3"));
             Assert.That(ResRadioQuality.Text, Is.EqualTo("3"));
-            Assert.That(ResState.Text, Is.EqualTo("True"));
+            Assert.That(ResState.Text, Is.EqualTo("Activated"));
         });
     }
 }
