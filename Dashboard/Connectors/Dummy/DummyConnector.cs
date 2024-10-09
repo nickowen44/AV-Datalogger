@@ -3,7 +3,7 @@ using System.Threading;
 using Dashboard.Models;
 using Dashboard.Utils;
 
-namespace Dashboard.Connectors;
+namespace Dashboard.Connectors.Dummy;
 
 public class DummyConnector : IConnector
 {
@@ -14,10 +14,7 @@ public class DummyConnector : IConnector
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
 
-    /// <summary>
-    ///     Handles setting up the connector to the data source when no port name is passed, Defaults to COM22.
-    /// </summary>
-    public void Start(string portName = "COM22")
+    public void Start(IConnectorArgs _)
     {
         var random = new Random();
 

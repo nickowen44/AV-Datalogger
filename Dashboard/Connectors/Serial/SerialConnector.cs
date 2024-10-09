@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Dashboard.Models;
@@ -26,16 +25,18 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
 
-    /// <summary>
-    ///     Handles setting up the connector for the data source.
-    /// </summary>
-    /// <param name="portName">The name of the port to connect to. Defaults to COM22</param>
-    public void Start(string portName = "COM22")
+    public void Start(IConnectorArgs args)
     {
         logger.LogInformation("Starting Serial Connector");
 
+        if (args is not SerialConnectorArgs serialArgs)
+        {
+            logger.LogError("Invalid arguments passed to Serial Connector");
+            return;
+        }
+
         // Set up the connection to the serial port
-        comPort.Configure(portName, 115200);
+        comPort.Configure(serialArgs.PortName, 115200);
 
         // Set up the event handler for when data is received
         comPort.DataReceived += OnDataReceived;
@@ -217,19 +218,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         });
     }
 
-    private DateTime ParseUTCTime(string timeString)
-    {
-        var datePart = "";
-        // Check if the UTC value includes the leading zero for months, if not add.
-        if (timeString.Length == 20)
-            datePart = timeString.Substring(1, 4) + "0" + timeString.Substring(5, 3) + timeString.Substring(9, 8);
-        else
-            datePart = timeString.Substring(1, 8) + timeString.Substring(9, 8);
-
-        var parsedDate = DateTime.ParseExact(datePart, @"yyyyMMddhh\:mm\:ss", CultureInfo.InvariantCulture);
-
-        return parsedDate;
-    }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
@@ -237,7 +225,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = values["ID"],
-            UTCTime = ParseUTCTime(values["UTC"]),
+            UTCTime = Time.ParseUtcTime(values["UTC"]),
             ConnectionStatus = comPort.IsConnected
         });
     }

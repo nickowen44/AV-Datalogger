@@ -11,6 +11,7 @@ public class SerialConnectorTests
     private SerialConnector _serialConnector;
     private Mock<ISerialPort> _serialPortMock;
     private ShimLogger<SerialConnector> _logger;
+    private readonly SerialConnectorArgs _args = new() { PortName = "COM1" };
 
     private void RaiseDataReceivedEvent(string input)
     {
@@ -36,7 +37,7 @@ public class SerialConnectorTests
             "#ID=A46|UTC=P2024820T06:56:04.00|LAT=-37.738357|LNG=144.935502|HFA=244|HDOP=2.53|HVAL=253|SFA=244|NOS=6|SPFA=369|MPS=0.62|KMH=2.24|AFA=244|ALM=129.90|AKM=0.13\r\n";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
@@ -55,7 +56,7 @@ public class SerialConnectorTests
             "#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
@@ -73,7 +74,7 @@ public class SerialConnectorTests
         const string input = "#ID=1|UTC=123456|RES=1|K2T=0|K3B=1|RRQ=75|NID=123\r\n";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
@@ -98,7 +99,7 @@ public class SerialConnectorTests
             "#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input1);
         RaiseDataReceivedEvent(input2);
         _serialConnector.Stop();
@@ -121,7 +122,7 @@ public class SerialConnectorTests
             "Invalid key-value pair: BADINPUT, Skipping message: #ID=A46|UTC=P2024820T06:56:04.00|BADINPUT";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 
@@ -138,7 +139,7 @@ public class SerialConnectorTests
             "Unknown message type received: #ID=A46|UTC=P2024820T06:56:04.00|BADKEY=123";
 
         // Act
-        _serialConnector.Start();
+        _serialConnector.Start(_args);
         RaiseDataReceivedEvent(input);
         _serialConnector.Stop();
 

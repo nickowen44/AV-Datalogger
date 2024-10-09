@@ -4,6 +4,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Dashboard.Serialisation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -49,7 +50,8 @@ public partial class FooterViewModel : ViewModelBase
 
     public FooterViewModel()
     {
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
+        _dataStore = new DataStore(new NullConnectorFactory(), NullLogger<DataStore>.Instance,
+            NullDataSerialisationFactory.Instance);
         _logger = NullLogger<FooterViewModel>.Instance;
     }
 

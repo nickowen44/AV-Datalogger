@@ -1,4 +1,5 @@
 ﻿using System;
+using Dashboard.Connectors;
 
 namespace Dashboard.Models;
 
@@ -15,12 +16,14 @@ public interface IDataStore
     ResData? ResData { get; }
     RawData? RawData { get; }
     bool? HeartBeat { get; }
-    /// <summary>
-    ///     Handles actually starting the connection of portName.
-    /// </summary>
-    bool startConnection(string portName);
 
-    void disconnect();
+    /// <summary>
+    ///     Handles setting up the data ingress connection to the data source.
+    ///     Dynamically creates the connector based on the type of the connector arguments.
+    /// </summary>
+    bool Connect(IConnectorArgs args);
+
+    void Disconnect();
 
     /// <summary>
     ///     Handles the cleanup when the data store is no longer needed.

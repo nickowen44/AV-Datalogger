@@ -1,6 +1,8 @@
 using System;
 using Dashboard.Connectors;
 using Dashboard.Models;
+using Dashboard.Serialisation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dashboard.ViewModels;
@@ -9,6 +11,7 @@ public class StatusViewModel : ViewModelBase, IDisposable
 {
     private readonly IDataStore _dataStore;
 
+    [ActivatorUtilitiesConstructor]
     public StatusViewModel(IDataStore dataStore)
     {
         _dataStore = dataStore;
@@ -20,7 +23,8 @@ public class StatusViewModel : ViewModelBase, IDisposable
     public StatusViewModel()
     {
         // This constructor is used for design-time data, so we don't need to start the connector
-        _dataStore = new DataStore(new DummyConnector(), NullLogger<DataStore>.Instance);
+        _dataStore = new DataStore(new NullConnectorFactory(), NullLogger<DataStore>.Instance,
+            NullDataSerialisationFactory.Instance);
     }
 
     public double SpeedActual => _dataStore.AvStatusData?.Speed.Actual ?? 0;

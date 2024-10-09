@@ -1,15 +1,9 @@
-﻿using System.IO.Ports;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Headless;
+﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
-using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dashboard.Models;
-using Dashboard.Utils;
 using Dashboard.ViewModels;
 using Dashboard.Views;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace DashboardTests;
@@ -17,14 +11,11 @@ namespace DashboardTests;
 public class ConnectionTest
 {
     private Mock<IDataStore> _dataStore;
-    private Mock<SerialPort> _serialPorts;
 
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
-        _serialPorts = new Mock<SerialPort>();
-
     }
 
     [AvaloniaTest]
@@ -99,10 +90,7 @@ public class ConnectionTest
         });
 
         // Change Connection Type to IP Address
-        window.MouseDown(new Point(370, 170), MouseButton.Left);
-        window.MouseUp(new Point(370, 170), MouseButton.Left);
-        window.MouseDown(new Point(360, 220), MouseButton.Left);
-        window.MouseUp(new Point(360, 220), MouseButton.Left);
+        connectionType.SelectedItem = "IP Address";
 
         Assert.Multiple(() =>
         {
@@ -111,5 +99,7 @@ public class ConnectionTest
             Assert.That(tcpPortSection.IsVisible, Is.EqualTo(true));
             Assert.That(filePortSection.IsVisible, Is.EqualTo(false));
         });
+
+        window.Close();
     }
 }
