@@ -52,7 +52,7 @@ public partial class ConnectionViewModel : ViewModelBase
         _currentConnectionType = ConnectionTypes.First();
     }
 
-    private static string[] GetSerialPorts()
+    public static string[] GetSerialPorts()
     {
         return SerialPort.GetPortNames();
     }

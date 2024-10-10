@@ -42,7 +42,7 @@
                                 SelectedItem="{Binding SelectedSerialPort}"
                                 ItemsSource="{Binding SerialPorts, Mode=TwoWay}" />
                             <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}"
-                                    Margin="5,0,0,0" />
+                                    Margin="5,0,0,0" Name="RefreshPortsButton"/>
                         </StackPanel>
                         <CheckBox Name="SaveToFile" Content="Save to File" IsChecked="{Binding SaveToFile}" />
                     </StackPanel>
@@ -57,7 +57,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="200" Name="LogFileSelected" IsReadOnly="True"
                                      Text="{Binding SelectedFilePath}" />
-                            <Button Content="..." Width="30" Margin="5,0,0,0" Click="FileSelectionClicked" />
+                            <Button Content="..." Width="30" Margin="5,0,0,0" Click="FileSelectionClicked"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
