@@ -14,7 +14,8 @@ public partial class ScrutineeringViewModel : ViewModelBase
     private readonly ILogger<ScrutineeringViewModel> _logger;
     private readonly IYamlLoader _yamlLoader;
 
-    [ObservableProperty] private YamlData _yamlData = new()
+    [ObservableProperty]
+    private YamlData _yamlData = new()
     {
         Steps = new List<StepData>
         {
