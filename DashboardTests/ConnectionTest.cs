@@ -1,15 +1,10 @@
-﻿using System.Reflection;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Headless.NUnit;
-using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dashboard.Connectors.Serial;
 using Dashboard.Models;
 using Dashboard.ViewModels;
 using Dashboard.Views;
-using DashboardTests.Utils;
 using Moq;
 
 namespace DashboardTests;
@@ -17,7 +12,7 @@ namespace DashboardTests;
 public class ConnectionTest
 {
     private Mock<IDataStore> _dataStore;
-    
+
     [SetUp]
     public void Setup()
     {
@@ -28,7 +23,7 @@ public class ConnectionTest
     public void TestConnectionPageStartup()
     {
         // Arrange  
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -60,13 +55,12 @@ public class ConnectionTest
     public void TestConnectionPageChangeConnectionType()
     {
         // Arrange
-        var window = new Window()
+        var window = new Window
         {
             Height = 450,
             Width = 800,
-            Content = new ConnectionView()
+            Content = new ConnectionView
             {
-
                 DataContext = new ConnectionViewModel(_dataStore.Object)
             }
         };
@@ -108,12 +102,12 @@ public class ConnectionTest
 
         window.Close();
     }
-    
+
     [AvaloniaTest]
     public void TestConnectionViewInitialState()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -128,18 +122,18 @@ public class ConnectionTest
         Assert.Multiple(() =>
         {
             Assert.That(connectionTypeComboBox, Is.Not.Null);
-            Assert.That(serialPortSection.IsVisible, Is.EqualTo(true));
-            Assert.That(tcpSection.IsVisible, Is.EqualTo(false));
-            Assert.That(fileSection.IsVisible, Is.EqualTo(false));
+            Assert.That(serialPortSection?.IsVisible, Is.EqualTo(true));
+            Assert.That(tcpSection?.IsVisible, Is.EqualTo(false));
+            Assert.That(fileSection?.IsVisible, Is.EqualTo(false));
         });
     }
-    
-    
+
+
     [AvaloniaTest]
     public void TestConnectCommandWithSerialPort()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -149,19 +143,19 @@ public class ConnectionTest
 
         // Act
         viewModel.SelectedSerialPort = "COM21";
-        connectButton.Command.Execute(null);
+        connectButton?.Command?.Execute(null);
 
         // Assert
         _dataStore.Verify(ds => ds.Connect(It.Is<SerialConnectorArgs>(
             args => args.PortName == "COM21"
         )));
     }
-    
+
     [AvaloniaTest]
     public void TestConnectCommandExecution()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -170,21 +164,21 @@ public class ConnectionTest
         var disconnectButton = window.FindControl<Button>("DisconnectButton");
 
         // Act - Simulate connection
-        connectButton.Command?.Execute(null);
+        connectButton?.Command?.Execute(null);
 
         // Assert - After connection
         Assert.Multiple(() =>
         {
-            Assert.That(connectButton.IsEnabled, Is.EqualTo(true));
-            Assert.That(disconnectButton.IsEnabled, Is.EqualTo(false));
+            Assert.That(connectButton?.IsEnabled, Is.EqualTo(true));
+            Assert.That(disconnectButton?.IsEnabled, Is.EqualTo(false));
         });
     }
-    
+
     [AvaloniaTest]
     public void TestDisconnectCommandExecution()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -193,22 +187,22 @@ public class ConnectionTest
         var disconnectButton = window.FindControl<Button>("DisconnectButton");
 
         // Act - Simulate connection
-        disconnectButton.Command?.Execute(null);
+        disconnectButton?.Command?.Execute(null);
 
         // Assert - After connection
         Assert.Multiple(() =>
         {
-            Assert.That(connectButton.IsEnabled, Is.EqualTo(true));
-            Assert.That(disconnectButton.IsEnabled, Is.EqualTo(false));
+            Assert.That(connectButton?.IsEnabled, Is.EqualTo(true));
+            Assert.That(disconnectButton?.IsEnabled, Is.EqualTo(false));
         });
     }
-    
-    
+
+
     [AvaloniaTest]
     public void TestDisconnectCommand()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -216,18 +210,18 @@ public class ConnectionTest
         var disconnectButton = window.FindControl<Button>("DisconnectButton");
 
         // Act
-        disconnectButton.Command.Execute(null);
+        disconnectButton?.Command?.Execute(null);
 
         // Assert
         _dataStore.Verify(ds => ds.Disconnect(), Times.Once);
     }
-    
-    
+
+
     [AvaloniaTest]
     public void TestRefreshSerialPortsCommand()
     {
         // Arrange
-        var window = new ConnectionView()
+        var window = new ConnectionView
         {
             DataContext = new ConnectionViewModel(_dataStore.Object)
         };
@@ -236,10 +230,9 @@ public class ConnectionTest
         var refreshButton = window.FindControl<Button>("RefreshPortsButton");
 
         // Act - Simulate refreshing serial ports
-        refreshButton.Command?.Execute(null);
+        refreshButton?.Command?.Execute(null);
 
         // Assert - Serial ports should be refreshed
-        Assert.That(serialPortCombo.Items.Count, Is.GreaterThan(0));
+        Assert.That(serialPortCombo?.Items.Count, Is.GreaterThan(0));
     }
-    
 }

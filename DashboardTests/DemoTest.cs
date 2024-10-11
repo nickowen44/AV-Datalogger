@@ -15,9 +15,6 @@ namespace DashboardTests;
 [TestFixture]
 public class DemoTest
 {
-    private Mock<IDataStore> _dataStore;
-    private Mock<IServiceProvider> _serviceProvider;
-
     [SetUp]
     public void Setup()
     {
@@ -31,9 +28,10 @@ public class DemoTest
             .Returns(statusViewModel);
         _serviceProvider.Setup(sp => sp.GetService(typeof(IDataStore)))
             .Returns(_dataStore.Object);
-
     }
 
+    private Mock<IDataStore> _dataStore;
+    private Mock<IServiceProvider> _serviceProvider;
 
 
     [AvaloniaTest]
@@ -56,7 +54,7 @@ public class DemoTest
             }
         });
 
-        var window = new DataView()
+        var window = new DataView
         {
             DataContext = new DataViewModel(_dataStore.Object, NullLogger<DataViewModel>.Instance)
         };
@@ -108,14 +106,13 @@ public class DemoTest
             Assert.That(steeringAngle.Text, Is.EqualTo("Steering Angle: 0"));
             Assert.That(brakePressure.Text, Is.EqualTo("Brake Actuation: 0"));
         });
-
     }
 
     [AvaloniaTest]
     public void TestNavigation()
     {
         // Arrange
-        var window = new MainWindowView()
+        var window = new MainWindowView
         {
             DataContext = new MainWindowViewModel(_serviceProvider.Object)
         };
@@ -129,7 +126,8 @@ public class DemoTest
 
         var naviBar = window.FindControl<ListBox>("NaviBar");
         var mainContent = window.FindControl<ContentControl>("MainContent");
-        var defaultSelectedItem = new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection");
+        var defaultSelectedItem =
+            new ListItemTemplate(typeof(ConnectionView), typeof(ConnectionViewModel), "Connection");
 
         Assert.Multiple(() =>
         {
