@@ -107,10 +107,18 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private void ParseMessage(string message)
     {
         // First we validate that we have the correct message format
-        if (!MyRegex().IsMatch(message))
+        if (!MyRegex().IsMatch(message) && message != "OK")
         {
             // Skips message if the format is invalid so the thread doesn't kill itself.
             logger.LogWarning("Invalid message format received: {message}", message);
+            return;
+        }
+
+        if (message == "OK")
+        {
+            HeartBeatUpdated?.Invoke(this, true);
+
+            logger.LogInformation("Heartbeat acknowledged by AV Logger");
             return;
         }
 
@@ -250,7 +258,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         try
         {
             logger.LogDebug("Sending heartbeat: {HeartBeatMessage}", HeartBeatMessage);
-            HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+            comPort.Write(HeartBeatMessage);
         }
         catch (Exception ex)
         {
