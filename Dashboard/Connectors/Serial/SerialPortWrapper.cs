@@ -27,7 +27,6 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
             return;
         }
 
-        _serialPort.Encoding = Encoding.UTF8;
         _serialPort.Open();
 
         // Initialise a read thread so our main (UI) thread doesn't block
@@ -112,8 +111,9 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
             try
             {
                 var terminatedData = $"{data}\r\n";
+                var encodedData = Encoding.UTF8.GetBytes(terminatedData);
 
-                _serialPort.Write(terminatedData);
+                _serialPort.Write(encodedData, 0, encodedData.Length);
                 return true;
             }
             catch (TimeoutException)
