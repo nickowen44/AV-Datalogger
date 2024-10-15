@@ -49,6 +49,7 @@
                 <!-- 20% right margin -->
                 <ColumnDefinition Width="0.2*" />
             </Grid.ColumnDefinitions>
+
             <StackPanel Grid.Row="0" Grid.Column="1" ZIndex="1" Margin="10 5">
                 <TextBlock TextAlignment="Left" Margin="0 30 0  0" Text="Autonomous Vehicle Inspection"
                            FontSize="30"
@@ -76,87 +77,89 @@
                     Padding="10" Margin="10"
                     Grid.Row="2"
                     Grid.Column="1">
-                <Carousel x:Name="Slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" Foreground="{DynamicResource BackgroundColour}" FontSize="18">
-                    <Carousel.PageTransition>
-                        <CompositePageTransition>
-                            <PageSlide Duration="0:00:01" Orientation="Horizontal" />
-                        </CompositePageTransition>
-                    </Carousel.PageTransition>
-                    <Carousel.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel x:Name="StackPanel" Margin="0 10">
-                                <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="AV {0}: {1}">
-                                            <Binding Path="Id" />
-                                            <Binding Path="Title" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                                <TextBlock Text="{Binding Caution}" TextWrapping="Wrap" TextAlignment="Center"
-                                           FontWeight="Bold" />
-                                <StackPanel Margin="100 5 100 0">
-                                    <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center" />
-                                </StackPanel>
-                                <TextBlock x:Name="DvData"
-                                           Text="DV Data"
-                                           Margin="10"
-                                           FontWeight="Bold"
-                                           TextAlignment="Center"
-                                           IsVisible="{Binding Measurements, Converter={StaticResource DvDataVisibility}}" />
-                                <ItemsControl ItemsSource="{Binding Measurements}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <ContentControl x:Name="ContentControl">
-                                                <ContentControl.Template>
-                                                    <ControlTemplate>
-                                                        <TextBlock TextAlignment="Center" x:Name="Measurements">
-                                                            <TextBlock.Text>
-                                                                <MultiBinding
-                                                                    Converter="{StaticResource MeasurementValueVisibility}">
-                                                                    <MultiBinding.Bindings>
-                                                                        <Binding />
-                                                                        <!-- Note:  We have to bind this way because regular bindings go to the carousels data context, so we need to get the relative data context, and cast it otherwise it thinks its an object-->
-                                                                        <Binding
-                                                                            Path="((vm:ScrutineeringViewModel)DataContext).SteeringAngle"
-                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}"
-                                                                            StringFormat="F2" />
-                                                                        <Binding
-                                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousMissionIndicator"
-                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                                                        <Binding
-                                                                            Path="((vm:ScrutineeringViewModel)DataContext).AutonomousSystemState"
-                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                                                        <Binding
-                                                                            Path="((vm:ScrutineeringViewModel)DataContext).ServiceBrakeState"
-                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                                                        <Binding
-                                                                            Path="((vm:ScrutineeringViewModel)DataContext).EmergencyBrakeState"
-                                                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                                                    </MultiBinding.Bindings>
-                                                                </MultiBinding>
-                                                            </TextBlock.Text>
-                                                        </TextBlock>
-                                                    </ControlTemplate>
-                                                </ContentControl.Template>
-                                            </ContentControl>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" AllowAutoHide="False">
+                    <Carousel x:Name="Slides" ItemsSource="{Binding YamlData.Steps}" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" Foreground="{DynamicResource BackgroundColour}" FontSize="18">
+                        <Carousel.PageTransition>
+                            <CompositePageTransition>
+                                <PageSlide Duration="0:00:01" Orientation="Horizontal" />
+                            </CompositePageTransition>
+                        </Carousel.PageTransition>
+                        <Carousel.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel x:Name="StackPanel" Margin="0 10">
+                                    <TextBlock FontWeight="Bold" TextAlignment="Center" Margin="10">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="AV {0}: {1}">
+                                                <Binding Path="Id" />
+                                                <Binding Path="Title" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Caution}" TextWrapping="Wrap" TextAlignment="Center"
+                                               FontWeight="Bold" />
+                                    <StackPanel Margin="100 5 100 0">
+                                        <TextBlock Text="{Binding Step}" TextWrapping="Wrap" TextAlignment="Center" />
+                                    </StackPanel>
+                                    <TextBlock x:Name="DvData"
+                                               Text="DV Data"
+                                               Margin="10"
+                                               FontWeight="Bold"
+                                               TextAlignment="Center"
+                                               IsVisible="{Binding Measurements, Converter={StaticResource DvDataVisibility}}" />
+                                    <ItemsControl ItemsSource="{Binding Measurements}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ContentControl x:Name="ContentControl">
+                                                    <ContentControl.Template>
+                                                        <ControlTemplate>
+                                                            <TextBlock TextAlignment="Center" x:Name="Measurements">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding
+                                                                        Converter="{StaticResource MeasurementValueVisibility}">
+                                                                        <MultiBinding.Bindings>
+                                                                            <Binding />
+                                                                            <!-- Note:  We have to bind this way because regular bindings go to the carousels data context, so we need to get the relative data context, and cast it otherwise it thinks its an object-->
+                                                                            <Binding
+                                                                                Path="((vm:ScrutineeringViewModel)DataContext).SteeringAngle"
+                                                                                RelativeSource="{RelativeSource AncestorType=UserControl}"
+                                                                                StringFormat="F2" />
+                                                                            <Binding
+                                                                                Path="((vm:ScrutineeringViewModel)DataContext).AutonomousMissionIndicator"
+                                                                                RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                            <Binding
+                                                                                Path="((vm:ScrutineeringViewModel)DataContext).AutonomousSystemState"
+                                                                                RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                            <Binding
+                                                                                Path="((vm:ScrutineeringViewModel)DataContext).ServiceBrakeState"
+                                                                                RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                            <Binding
+                                                                                Path="((vm:ScrutineeringViewModel)DataContext).EmergencyBrakeState"
+                                                                                RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                        </MultiBinding.Bindings>
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </ControlTemplate>
+                                                    </ContentControl.Template>
+                                                </ContentControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                                    <Button Content="Pass" Background="{DynamicResource AccentBorderColour}"
-                                            Foreground="White" Margin="5"
-                                            Click="OnPass" Tag="{Binding Id}" />
-                                    <Button Content="Fail" Background="{DynamicResource ForegroundBorderColour}"
-                                            Foreground="White" Margin="5"
-                                            Click="OnFail" Tag="{Binding Id}" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                                        <Button Content="Pass" Background="{DynamicResource AccentBorderColour}"
+                                                Foreground="White" Margin="5"
+                                                Click="OnPass" Tag="{Binding Id}" />
+                                        <Button Content="Fail" Background="{DynamicResource ForegroundBorderColour}"
+                                                Foreground="White" Margin="5"
+                                                Click="OnFail" Tag="{Binding Id}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Carousel.ItemTemplate>
-                </Carousel>
+                            </DataTemplate>
+                        </Carousel.ItemTemplate>
+                    </Carousel>
+                </ScrollViewer>
             </Border>
             <Panel Margin="30 90" Grid.Row="2" Grid.Column="1">
                 <Button Background="{DynamicResource ForegroundBorderColour}"

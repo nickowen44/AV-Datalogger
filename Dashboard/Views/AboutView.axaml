@@ -39,7 +39,9 @@
                     Margin="0 10">
                 <StackPanel Spacing="5">
                     <TextBlock Name="IntroParagraph" FontSize="18">
-                        This program was developed for Nuvotion Pty Ltd. during an RMIT University Capstone project.
+                        Developed for Nuvotion as part of the RMIT University Software Capstone Project 2024.
+                        <LineBreak />
+                        Inquiries please contact: nick@nuvotion.com.au
                     </TextBlock>
                     <TextBlock Name="TeamMembers" FontSize="18">
                         <Run Text="Team Members:" FontWeight="Bold" />
