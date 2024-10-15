@@ -6,7 +6,6 @@ using Dashboard.Utils;
 
 namespace Dashboard.Serialisation.Csv;
 
-
 public class CsvDataSerialiser : IDataSerialiser, IDisposable
 {
     public const string Header = "CarId,UTCTime,Connected," +
@@ -17,8 +16,33 @@ public class CsvDataSerialiser : IDataSerialiser, IDisposable
                                  // Res Data
                                  "ResState,K2State,K3State,ResRadioQuality,ResNodeId";
 
-    private StreamWriter? _streamWriter;
     private bool _initialised;
+
+    private StreamWriter? _streamWriter;
+
+    public async Task Write(GpsData gpsData, AvData avData, ResData resData, RawData rawData)
+    {
+        // If the stream writer hasn't been initialised, do so
+        if (!_initialised)
+        {
+            Initialise(rawData);
+            _initialised = true;
+        }
+
+        // Format the data
+        var data = FormatData(gpsData, avData, resData, rawData);
+
+        // Write the data to the file (stream write can't be null here as it's initialised in Initialise)
+        await _streamWriter!.WriteLineAsync(data);
+    }
+
+    public void Dispose()
+    {
+        // Dispose of the stream writer
+        _streamWriter?.Dispose();
+
+        GC.SuppressFinalize(this);
+    }
 
     private void Initialise(RawData rawData)
     {
@@ -38,35 +62,11 @@ public class CsvDataSerialiser : IDataSerialiser, IDisposable
         _streamWriter.WriteLine(Header);
     }
 
-    public async Task Write(GpsData gpsData, AvData avData, ResData resData, RawData rawData)
-    {
-        // If the stream writer hasn't been initialised, do so
-        if (!_initialised)
-        {
-            Initialise(rawData);
-            _initialised = true;
-        }
-
-        // Format the data
-        var data = FormatData(gpsData, avData, resData, rawData);
-
-        // Write the data to the file (stream write can't be null here as it's initialised in Initialise)
-        await _streamWriter!.WriteLineAsync(data);
-    }
-
     private static string FormatData(GpsData gpsData, AvData avData, ResData resData, RawData rawData)
     {
         return $"{rawData.CarId},{Time.FormatUtcTime(rawData.UTCTime)},{rawData.ConnectionStatus}," +
                $"{gpsData.Latitude},{gpsData.Longitude},{gpsData.AltitudeMetres},{gpsData.AltitudeKilometres},{gpsData.MetresPerSecond},{gpsData.KilometresPerHour},{gpsData.HdopFixAge},{gpsData.Hdop},{gpsData.HVal},{gpsData.SatFixAge},{gpsData.SatCount},{gpsData.SpeedFixAge},{gpsData.AltFixAge}," +
                $"{avData.Speed.Actual},{avData.Speed.Target},{avData.SteeringAngle.Actual},{avData.SteeringAngle.Target},{avData.BrakeActuation.Actual},{avData.BrakeActuation.Target},{avData.MotorMoment.Actual},{avData.MotorMoment.Target},{avData.LateralAcceleration},{avData.LongitudinalAcceleration},{avData.YawRate},{avData.AutonomousSystemState},{avData.EmergencyBrakeState},{avData.MissionIndicator},{avData.SteeringState},{avData.ServiceBrakeState},{avData.LapCount},{avData.ConeCountPerLap},{avData.ConeCountTotal}," +
                $"{resData.ResState},{resData.K2State},{resData.K3State},{resData.ResRadioQuality},{resData.ResNodeId}";
-    }
-
-    public void Dispose()
-    {
-        // Dispose of the stream writer
-        _streamWriter?.Dispose();
-
-        GC.SuppressFinalize(this);
     }
 }

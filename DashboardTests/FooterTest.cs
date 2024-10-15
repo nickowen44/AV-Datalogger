@@ -13,20 +13,19 @@ namespace DashboardTests;
 
 public class FooterTest
 {
+    private Mock<IDataStore> _dataStore;
+
     [SetUp]
     public void Setup()
     {
         _dataStore = new Mock<IDataStore>();
     }
 
-    private Mock<IDataStore> _dataStore;
-
     [AvaloniaTest]
     public void TestFooterStartup()
     {
-
         // Arrange
-        var window = new FooterView()
+        var window = new FooterView
         {
             DataContext = new FooterViewModel(_dataStore.Object, NullLogger<FooterViewModel>.Instance)
         };
@@ -48,20 +47,18 @@ public class FooterTest
             Assert.That(localTime, Is.Not.Null);
             Assert.That(console, Is.Not.Null);
         });
-
     }
 
     [AvaloniaTest]
     public void TestFooterCarIdCurTimeConsoleUpdate()
     {
-
         // Arrange
         const string consoleText =
             "ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###";
         _dataStore.SetupGet(x => x.RawData).Returns(new RawData
         {
             CarId = "A46",
-            UTCTime = DateTime.Parse("2024-08-20 06:56:04"),
+            UTCTime = DateTime.Parse("2024-08-20 06:56:04")
         });
 
         var window = new Window
@@ -119,7 +116,7 @@ public class FooterTest
         {
             CarId = "A46",
             UTCTime = DateTime.Parse("2024-08-20 06:56:04"),
-            ConnectionStatus = false,
+            ConnectionStatus = false
         });
 
         var window = new Window

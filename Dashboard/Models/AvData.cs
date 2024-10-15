@@ -4,8 +4,6 @@ namespace Dashboard.Models;
 
 public record AvData
 {
-
-
     public ValuePair<double> Speed { get; init; } = new()
     {
         Actual = 0, Target = 0
@@ -25,6 +23,7 @@ public record AvData
     {
         Actual = 0, Target = 0
     };
+
     public double LateralAcceleration { get; init; }
     public double LongitudinalAcceleration { get; init; }
     public double YawRate { get; init; }
@@ -36,5 +35,4 @@ public record AvData
     public int LapCount { get; init; }
     public int ConeCountPerLap { get; init; }
     public int ConeCountTotal { get; init; }
-
 }

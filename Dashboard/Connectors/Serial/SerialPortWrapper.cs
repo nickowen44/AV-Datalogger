@@ -7,13 +7,13 @@ namespace Dashboard.Connectors.Serial;
 
 public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
 {
-    public event EventHandler<SerialPortData>? DataReceived;
+    private const double ConnectionTimeout = 5.0;
 
     private readonly SerialPort _serialPort = new();
+    private DateTime _lastMessageReceived = DateTime.Now;
 
     private bool _shouldRun = true;
-    private const double ConnectionTimeout = 5.0;
-    private DateTime _lastMessageReceived = DateTime.Now;
+    public event EventHandler<SerialPortData>? DataReceived;
 
     public void Open()
     {
@@ -32,7 +32,6 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
         var thread = new Thread(() =>
         {
             while (_shouldRun)
-            {
                 try
                 {
                     var data = ReadLine();
@@ -47,7 +46,6 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
                     // and the thread is stopped, we can safely ignore this exception.
                     logger.LogDebug("Serial port read thread cancelled");
                 }
-            }
         });
 
         _shouldRun = true;
@@ -85,12 +83,6 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
             _serialPort.Open();
     }
 
-    private string ReadLine()
-    {
-        _lastMessageReceived = DateTime.Now;
-        return _serialPort.ReadLine();
-    }
-
     public bool IsConnected
     {
         get
@@ -113,10 +105,7 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
 
                 // If the AV Logger doesn't respond OK then connection is dead.
                 // TODO: This will not work for the actual logger as there could be multiple messages in the buffer.
-                if (_serialPort.ReadLine() != "OK")
-                {
-                    return false;
-                }
+                if (_serialPort.ReadLine() != "OK") return false;
 
                 logger.LogInformation("Heartbeat acknowledged by AV Logger");
                 return true;
@@ -127,6 +116,13 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
                 return false;
             }
         }
+
         return false;
+    }
+
+    private string ReadLine()
+    {
+        _lastMessageReceived = DateTime.Now;
+        return _serialPort.ReadLine();
     }
 }
