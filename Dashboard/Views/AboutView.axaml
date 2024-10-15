@@ -39,7 +39,7 @@
                     Margin="0 10">
                 <StackPanel Spacing="5">
                     <TextBlock Name="IntroParagraph" FontSize="18">
-                        Developed for Nuvotion as part of the RMIT University Software Capstone Project 2024.
+                        Developed for Nuvotion as part of the RMIT University Software Engineering Capstone Project 2024.
                         <LineBreak />
                         Inquiries please contact: nick@nuvotion.com.au
                     </TextBlock>
