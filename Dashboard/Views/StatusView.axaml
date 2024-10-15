@@ -48,7 +48,7 @@
         </Style>
     </UserControl.Styles>
     <Panel VerticalAlignment="Center">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" AllowAutoHide="False" HorizontalScrollBarVisibility="Auto">
             <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto, *">
                 <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource ForegroundColour}" Height="870"
                         Margin="0,20,0,0" BorderBrush="{DynamicResource ForegroundBorderColour}"
