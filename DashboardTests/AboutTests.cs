@@ -9,6 +9,8 @@ namespace DashboardTests;
 [TestFixture]
 public class AboutTests
 {
+    private AboutView _view;
+
     [SetUp]
     public void Setup()
     {
@@ -17,8 +19,6 @@ public class AboutTests
             DataContext = new AboutViewModel()
         };
     }
-
-    private AboutView _view;
 
     [AvaloniaTest]
     public void AboutViewShouldDisplayCorrectTeamMembers()

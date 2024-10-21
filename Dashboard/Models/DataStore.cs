@@ -12,14 +12,23 @@ namespace Dashboard.Models;
 
 public class DataStore : IDataStore, IDisposable
 {
-    private readonly IConnectorFactory _connectorFactory;
-    private readonly IDataSerialisationFactory _dataSerialiserFactory;
+    public event EventHandler? GpsDataUpdated;
+    public event EventHandler? AvDataUpdated;
+    public event EventHandler? ResDataUpdated;
+    public event EventHandler? RawDataUpdated;
+    public event EventHandler<bool>? HeartBeatUpdated;
+    public event EventHandler<string>? ConsoleMessageUpdated;
 
-    // Keep a buffer until the UI is ready to display the message
-    private readonly List<string> _logBuffer = [];
-    private readonly ILogger<DataStore> _logger;
+    public bool? HeartBeat { get; private set; }
+    public GpsData? GpsData { get; private set; }
+    public AvData? AvStatusData { get; private set; }
+    public ResData? ResData { get; private set; }
+    public RawData? RawData { get; private set; }
 
     private IConnector? _connector;
+    private readonly IConnectorFactory _connectorFactory;
+    private readonly ILogger<DataStore> _logger;
+    private readonly IDataSerialisationFactory _dataSerialiserFactory;
     private IDataSerialiser? _dataSerialiser;
     private Timer? _serialisationTimer;
 
@@ -34,18 +43,16 @@ public class DataStore : IDataStore, IDisposable
         _logger.LogDebug("DataStore created");
     }
 
-    public event EventHandler? GpsDataUpdated;
-    public event EventHandler? AvDataUpdated;
-    public event EventHandler? ResDataUpdated;
-    public event EventHandler? RawDataUpdated;
-    public event EventHandler<bool>? HeartBeatUpdated;
-    public event EventHandler<string>? ConsoleMessageUpdated;
+    private void SetupConnector(IConnectorArgs args)
+    {
+        _connector = _connectorFactory.CreateConnector(args);
 
-    public bool? HeartBeat { get; private set; }
-    public GpsData? GpsData { get; private set; }
-    public AvData? AvStatusData { get; private set; }
-    public ResData? ResData { get; private set; }
-    public RawData? RawData { get; private set; }
+        _connector.GpsDataUpdated += OnGpsDataUpdated;
+        _connector.AvDataUpdated += OnAvDataUpdated;
+        _connector.ResDataUpdated += OnResDataUpdated;
+        _connector.RawDataUpdated += OnRawDataUpdated;
+        _connector.HeartBeatUpdated += OnHeartbeatUpdated;
+    }
 
     public bool Connect(IConnectorArgs args)
     {
@@ -90,49 +97,8 @@ public class DataStore : IDataStore, IDisposable
         _dataSerialiser = null;
     }
 
-    public void FlushLogBuffer()
-    {
-        foreach (var message in _logBuffer) ConsoleMessageUpdated?.Invoke(this, message);
-
-        _logBuffer.Clear();
-    }
-
-    public void Dispose()
-    {
-        _logger.LogDebug("DataStore disposed");
-
-        // Stop the connector
-        if (_connector is not null)
-        {
-            _connector.GpsDataUpdated -= OnGpsDataUpdated;
-            _connector.AvDataUpdated -= OnAvDataUpdated;
-            _connector.ResDataUpdated -= OnResDataUpdated;
-            _connector.RawDataUpdated -= OnRawDataUpdated;
-
-            _connector.Stop();
-        }
-
-        // Stop the serialisation timer
-        _serialisationTimer?.Stop();
-        _serialisationTimer?.Dispose();
-
-        // Dispose of the data serialiser
-        _dataSerialiser?.Dispose();
-        _dataSerialiser = null;
-
-        GC.SuppressFinalize(this);
-    }
-
-    private void SetupConnector(IConnectorArgs args)
-    {
-        _connector = _connectorFactory.CreateConnector(args);
-
-        _connector.GpsDataUpdated += OnGpsDataUpdated;
-        _connector.AvDataUpdated += OnAvDataUpdated;
-        _connector.ResDataUpdated += OnResDataUpdated;
-        _connector.RawDataUpdated += OnRawDataUpdated;
-        _connector.HeartBeatUpdated += OnHeartbeatUpdated;
-    }
+    // Keep a buffer until the UI is ready to display the message
+    private readonly List<string> _logBuffer = [];
 
     private void OnLogMessageReceived(object? sender, string e)
     {
@@ -144,6 +110,13 @@ public class DataStore : IDataStore, IDisposable
         }
 
         ConsoleMessageUpdated?.Invoke(this, e);
+    }
+
+    public void FlushLogBuffer()
+    {
+        foreach (var message in _logBuffer) ConsoleMessageUpdated?.Invoke(this, message);
+
+        _logBuffer.Clear();
     }
 
     private void OnHeartbeatUpdated(object? sender, bool isReceived)
@@ -200,5 +173,31 @@ public class DataStore : IDataStore, IDisposable
         if (GpsData is null || AvStatusData is null || ResData is null || RawData is null) return;
 
         await _dataSerialiser.Write(GpsData, AvStatusData, ResData, RawData);
+    }
+
+    public void Dispose()
+    {
+        _logger.LogDebug("DataStore disposed");
+
+        // Stop the connector
+        if (_connector is not null)
+        {
+            _connector.GpsDataUpdated -= OnGpsDataUpdated;
+            _connector.AvDataUpdated -= OnAvDataUpdated;
+            _connector.ResDataUpdated -= OnResDataUpdated;
+            _connector.RawDataUpdated -= OnRawDataUpdated;
+
+            _connector.Stop();
+        }
+
+        // Stop the serialisation timer
+        _serialisationTimer?.Stop();
+        _serialisationTimer?.Dispose();
+
+        // Dispose of the data serialiser
+        _dataSerialiser?.Dispose();
+        _dataSerialiser = null;
+
+        GC.SuppressFinalize(this);
     }
 }
