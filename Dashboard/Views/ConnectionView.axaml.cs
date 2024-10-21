@@ -9,21 +9,22 @@ namespace Dashboard.Views;
 
 public partial class ConnectionView : UserControl
 {
+    private static FilePickerFileType CSV { get; } = new("CSV Files")
+    {
+        Patterns = new[] { "*.csv", },
+    };
     public ConnectionView()
     {
         InitializeComponent();
         ConnectionTypeCombo.SelectionChanged += ConnectionTypeUpdated;
         Loaded += ConnectionViewLoaded;
     }
-
-    private static FilePickerFileType CSV { get; } = new("CSV Files")
-    {
-        Patterns = new[] { "*.csv" }
-    };
-
     private void ConnectionViewLoaded(object? sender, EventArgs e)
     {
-        if (DataContext is ConnectionViewModel viewModel) viewModel.ConnectionChanged += OnConnectionStarted;
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.ConnectionChanged += OnConnectionStarted;
+        }
     }
 
     private void OnConnectionStarted(bool connected)
@@ -64,7 +65,7 @@ public partial class ConnectionView : UserControl
         var topLevel = TopLevel.GetTopLevel(this);
 
         // Start async operation to open the dialog.
-        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "Select Log File",
             AllowMultiple = false,

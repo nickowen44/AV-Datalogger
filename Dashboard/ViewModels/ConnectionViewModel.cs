@@ -17,18 +17,16 @@ namespace Dashboard.ViewModels;
 
 public partial class ConnectionViewModel : ViewModelBase
 {
-    private readonly List<string> _connectionTemplates =
-    [
-        "Serial Port",
-        "IP Address",
-        "Log Replay"
-    ];
-
-    private readonly IDataStore _dataStore;
 
     [ObservableProperty] private string? _currentConnectionType;
-    [ObservableProperty] private bool _saveToFile;
     [ObservableProperty] private string? _selectedSerialPort;
+    [ObservableProperty] private bool _saveToFile;
+
+    public string? SelectedFilePath { get; set; }
+    public ObservableCollection<string> ConnectionTypes { get; }
+    public ObservableCollection<string> SerialPorts { get; }
+    private readonly IDataStore _dataStore;
+    public event Action<bool>? ConnectionChanged;
 
     [ActivatorUtilitiesConstructor]
     public ConnectionViewModel(IDataStore dataStore)
@@ -54,12 +52,7 @@ public partial class ConnectionViewModel : ViewModelBase
         _currentConnectionType = ConnectionTypes.First();
     }
 
-    public string? SelectedFilePath { get; set; }
-    public ObservableCollection<string> ConnectionTypes { get; }
-    public ObservableCollection<string> SerialPorts { get; }
-    public event Action<bool>? ConnectionChanged;
-
-    public static string[] GetSerialPorts()
+    private static string[] GetSerialPorts()
     {
         return SerialPort.GetPortNames();
     }
@@ -68,7 +61,10 @@ public partial class ConnectionViewModel : ViewModelBase
     private void RefreshSerialPorts()
     {
         SerialPorts.Clear();
-        foreach (var port in GetSerialPorts()) SerialPorts.Add(port);
+        foreach (var port in GetSerialPorts())
+        {
+            SerialPorts.Add(port);
+        }
         SelectedSerialPort = SerialPorts.FirstOrDefault();
     }
 
@@ -100,4 +96,11 @@ public partial class ConnectionViewModel : ViewModelBase
 
         ConnectionChanged?.Invoke(false);
     }
+
+    private readonly List<string> _connectionTemplates =
+    [
+        "Serial Port",
+        "IP Address",
+        "Log Replay"
+    ];
 }
