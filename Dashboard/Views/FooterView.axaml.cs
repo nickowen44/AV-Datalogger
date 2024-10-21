@@ -6,12 +6,12 @@ namespace Dashboard.Views;
 
 public partial class FooterView : UserControl
 {
-    private ScrollViewer? ConsoleScrollViewer => ConsoleTextBox.FindDescendantOfType<ScrollViewer>();
-
     public FooterView()
     {
         InitializeComponent();
     }
+
+    private ScrollViewer? ConsoleScrollViewer => ConsoleTextBox.FindDescendantOfType<ScrollViewer>();
 
     private void ConsoleTextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
     {

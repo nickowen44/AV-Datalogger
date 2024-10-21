@@ -10,15 +10,15 @@ namespace Dashboard.Connectors.Csv;
 
 public class CsvConnector(ILogger<CsvConnector> logger) : IConnector
 {
+    private StreamReader? _reader;
+
+    private Thread? _readThread;
+    private bool _shouldStop;
     public event EventHandler<GpsData>? GpsDataUpdated;
     public event EventHandler<AvData>? AvDataUpdated;
     public event EventHandler<ResData>? ResDataUpdated;
     public event EventHandler<RawData>? RawDataUpdated;
     public event EventHandler<bool>? HeartBeatUpdated;
-
-    private Thread? _readThread;
-    private StreamReader? _reader;
-    private bool _shouldStop;
 
     public void Start(IConnectorArgs args)
     {

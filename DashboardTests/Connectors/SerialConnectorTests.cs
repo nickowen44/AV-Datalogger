@@ -8,6 +8,14 @@ namespace DashboardTests.Connectors;
 [TestFixture]
 public class SerialConnectorTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        _serialPortMock = new Mock<ISerialPort>();
+        _logger = new ShimLogger<SerialConnector>();
+        _serialConnector = new SerialConnector(_serialPortMock.Object, _logger);
+    }
+
     private SerialConnector _serialConnector;
     private Mock<ISerialPort> _serialPortMock;
     private ShimLogger<SerialConnector> _logger;
@@ -16,14 +24,6 @@ public class SerialConnectorTests
     private void RaiseDataReceivedEvent(string input)
     {
         _serialPortMock.Raise(s => s.DataReceived += null, this, new SerialPortData { Buffer = input });
-    }
-
-    [SetUp]
-    public void Setup()
-    {
-        _serialPortMock = new Mock<ISerialPort>();
-        _logger = new ShimLogger<SerialConnector>();
-        _serialConnector = new SerialConnector(_serialPortMock.Object, _logger);
     }
 
     [Test]

@@ -8,10 +8,6 @@ namespace DashboardTests.Connectors;
 [TestFixture]
 public class CsvConnectorTests
 {
-    private CsvConnector _csvConnector;
-    private ShimLogger<CsvConnector> _logger;
-    private CsvConnectorArgs _args;
-
     [SetUp]
     public void Setup()
     {
@@ -21,6 +17,10 @@ public class CsvConnectorTests
         // initialise the args with a unique file path
         _args = new CsvConnectorArgs { FilePath = $"test_{Guid.NewGuid()}.csv" };
     }
+
+    private CsvConnector _csvConnector;
+    private ShimLogger<CsvConnector> _logger;
+    private CsvConnectorArgs _args;
 
     private void Cleanup()
     {

@@ -8,8 +8,6 @@ namespace Dashboard.Logging;
 
 public class LogEventSink : ILogEventSink
 {
-    public event EventHandler<string>? LogMessageReceived;
-
     private readonly MessageTemplateTextFormatter _formatter = new(
         "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
 
@@ -20,4 +18,6 @@ public class LogEventSink : ILogEventSink
 
         LogMessageReceived?.Invoke(this, formatter.ToString());
     }
+
+    public event EventHandler<string>? LogMessageReceived;
 }

@@ -5,17 +5,17 @@ namespace Dashboard.Models;
 
 public interface IDataStore
 {
+    GpsData? GpsData { get; }
+    AvData? AvStatusData { get; }
+    ResData? ResData { get; }
+    RawData? RawData { get; }
+    bool? HeartBeat { get; }
     event EventHandler GpsDataUpdated;
     event EventHandler AvDataUpdated;
     event EventHandler ResDataUpdated;
     event EventHandler RawDataUpdated;
     event EventHandler<bool> HeartBeatUpdated;
     event EventHandler<string> ConsoleMessageUpdated;
-    GpsData? GpsData { get; }
-    AvData? AvStatusData { get; }
-    ResData? ResData { get; }
-    RawData? RawData { get; }
-    bool? HeartBeat { get; }
 
     /// <summary>
     ///     Handles setting up the data ingress connection to the data source.
