@@ -12,12 +12,22 @@ namespace Dashboard.ViewModels;
 
 public partial class FooterViewModel : ViewModelBase
 {
-    private readonly IDataStore _dataStore;
-    private readonly Timer? _heartBeatTimer;
-    private readonly ILogger<FooterViewModel> _logger;
-    private bool _heartBeatFlicker;
+    public string CarId => _dataStore.RawData?.CarId ?? "0";
+    public string UTCTime => _dataStore.RawData?.UTCTime.ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
+    public string LocalTime => _dataStore.RawData?.UTCTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
 
     [ObservableProperty] private string _logMessage = string.Empty;
+
+    public IBrush ConnectionColor => ConnectionStatus ? Brushes.Green : Brushes.Red;
+    public IBrush HeartBeatColor => HeartBeat && _heartBeatFlicker ? Brushes.OrangeRed : Brushes.Orange;
+
+    private bool HeartBeat => _dataStore.HeartBeat ?? false;
+    private bool _heartBeatFlicker;
+    private bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
+
+    private readonly IDataStore _dataStore;
+    private readonly ILogger<FooterViewModel> _logger;
+    private readonly Timer? _heartBeatTimer;
 
     public FooterViewModel(IDataStore dataStore, ILogger<FooterViewModel> logger)
     {
@@ -44,18 +54,6 @@ public partial class FooterViewModel : ViewModelBase
             NullDataSerialisationFactory.Instance);
         _logger = NullLogger<FooterViewModel>.Instance;
     }
-
-    public string CarId => _dataStore.RawData?.CarId ?? "0";
-    public string UTCTime => _dataStore.RawData?.UTCTime.ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
-
-    public string LocalTime =>
-        _dataStore.RawData?.UTCTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "Invalid Time";
-
-    public IBrush ConnectionColor => ConnectionStatus ? Brushes.Green : Brushes.Red;
-    public IBrush HeartBeatColor => HeartBeat && _heartBeatFlicker ? Brushes.OrangeRed : Brushes.Orange;
-
-    private bool HeartBeat => _dataStore.HeartBeat ?? false;
-    private bool ConnectionStatus => _dataStore.RawData?.ConnectionStatus ?? false;
 
     /// <summary>
     ///     Notifies the view that the Footer data has changed.
@@ -104,4 +102,5 @@ public partial class FooterViewModel : ViewModelBase
 
         GC.SuppressFinalize(this);
     }
+
 }

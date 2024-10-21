@@ -20,59 +20,55 @@
                     BorderThickness="3"
                     CornerRadius="1"
                     Padding="100 50" Margin="10">
-                <Grid RowDefinitions="Auto,Auto,*">
-                    <!-- Connection Type -->
-                    <StackPanel Grid.Row="0" Margin="0,0,50,0" Name="ConnectionTypeSelectionSeection">
-                        <TextBlock Text="Connection Type" Margin="0, 10, 0, 5" FontWeight="Bold" />
-                        <ComboBox
-                            x:Name="ConnectionTypeCombo"
-                            Width="200"
-                            SelectedItem="{Binding CurrentConnectionType}"
-                            ItemsSource="{Binding ConnectionTypes}"
-                            Foreground="Black" />
+            <Grid RowDefinitions="Auto,Auto,*">
+                <!-- Connection Type -->
+                <StackPanel Grid.Row="0" Margin="0,0,50,0" Name="ConnectionTypeSelectionSeection">
+                    <TextBlock Text="Connection Type" Margin="0, 10, 0, 5" FontWeight="Bold"/>
+                    <ComboBox
+                        x:Name="ConnectionTypeCombo"
+                        Width="200"
+                        SelectedItem="{Binding CurrentConnectionType}"
+                        ItemsSource="{Binding ConnectionTypes}"
+                        Foreground="Black" />
+                </StackPanel>
+                <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
+                    <!-- Serial Port Section -->
+                    <StackPanel Grid.Row="0" Margin="0, 10, 0, 5" Name="SerialPortSection" IsVisible="True" Spacing="5">
+                        <TextBlock Text="Serial Port" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox
+                                Name="SerialPortCombo"
+                                Width="200"
+                                SelectedItem="{Binding SelectedSerialPort}"
+                                ItemsSource="{Binding SerialPorts, Mode=TwoWay}" />
+                            <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}"
+                                    Margin="5,0,0,0" />
+                        </StackPanel>
+                        <CheckBox Name="SaveToFile" Content="Save to File" IsChecked="{Binding SaveToFile}" />
                     </StackPanel>
-                    <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
-                        <!-- Serial Port Section -->
-                        <StackPanel Grid.Row="0" Margin="0, 10, 0, 5" Name="SerialPortSection" IsVisible="True"
-                                    Spacing="5">
-                            <TextBlock Text="Serial Port" FontWeight="Bold" />
-                            <StackPanel Orientation="Horizontal">
-                                <ComboBox
-                                    Name="SerialPortCombo"
-                                    Width="200"
-                                    SelectedItem="{Binding SelectedSerialPort}"
-                                    ItemsSource="{Binding SerialPorts, Mode=TwoWay}" />
-                                <Button Content="↻" Width="30" Command="{Binding RefreshSerialPortsCommand}"
-                                        Margin="5,0,0,0" Name="RefreshPortsButton" />
-                            </StackPanel>
-                            <CheckBox Name="SaveToFile" Content="Save to File" IsChecked="{Binding SaveToFile}" />
+                    <!-- TCP Section -->
+                    <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsEnabled="False" IsVisible="False">
+                        <TextBlock Text="IP Address - Not Implemented" Margin="0, 0, 0, 5" FontWeight="Bold" />
+                        <TextBox Width="200" HorizontalAlignment="Left" />
+                    </StackPanel>
+                    <!-- File Section -->
+                    <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsVisible="False">
+                        <TextBlock Text="Log File" Margin="0, 0, 0, 5" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="200" Name="LogFileSelected" IsReadOnly="True"
+                                     Text="{Binding SelectedFilePath}" />
+                            <Button Content="..." Width="30" Margin="5,0,0,0" Click="FileSelectionClicked" />
                         </StackPanel>
-                        <!-- TCP Section -->
-                        <StackPanel Grid.Row="1" Margin="0, 10, 0, 5" Name="TCPSection" IsEnabled="False"
-                                    IsVisible="False">
-                            <TextBlock Text="IP Address - Not Implemented" Margin="0, 0, 0, 5" FontWeight="Bold" />
-                            <TextBox Width="200" HorizontalAlignment="Left" />
-                        </StackPanel>
-                        <!-- File Section -->
-                        <StackPanel Grid.Row="2" Margin="0, 10, 0, 5" Name="FileSection" IsVisible="False">
-                            <TextBlock Text="Log File" Margin="0, 0, 0, 5" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Width="200" Name="LogFileSelected" IsReadOnly="True"
-                                         Text="{Binding SelectedFilePath}" />
-                                <Button Content="..." Width="30" Margin="5,0,0,0" Click="FileSelectionClicked" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                    <!-- Connect Button -->
-                    <Button Grid.Row="2" Content="Connect" Name="ConnectButton" Margin="0,10,50,10" FontWeight="Bold"
-                            Command="{Binding ConnectCommand}" IsEnabled="True" HorizontalAlignment="Left"
-                            Background="{DynamicResource AccentBorderColour}" Foreground="White" />
-                    <Button Grid.Row="2" Content="Disconnect" Name="DisconnectButton" Margin="0,10,50,10"
-                            FontWeight="Bold"
-                            Command="{Binding DisconnectCommand}" IsEnabled="False"
-                            HorizontalAlignment="Right" Background="{DynamicResource ForegroundBorderColour}"
-                            Foreground="White" />
+                    </StackPanel>
                 </Grid>
+                <!-- Connect Button -->
+                <Button Grid.Row="2" Content="Connect" Name="ConnectButton" Margin="0,10,50,10" FontWeight="Bold"
+                        Command="{Binding ConnectCommand}" IsEnabled="True" HorizontalAlignment="Left" 
+                        Background="{DynamicResource AccentBorderColour}" Foreground="White"/>
+                <Button Grid.Row="2" Content="Disconnect" Name="DisconnectButton" Margin="0,10,50,10" FontWeight="Bold"
+                        Command="{Binding DisconnectCommand}" IsEnabled="False"
+                        HorizontalAlignment="Right" Background="{DynamicResource ForegroundBorderColour}" Foreground="White" />
+            </Grid>
             </Border>
         </ThemeVariantScope>
     </Panel>
