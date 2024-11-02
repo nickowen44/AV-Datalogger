@@ -34,7 +34,7 @@ public class SerialConnectorTests
         _serialConnector.GpsDataUpdated += (_, _) => gpsDataReceived = true;
 
         const string input =
-            "ID=A46|UTC=P2024820T06:56:04.00|LAT=-37.738357|LNG=144.935502|HFA=244|HDOP=2.53|HVAL=253|SFA=244|NOS=6|SPFA=369|MPS=0.62|KMH=2.24|AFA=244|ALM=129.90|AKM=0.13\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|LAT=-37.738357|LNG=144.935502|HFA=244|HDOP=2.53|HVAL=253|SFA=244|NOS=6|SPFA=369|MPS=0.62|KMH=2.24|AFA=244|ALM=129.90|AKM=0.13\r\n";
 
         // Act
         _serialConnector.Start(_args);
