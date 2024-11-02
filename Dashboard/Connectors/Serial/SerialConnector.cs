@@ -149,17 +149,16 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
         if (values.ContainsKey("LAT"))
             // Check UTC here, if GPS isn't initialized yet, log error
-            if (values.ContainsKey("UTC"))
-                try
-                {
-                    ParseUTCTime(values["UTC"]);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    logger.LogError("Error parsing GPS message: {message}", ex.Message);
-                }
-            else
+
+            try
+            {
+                ParseUTCTime(values["UTC"]);
                 ParseGpsMessage(values);
+            }
+            catch (InvalidOperationException ex)
+            {
+                logger.LogError("Error parsing GPS message: {message}", ex.Message);
+            }
         else if (values.ContainsKey("SA"))
             ParseAvStatusMessage(values);
         else if (values.ContainsKey("RES"))
