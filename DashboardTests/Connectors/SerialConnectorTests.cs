@@ -8,6 +8,14 @@ namespace DashboardTests.Connectors;
 [TestFixture]
 public class SerialConnectorTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        _serialPortMock = new Mock<ISerialPort>();
+        _logger = new ShimLogger<SerialConnector>();
+        _serialConnector = new SerialConnector(_serialPortMock.Object, _logger);
+    }
+
     private SerialConnector _serialConnector;
     private Mock<ISerialPort> _serialPortMock;
     private ShimLogger<SerialConnector> _logger;
@@ -16,14 +24,6 @@ public class SerialConnectorTests
     private void RaiseDataReceivedEvent(string input)
     {
         _serialPortMock.Raise(s => s.DataReceived += null, this, new SerialPortData { Buffer = input });
-    }
-
-    [SetUp]
-    public void Setup()
-    {
-        _serialPortMock = new Mock<ISerialPort>();
-        _logger = new ShimLogger<SerialConnector>();
-        _serialConnector = new SerialConnector(_serialPortMock.Object, _logger);
     }
 
     [Test]
@@ -53,7 +53,7 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         const string input =
-            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -94,9 +94,9 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         // First input is Res data, second is AV data
-        const string input1 = "ID=A46|UTC=P2024820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255\r\n";
+        const string input1 = "ID=A46|UTC=P20240820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255\r\n";
         const string input2 =
-            "ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
