@@ -192,10 +192,10 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             {
                 Actual = ParseDouble(values["SA"]), Target = ParseDouble(values["ST"])
             },
-            // SteeringAngle = new ValuePair<double>
-            // {
-            //     Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"])
-            // },
+            SteeringAngle = new ValuePair<double>
+            {
+                Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"])
+            },
             BrakeActuation = new ValuePair<double>
             {
                 Actual = ParseDouble(values["BRA"]), Target = ParseDouble(values["BRT"])
@@ -209,7 +209,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             YawRate = ParseDouble(values["YAW"]),
             AutonomousSystemState = ParseInt(values["AST"]),
             EmergencyBrakeState = ParseInt(values["EBS"]),
-            //MissionIndicator = ParseInt(values["AMI"]),
+            MissionIndicator = ParseInt(values["AMI"]),
             SteeringState = ParseBool(values["STS"]),
             ServiceBrakeState = ParseBool(values["SBS"]),
             LapCount = ParseInt(values["LAP"]),
@@ -234,7 +234,10 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
     private DateTime ParseUTCTime(string UTC)
     {
-        string format = "'P'yyyyMMdd'T'HH:'0'mm:ss.ff";
+        // P200000T00:000:00.00
+        // TODO: Make an exception for the above timestamp, and display a warning that GPS has not reported a time yet
+        string formatException = "P200000T00:000:00.00";
+        string format = "'P'yyyyMMdd'T'HH:mm:ss.ff";
         DateTime parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
         // Return the parsed or default DateTime
         return parsedDateTime;
