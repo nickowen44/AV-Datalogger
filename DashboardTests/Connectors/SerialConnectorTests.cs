@@ -34,7 +34,7 @@ public class SerialConnectorTests
         _serialConnector.GpsDataUpdated += (_, _) => gpsDataReceived = true;
 
         const string input =
-            "#ID=A46|UTC=P2024820T06:56:04.00|LAT=-37.738357|LNG=144.935502|HFA=244|HDOP=2.53|HVAL=253|SFA=244|NOS=6|SPFA=369|MPS=0.62|KMH=2.24|AFA=244|ALM=129.90|AKM=0.13\r\n";
+            "ID=A46|UTC=P2024820T06:56:04.00|LAT=-37.738357|LNG=144.935502|HFA=244|HDOP=2.53|HVAL=253|SFA=244|NOS=6|SPFA=369|MPS=0.62|KMH=2.24|AFA=244|ALM=129.90|AKM=0.13\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -53,7 +53,7 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         const string input =
-            "#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -71,7 +71,7 @@ public class SerialConnectorTests
         var resDataReceived = false;
         _serialConnector.ResDataUpdated += (_, _) => resDataReceived = true;
 
-        const string input = "#ID=1|UTC=123456|RES=1|K2T=0|K3B=1|RRQ=75|NID=123\r\n";
+        const string input = "ID=1|UTC=123456|RES=1|K2T=0|K3B=1|RRQ=75\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -94,9 +94,9 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         // First input is Res data, second is AV data
-        const string input1 = "#ID=A46|UTC=P2024820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255|NID=203445\r\n";
+        const string input1 = "ID=A46|UTC=P2024820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255\r\n";
         const string input2 =
-            "#ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P2024820T06:56:04.00|SA=###|ST=###|STA=###|STT=###|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -117,9 +117,9 @@ public class SerialConnectorTests
     public void TestInvalidKeyValuePair()
     {
         // Arrange
-        const string input = "#ID=A46|UTC=P2024820T06:56:04.00|BADINPUT\r\n";
+        const string input = "ID=A46|UTC=P20240820T06:56:04.00|BADINPUT\r\n";
         const string expectedExceptionMessage =
-            "Invalid key-value pair: BADINPUT, Skipping message: #ID=A46|UTC=P2024820T06:56:04.00|BADINPUT";
+            "Invalid key-value pair: BADINPUT, Skipping value: ID=A46|UTC=P20240820T06:56:04.00|BADINPUT";
 
         // Act
         _serialConnector.Start(_args);
@@ -134,9 +134,9 @@ public class SerialConnectorTests
     public void TestInvalidKey()
     {
         // Arrange
-        const string input = "#ID=A46|UTC=P2024820T06:56:04.00|BADKEY=123\r\n";
+        const string input = "ID=A46|UTC=P20240820T06:56:04.00|BADKEY=123\r\n";
         const string expectedExceptionMessage =
-            "Unknown message type received: #ID=A46|UTC=P2024820T06:56:04.00|BADKEY=123";
+            "Unknown message type received: ID=A46|UTC=P20240820T06:56:04.00|BADKEY=123";
 
         // Act
         _serialConnector.Start(_args);
