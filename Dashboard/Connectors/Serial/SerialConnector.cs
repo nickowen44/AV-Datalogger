@@ -114,14 +114,14 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             logger.LogWarning("Invalid message format received: {message}", message);
             return;
         }
-        
+
         if (message == "OK")
         {
             HeartBeatUpdated?.Invoke(this, true);
             logger.LogInformation("Heartbeat acknowledged by AV Logger");
             return;
         }
-        
+
         // remove ending pipe on message
         message = message.TrimEnd('|');
         var split = message.Split('|');
@@ -235,9 +235,9 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     {
         // P200000T00:000:00.00
         // TODO: Make an exception for the above timestamp, and display a warning that GPS has not reported a time yet
-        string formatException = "P200000T00:000:00.00";
-        string format = "'P'yyyyMMdd'T'HH:mm:ss.ff";
-        DateTime parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
+        var formatException = "P200000T00:000:00.00";
+        var format = "'P'yyyyMMdd'T'HH:mm:ss.ff";
+        var parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
         // Return the parsed or default DateTime
         return parsedDateTime;
     }
@@ -246,7 +246,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     {
         // Steering Angle is sent as a signed int, but needs to be translated to left and right values
         // 128 is 0, below 128 is negative and above 128 is positive
-        int angle = int.Parse(value);
+        var angle = int.Parse(value);
         return angle - 128;
     }
 
