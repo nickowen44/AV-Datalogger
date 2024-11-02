@@ -66,7 +66,7 @@
                                                    HorizontalAlignment="Center" Margin="0,15,0,0" />
                                         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
                                             <StackPanel Margin="10">
-                                                <Slider Minimum="0" Maximum="100" Value="{Binding MotorMomentTarget}"
+                                                <Slider Minimum="-100" Maximum="100" Value="{Binding MotorMomentTarget}"
                                                         Orientation="Vertical"
                                                         Height="600" Margin="10" IsEnabled="False"
                                                         Name="MotorSliderTarget" />
@@ -81,7 +81,7 @@
                                                     Name="MotorTextTarget" />
                                             </StackPanel>
                                             <StackPanel Margin="10">
-                                                <Slider Minimum="0" Maximum="100" Value="{Binding MotorMomentActual}"
+                                                <Slider Minimum="-100" Maximum="100" Value="{Binding MotorMomentActual}"
                                                         Orientation="Vertical"
                                                         Height="600" Margin="10" IsEnabled="False"
                                                         Name="MotorSliderActual" />

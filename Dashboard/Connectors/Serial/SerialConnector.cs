@@ -194,7 +194,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             },
             SteeringAngle = new ValuePair<double>
             {
-                Actual = ParseSteeringAngle(values["STA"]), Target = ParseSteeringAngle(values["STT"])
+                Actual = ParseSignedInt(values["STA"]), Target = ParseSignedInt(values["STT"])
             },
             BrakeActuation = new ValuePair<double>
             {
@@ -202,7 +202,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             },
             MotorMoment = new ValuePair<double>
             {
-                Actual = ParseDouble(values["MMA"]), Target = ParseDouble(values["MMT"])
+                Actual = ParseSignedInt(values["MMA"]), Target = ParseSignedInt(values["MMT"])
             },
             LateralAcceleration = ParseDouble(values["ALAT"]),
             LongitudinalAcceleration = ParseDouble(values["ALON"]),
@@ -243,12 +243,11 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         return parsedDateTime;
     }
 
-    private int ParseSteeringAngle(string value)
+    private int ParseSignedInt(string value)
     {
-        // Steering Angle is sent as a signed int, but needs to be translated to left and right values
         // 128 is 0, below 128 is negative and above 128 is positive
-        int angle = int.Parse(value);
-        return angle - 128;
+        int translatedValue = int.Parse(value);
+        return translatedValue - 128;
     }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
