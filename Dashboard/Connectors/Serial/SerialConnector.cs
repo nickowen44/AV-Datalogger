@@ -245,7 +245,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private int ParseSignedInt(string value)
     {
         // 128 is 0, below 128 is negative and above 128 is positive
-        int translatedValue = int.Parse(value);
+        var translatedValue = int.Parse(value);
         return translatedValue - 128;
     }
 

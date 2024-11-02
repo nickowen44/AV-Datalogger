@@ -53,7 +53,7 @@ public class SerialConnectorTests
         _serialConnector.AvDataUpdated += (_, _) => avDataReceived = true;
 
         const string input =
-            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=125|MMA=70|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
@@ -96,7 +96,7 @@ public class SerialConnectorTests
         // First input is Res data, second is AV data
         const string input1 = "ID=A46|UTC=P20240820T06:56:04.00|RES=0|K2T=0|K3B=0|RRQ=255\r\n";
         const string input2 =
-            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=###|MMA=###|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
+            "ID=A46|UTC=P20240820T06:56:04.00|SA=###|ST=###|STA=180|STT=128|BRA=###|BRT=###|MMT=180|MMA=243|ALAT=#########|ALON=#########|YAW=#########|AST=###|EBS=###|AMI=###|STS=###|SBS=###|LAP=###|CCA=###|CCT=###\r\n";
 
         // Act
         _serialConnector.Start(_args);
