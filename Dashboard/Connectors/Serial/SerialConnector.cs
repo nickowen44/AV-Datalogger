@@ -194,7 +194,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             },
             SteeringAngle = new ValuePair<double>
             {
-                Actual = ParseDouble(values["STA"]), Target = ParseDouble(values["STT"])
+                Actual = ParseSteeringAngle(values["STA"]), Target = ParseSteeringAngle(values["STT"])
             },
             BrakeActuation = new ValuePair<double>
             {
@@ -241,6 +241,14 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         DateTime parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
         // Return the parsed or default DateTime
         return parsedDateTime;
+    }
+
+    private int ParseSteeringAngle(string value)
+    {
+        // Steering Angle is sent as a signed int, but needs to be translated to left and right values
+        // 128 is 0, below 128 is negative and above 128 is positive
+        int angle = int.Parse(value);
+        return angle - 128;
     }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
