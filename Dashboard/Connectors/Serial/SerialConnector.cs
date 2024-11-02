@@ -148,7 +148,18 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         }
 
         if (values.ContainsKey("LAT"))
-            ParseGpsMessage(values);
+            // Check UTC here, if GPS isn't initialized yet, log error
+            if (values.ContainsKey("UTC"))
+                try
+                {
+                    ParseUTCTime(values["UTC"]);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    logger.LogError("Error parsing GPS message: {message}", ex.Message);
+                }
+            else
+                ParseGpsMessage(values);
         else if (values.ContainsKey("SA"))
             ParseAvStatusMessage(values);
         else if (values.ContainsKey("RES"))
@@ -233,12 +244,12 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
 
     private DateTime ParseUTCTime(string UTC)
     {
-        // P200000T00:000:00.00
-        // TODO: Make an exception for the above timestamp, and display a warning that GPS has not reported a time yet
+        // If the reported time is equal to this exception, throw an exception as the GPS module hasn't been initialized yet.
         var formatException = "P200000T00:000:00.00";
+        if (UTC == formatException) throw new InvalidOperationException("GPS module not initialized yet.");
         var format = "'P'yyyyMMdd'T'HH:mm:ss.ff";
         var parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
-        // Return the parsed or default DateTime
+        // Return the parsed DateTime
         return parsedDateTime;
     }
 
