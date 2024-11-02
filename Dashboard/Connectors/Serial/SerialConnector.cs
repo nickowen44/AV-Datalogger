@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Dashboard.Models;
@@ -93,7 +94,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         comPort.Close();
     }
 
-    [GeneratedRegex(@"^#ID=.*\|UTC=.*\|.*")]
+    [GeneratedRegex(@"^ID=.*\|UTC=.*\|.*")]
     private static partial Regex MyRegex();
 
     private void OnDataReceived(object? _, SerialPortData data)
@@ -107,14 +108,24 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
     private void ParseMessage(string message)
     {
         // First we validate that we have the correct message format
-        if (!MyRegex().IsMatch(message))
+        if (!MyRegex().IsMatch(message) && message != "OK")
         {
             // Skips message if the format is invalid so the thread doesn't kill itself.
             logger.LogWarning("Invalid message format received: {message}", message);
             return;
         }
 
-        var split = message.Substring(1).Split('|');
+        if (message == "OK")
+        {
+            HeartBeatUpdated?.Invoke(this, true);
+
+            logger.LogInformation("Heartbeat acknowledged by AV Logger");
+            return;
+        }
+
+        // remove ending pipe on message
+        message = message.TrimEnd('|');
+        var split = message.Split('|');
 
         // We have 3 message types: GPS NVP, AV Status, and RES Message
         // GPS starts with "LAT", AV Status starts with "SA", and RES starts with "RES"
@@ -127,11 +138,14 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             // If we don't have a key-value pair, we throw an exception
             if (pair.Length < 2)
             {
-                logger.LogError("Invalid key-value pair: {s}, Skipping message: {message}", s, message);
-                return;
+                logger.LogError("Invalid key-value pair: {s}, Skipping value: {message}", s, message);
+                var key = s.Replace("=", "");
+                values[key] = "0.0";
             }
-
-            values[pair[0]] = pair[1];
+            else
+            {
+                values[pair[0]] = pair[1];
+            }
         }
 
         if (values.ContainsKey("LAT"))
@@ -214,10 +228,20 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
             K2State = ParseBool(values["K2T"]),
             K3State = ParseBool(values["K3B"]),
             ResRadioQuality = ParseInt(values["RRQ"]),
-            ResNodeId = ParseInt(values["NID"])
+            ResNodeId = ParseInt("11")
         });
     }
 
+    private DateTime ParseUTCTime(string UTC)
+    {
+        // P200000T00:000:00.00
+        // TODO: Make an exception for the above timestamp, and display a warning that GPS has not reported a time yet
+        var formatException = "P200000T00:000:00.00";
+        var format = "'P'yyyyMMdd'T'HH:mm:ss.ff";
+        var parsedDateTime = DateTime.ParseExact(UTC, format, CultureInfo.InvariantCulture);
+        // Return the parsed or default DateTime
+        return parsedDateTime;
+    }
 
     private void ParseRawMessage(Dictionary<string, string> values, string rawMessage)
     {
@@ -225,7 +249,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         RawDataUpdated?.Invoke(this, new RawData
         {
             CarId = values["ID"],
-            UTCTime = Time.ParseUtcTime(values["UTC"]),
+            UTCTime = ParseUTCTime(values["UTC"]),
             ConnectionStatus = comPort.IsConnected
         });
     }
@@ -250,7 +274,7 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         try
         {
             logger.LogDebug("Sending heartbeat: {HeartBeatMessage}", HeartBeatMessage);
-            HeartBeatUpdated?.Invoke(this, comPort.Write(HeartBeatMessage));
+            comPort.Write(HeartBeatMessage);
         }
         catch (Exception ex)
         {

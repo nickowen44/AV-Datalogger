@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Text;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 
@@ -109,16 +110,10 @@ public class SerialPortWrapper(ILogger<SerialPortWrapper> logger) : ISerialPort
             logger.LogInformation("Writing data to serial port: {data}", data);
             try
             {
-                _serialPort.Write(data);
+                var terminatedData = $"{data}\r\n";
+                var encodedData = Encoding.UTF8.GetBytes(terminatedData);
 
-                // If the AV Logger doesn't respond OK then connection is dead.
-                // TODO: This will not work for the actual logger as there could be multiple messages in the buffer.
-                if (_serialPort.ReadLine() != "OK")
-                {
-                    return false;
-                }
-
-                logger.LogInformation("Heartbeat acknowledged by AV Logger");
+                _serialPort.Write(encodedData, 0, encodedData.Length);
                 return true;
             }
             catch (TimeoutException)
