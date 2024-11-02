@@ -118,7 +118,6 @@ public partial class SerialConnector(ISerialPort comPort, ILogger<SerialConnecto
         if (message == "OK")
         {
             HeartBeatUpdated?.Invoke(this, true);
-
             logger.LogInformation("Heartbeat acknowledged by AV Logger");
             return;
         }
